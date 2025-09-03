@@ -113,3 +113,6 @@ if(BUILD_TESTS)
   include(cmake/FindGoogleTest.cmake)
   add_subdirectory(${PROJECT_SOURCE_DIR}/include/flatnav/tests)
 endif()
+
+add_executable(test_flatnav test_flatnav.cpp)
+target_link_libraries(test_flatnav FLAT_NAV_LIB)
