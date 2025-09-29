@@ -30,3 +30,5 @@ external/openmp
 
 # Python wheels 
 wheelhouse
+
+/venv
