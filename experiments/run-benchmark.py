@@ -554,7 +554,7 @@ def plot_all_metrics(
 
 def run_experiment():
     # This is the root directory inside the Docker container not the host machine.
-    ROOT_DIR = "/root"
+    ROOT_DIR = ".."
     args = parse_arguments()
 
     data_loader = get_data_loader(
