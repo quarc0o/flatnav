@@ -363,6 +363,22 @@ mnist-bench-flatnav-alpha-0.5:
 		--pruning-strategy alpha_diversity \
 		--alpha 0.5
 
+mnist-bench-flatnav-alpha-0.1:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.1 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.1
+
 mnist-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name mnist-784 \
