@@ -309,7 +309,7 @@ mnist-bench-flatnav-hnsw:
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100  \
+		--ef-search 100 200 300 500 1000 3000  \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 \
