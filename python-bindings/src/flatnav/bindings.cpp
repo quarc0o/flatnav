@@ -19,10 +19,8 @@
 #include <vector>
 #include "docs.h"
 
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-
 
 using flatnav::Index;
 using flatnav::distances::DistanceInterface;
@@ -277,10 +275,48 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
     _index->buildGraphLinks(/* mtx_filename = */ mtx_filename);
   }
 
+  size_t countActualEdges() const { return _index->countActualEdges(); }
+
+  float getAverageOutDegree() const { return _index->getAverageOutDegree(); }
+
+  void getEdgeStatistics() const { _index->getEdgeStatistics(); }
 
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() { return _index->getGraphOutdegreeTable(); }
 
   uint32_t getMaxEdgesPerNode() { return _index->maxEdgesPerNode(); }
+
+  void setPruningStrategy(const std::string& strategy) {
+    auto strat = strategy;
+    std::transform(strat.begin(), strat.end(), strat.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+
+    if (strat == "hnsw" || strat == "hnsw_heuristic") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::HNSW_HEURISTIC);
+    } else if (strat == "alpha_diversity" || strat == "alpha") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY);
+    } else {
+      throw std::invalid_argument("Invalid pruning strategy: '" + strategy +
+                                  "'. Valid options: 'hnsw', 'alpha_diversity'");
+    }
+  }
+
+  void setAlpha(float alpha) { _index->setAlpha(alpha); }
+
+  std::string getPruningStrategy() const {
+    auto strategy = _index->getPruningStrategy();
+    switch (strategy) {
+      case Index<dist_t, label_t>::PruningStrategy::HNSW_HEURISTIC:
+        return "hnsw_heuristic";
+      case Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY:
+        return "alpha_diversity";
+      case Index<dist_t, label_t>::PruningStrategy::RNG:
+        return "rng";
+      default:
+        return "unknown";
+    }
+  }
+
+  float getAlpha() const { return _index->getAlpha(); }
 
   void reorder(const std::vector<std::string>& strategies) {
     // validate the given strategies
@@ -469,6 +505,19 @@ void bindSpecialization(py::module_& index_submodule) {
       .def("reorder", &IndexType::reorder, py::arg("strategies"), REORDER_DOCSTRING)
       .def("set_num_threads", &IndexType::setNumThreads, py::arg("num_threads"), SET_NUM_THREADS_DOCSTRING)
       .def_static("load_index", &IndexType::loadIndex, py::arg("filename"), LOAD_INDEX_DOCSTRING)
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw' or 'alpha_diversity'")
+      .def("set_alpha", &IndexType::setAlpha, py::arg("alpha"),
+           "Set alpha parameter for alpha-diversity pruning (typically 0.5-1.5)")
+      .def("get_pruning_strategy", &IndexType::getPruningStrategy, "Get the current pruning strategy")
+      .def("get_alpha", &IndexType::getAlpha, "Get the current alpha parameter")
+
+      .def("count_actual_edges", &IndexType::countActualEdges,
+           "Count the actual number of edges (excluding self-loops)")
+      .def("get_average_out_degree", &IndexType::getAverageOutDegree, "Get average out-degree per node")
+      .def("get_edge_statistics", &IndexType::getEdgeStatistics, "Print detailed edge statistics")
+
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
 }
@@ -523,10 +572,10 @@ void defineDistanceEnums(py::module_& module) {
 PYBIND11_MODULE(_core, module) {
 #ifdef VERSION_INFO
   module.attr("__version__") = TOSTRING(VERSION_INFO);
-  #pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
+#pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
 #else
   module.attr("__version__") = "dev";
-  #pragma message("VERSION_INFO is not defined")
+#pragma message("VERSION_INFO is not defined")
 #endif
 
   module.doc() = CXX_EXTENSION_MODULE_DOCSTRING;

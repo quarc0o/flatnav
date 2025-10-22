@@ -169,6 +169,8 @@ def train_index(
     use_hnsw_base_layer: bool = False,
     hnsw_base_layer_filename: Optional[str] = None,
     num_build_threads: int = 1,
+    pruning_strategy: str = "hnsw",
+    alpha: float = 1.0,
 ) -> Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat, hnswlib.Index]:
     """
     Creates and trains an index on the given dataset.
@@ -248,6 +250,15 @@ def train_index(
             verbose=True,
             collect_stats=False,
         )
+
+        if pruning_strategy.lower() == "alpha_diversity":
+            index.set_pruning_strategy("alpha_diversity")
+            index.set_alpha(alpha)
+            logging.info(f"Using alpha-diversity pruning with alpha={alpha}")
+        else:
+            index.set_pruning_strategy("hnsw")
+            logging.info("Using HNSW heuristic pruning")
+
         index.set_num_threads(num_build_threads)
 
         # Train the index.
@@ -258,6 +269,22 @@ def train_index(
         end = time.time()
 
         logging.info(f"Indexing time = {end - start} seconds")
+
+        logging.info("\n" + "="*50)
+        logging.info("POST-BUILD INDEX STATISTICS")
+        logging.info("="*50)
+
+        try:
+            index.get_edge_statistics()
+            avg_degree = index.get_average_out_degree()
+            total_edges = index.count_actual_edges()
+            logging.info(f"Average out-degree: {avg_degree:.2f} / {max_edges_per_node}")
+            logging.info(f"Total edges used: {total_edges:,}")
+            logging.info(f"Edge utilization: {(avg_degree/max_edges_per_node)*100:.1f}%")
+        except Exception as e:
+            logging.error(f"Could not get edge statistics: {e}")
+        
+        logging.info("="*50 + "\n")
 
     return index
 
@@ -281,6 +308,8 @@ def main(
     num_initializations: Optional[List[int]] = None,
     num_build_threads: int = 1,
     num_search_threads: int = 1,
+    pruning_strategy: str = "hnsw",     
+    alpha: float = 1.0,  
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
@@ -302,6 +331,8 @@ def main(
             use_hnsw_base_layer=use_hnsw_base_layer,
             hnsw_base_layer_filename=hnsw_base_layer_filename,
             num_build_threads=num_build_threads,
+            pruning_strategy=pruning_strategy,  
+            alpha=alpha, 
         )
         
         if reordering_strategies is not None:
@@ -503,6 +534,23 @@ def parse_arguments() -> argparse.Namespace:
         help="The first element is the start index and the second element is the end index. Must be two integers.",
     )
 
+    parser.add_argument(
+        "--pruning-strategy",
+        required=False,
+        default="hnsw",
+        choices=["hnsw", "alpha_diversity"],
+        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity'.",
+    )
+    
+    parser.add_argument(
+        "--alpha",
+        required=False,
+        default=1.0,
+        type=float,
+        help="Alpha parameter for alpha-diversity pruning (default: 1.0). "
+             "Typical range: 0.5 to 1.5. Lower = more aggressive pruning.",
+    )
+
     return parser.parse_args()
 
 
@@ -591,6 +639,8 @@ def run_experiment():
         metrics_file=metrics_file_path,
         num_initializations=num_initializations,
         requested_metrics=args.requested_metrics,
+        pruning_strategy=args.pruning_strategy,  
+        alpha=args.alpha,
     )
 
     plot_all_metrics(

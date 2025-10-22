@@ -1,11 +1,11 @@
 #pragma once
 
 #include <flatnav/distances/DistanceInterface.h>
+#include <flatnav/util/Datatype.h>
 #include <flatnav/util/Macros.h>
 #include <flatnav/util/Multithreading.h>
 #include <flatnav/util/Reordering.h>
 #include <flatnav/util/VisitedSetPool.h>
-#include <flatnav/util/Datatype.h>
 #include <algorithm>
 #include <atomic>
 #include <cassert>
@@ -18,16 +18,16 @@
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <queue>
 #include <thread>
 #include <utility>
 #include <vector>
-#include <optional>
 
 using flatnav::distances::DistanceInterface;
+using flatnav::util::DataType;
 using flatnav::util::VisitedSet;
 using flatnav::util::VisitedSetPool;
-using flatnav::util::DataType;
 
 namespace flatnav {
 
@@ -45,7 +45,7 @@ class Index {
   // min-heap depending on the context.
 
   struct CompareByFirst {
-    constexpr bool operator()(dist_node_t const& a, dist_node_t const& b) const noexcept{
+    constexpr bool operator()(dist_node_t const& a, dist_node_t const& b) const noexcept {
       return a.first < b.first;
     }
   };
@@ -76,8 +76,8 @@ class Index {
   DataType _data_type;
 
   // NOTE: These metrics are meaningful the most with single-threaded search.
-  // With multi-threaded search, for instance, the number of distance computations will 
-  // accumulate across queries, which means at the end of the batched search, the number 
+  // With multi-threaded search, for instance, the number of distance computations will
+  // accumulate across queries, which means at the end of the batched search, the number
   // you get is the cumulative sum of all distance computations across all queries.
   // Maybe that's what you want, but it's worth noting
   mutable std::atomic<uint64_t> _distance_computations = 0;
@@ -141,6 +141,14 @@ class Index {
   }
 
  public:
+  enum class PruningStrategy {
+    HNSW_HEURISTIC,
+    ALPHA_DIVERSITY,
+    RNG  // For future implementation
+  };
+
+  PruningStrategy _pruning_strategy;
+  float _alpha;
   /**
    * @brief Construct a new Index object for approximate near neighbor search.
    *
@@ -157,7 +165,8 @@ class Index {
    * the search process.
    */
   Index(std::unique_ptr<DistanceInterface<dist_t>> dist, int dataset_size, int max_edges_per_node,
-        bool collect_stats = false, DataType data_type = DataType::float32)
+        bool collect_stats = false, DataType data_type = DataType::float32,
+        PruningStrategy strategy = PruningStrategy::HNSW_HEURISTIC, float alpha = 1.2f)
       : _M(max_edges_per_node),
         _max_node_count(dataset_size),
         _cur_num_nodes(0),
@@ -167,7 +176,10 @@ class Index {
             /* initial_pool_size = */ 1,
             /* num_elements = */ dataset_size)),
         _node_links_mutexes(dataset_size),
-        _collect_stats(collect_stats), _data_type(data_type) {
+        _collect_stats(collect_stats),
+        _data_type(data_type),
+        _pruning_strategy(strategy),
+        _alpha(alpha) {
 
     // Get the size in bytes of the _node_links_mutexes vector.
     size_t mutexes_size_bytes = _node_links_mutexes.size() * sizeof(std::mutex);
@@ -182,7 +194,6 @@ class Index {
     delete[] _index_memory;
     delete _visited_set_pool;
   }
-
 
   void buildGraphLinks(const std::string& mtx_filename) {
     std::ifstream input_file(mtx_filename);
@@ -250,6 +261,39 @@ class Index {
     return outdegree_table;
   }
 
+  size_t countActualEdges() const {
+    size_t total_edges = 0;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+      for (size_t i = 0; i < _M; i++) {
+        if (links[i] != node) {
+          total_edges++;
+        }
+      }
+    }
+    return total_edges;
+  }
+
+  float getAverageOutDegree() const {
+    if (_cur_num_nodes == 0)
+      return 0.0f;
+    return static_cast<float>(countActualEdges()) / static_cast<float>(_cur_num_nodes);
+  }
+
+  void getEdgeStatistics() const {
+    size_t total_edges = countActualEdges();
+    size_t max_possible = _cur_num_nodes * _M;
+    float avg_degree = getAverageOutDegree();
+    float utilization = static_cast<float>(total_edges) / static_cast<float>(max_possible) * 100.0f;
+
+    std::cout << "\nEdge Statistics\n" << std::flush;
+    std::cout << "-----------------------------\n" << std::flush;
+    std::cout << "Total actual edges: " << total_edges << "\n" << std::flush;
+    std::cout << "Max possible edges: " << max_possible << "\n" << std::flush;
+    std::cout << "Average out-degree: " << avg_degree << " / " << _M << "\n" << std::flush;
+    std::cout << "Edge utilization: " << utilization << "%\n" << std::flush;
+  }
+
   /**
    * @brief Store the new node in the global data structure. In a
    * multi-threaded setting, the index data guard should be held by the caller
@@ -300,32 +344,32 @@ class Index {
   template <typename data_type>
   void addBatch(void* data, std::vector<label_t>& labels, int ef_construction,
                 int num_initializations = 100) {
-      if (num_initializations <= 0) {
-          throw std::invalid_argument("num_initializations must be greater than 0.");
-      }
-      uint32_t total_num_nodes = labels.size();
-      uint32_t data_dimension = _distance->dimension();
+    if (num_initializations <= 0) {
+      throw std::invalid_argument("num_initializations must be greater than 0.");
+    }
+    uint32_t total_num_nodes = labels.size();
+    uint32_t data_dimension = _distance->dimension();
 
-      // Don't spawn any threads if we are only using one.
-      if (_num_threads == 1) {
-          for (uint32_t row_index = 0; row_index < total_num_nodes; row_index++) {
-              uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
-              void* vector = (data_type*)data + offset;
-              label_t label = labels[row_index];
-              this->add(vector, label, ef_construction, num_initializations);
-          }
-          return;
+    // Don't spawn any threads if we are only using one.
+    if (_num_threads == 1) {
+      for (uint32_t row_index = 0; row_index < total_num_nodes; row_index++) {
+        uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
+        void* vector = (data_type*)data + offset;
+        label_t label = labels[row_index];
+        this->add(vector, label, ef_construction, num_initializations);
       }
+      return;
+    }
 
-      flatnav::executeInParallel(
-          /* start_index = */ 0, /* end_index = */ total_num_nodes,
-          /* num_threads = */ _num_threads, /* function = */
-          [&](uint32_t row_index) {
-              uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
-              void* vector = (data_type*)data + offset;
-              label_t label = labels[row_index];
-              this->add(vector, label, ef_construction, num_initializations);
-          });
+    flatnav::executeInParallel(
+        /* start_index = */ 0, /* end_index = */ total_num_nodes,
+        /* num_threads = */ _num_threads, /* function = */
+        [&](uint32_t row_index) {
+          uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
+          void* vector = (data_type*)data + offset;
+          label_t label = labels[row_index];
+          this->add(vector, label, ef_construction, num_initializations);
+        });
   }
 
   /**
@@ -373,7 +417,7 @@ class Index {
         /* buffer_size = */ ef_construction);
 
     int selection_M = std::max(static_cast<int>(_M / 2), 1);
-    selectNeighbors(/* neighbors = */ neighbors, /* M = */ selection_M);
+    selectNeighborsUnified(/* neighbors = */ neighbors, /* M = */ selection_M);
     connectNeighbors(neighbors, new_node_id);
   }
 
@@ -407,7 +451,6 @@ class Index {
 
     return results;
   }
-
 
   void doGraphReordering(const std::vector<std::string>& reordering_methods) {
 
@@ -452,14 +495,8 @@ class Index {
     std::unique_ptr<DistanceInterface<dist_t>> dist = std::make_unique<dist_t>();
 
     // 1. Deserialize metadata
-    archive(index->_data_type, 
-            index->_M, 
-            index->_data_size_bytes, 
-            index->_node_size_bytes, 
-            index->_max_node_count,
-            index->_cur_num_nodes, 
-            *dist
-    );
+    archive(index->_data_type, index->_M, index->_data_size_bytes, index->_node_size_bytes,
+            index->_max_node_count, index->_cur_num_nodes, *dist);
     index->_visited_set_pool = new VisitedSetPool(
         /* initial_pool_size = */ 1,
         /* num_elements = */ index->_max_node_count);
@@ -468,7 +505,8 @@ class Index {
     index->_node_links_mutexes = std::vector<std::mutex>(index->_max_node_count);
 
     // 2. Allocate memory using deserialized metadata
-    uint64_t mem_size = static_cast<uint64_t>(index->_node_size_bytes) * static_cast<uint64_t>(index->_max_node_count);
+    uint64_t mem_size =
+        static_cast<uint64_t>(index->_node_size_bytes) * static_cast<uint64_t>(index->_max_node_count);
 
     index->_index_memory = new char[mem_size];
 
@@ -500,7 +538,6 @@ class Index {
       _visited_set_pool->setPoolSize(1);
     }
   }
-
 
   inline uint64_t getTotalIndexMemory() const {
     return static_cast<uint64_t>(_node_size_bytes) * static_cast<uint64_t>(_max_node_count);
@@ -546,6 +583,19 @@ class Index {
 
     _distance->getSummary();
   }
+
+  void setPruningStrategy(PruningStrategy strategy) { _pruning_strategy = strategy; }
+
+  void setAlpha(float alpha) {
+    if (alpha <= 0.0f) {
+      throw std::invalid_argument("Alpha must be positive");
+    }
+    _alpha = alpha;
+  }
+
+  PruningStrategy getPruningStrategy() const { return _pruning_strategy; }
+
+  float getAlpha() const { return _alpha; }
 
  private:
   friend class cereal::access;
@@ -603,8 +653,7 @@ class Index {
    * @return PriorityQueue
    */
 
-  PriorityQueue beamSearch(const void* query, const node_id_t entry_node, 
-          const int buffer_size) {
+  PriorityQueue beamSearch(const void* query, const node_id_t entry_node, const int buffer_size) {
     PriorityQueue neighbors;
     PriorityQueue candidates;
 
@@ -683,8 +732,8 @@ class Index {
       }
       visited_set->insert(/* num = */ neighbor_node_id);
       float dist = _distance->distance(/* x = */ query,
-                                 /* y = */ getNodeData(neighbor_node_id),
-                                 /* asymmetric = */ true);
+                                       /* y = */ getNodeData(neighbor_node_id),
+                                       /* asymmetric = */ true);
 
       if (_collect_stats) {
         _distance_computations.fetch_add(1);
@@ -706,11 +755,69 @@ class Index {
     }
   }
 
+  void selectNeighborsUnified(PriorityQueue& neighbors, int M) {
+    if (_pruning_strategy == PruningStrategy::ALPHA_DIVERSITY) {
+      selectNeighborsAlphaDiversity(neighbors, M, _alpha);
+    } else {
+      selectNeighbors(neighbors, M);
+    }
+  }
+
   /**
    * @brief Selects neighbors from the PriorityQueue, according to the HNSW
    * heuristic. The neighbors priority queue contains elements sorted by
    * distance where the top element is the furthest neighbor from the query.
    */
+  void selectNeighborsAlphaDiversity(PriorityQueue& neighbors, int M, float alpha) {
+
+    if (neighbors.size() <= M) {
+      return;  // No pruning needed
+    }
+
+    // Convert max-heap to min-heap (sort by distance ascending)
+    std::priority_queue<std::pair<float, node_id_t>, std::vector<std::pair<float, node_id_t>>,
+                        std::greater<std::pair<float, node_id_t>>>
+        candidates;
+
+    while (!neighbors.empty()) {
+      auto [dist, id] = neighbors.top();
+      candidates.emplace(dist, id);
+      neighbors.pop();
+    }
+
+    // Greedily select diverse neighbors
+    std::vector<dist_node_t> selected;
+    selected.reserve(M);
+
+    while (!candidates.empty() && selected.size() < M) {
+      auto [d_query, candidate] = candidates.top();
+      candidates.pop();
+
+      bool keep = true;
+      for (const auto& [_, already_selected] : selected) {
+        // Compute distance between candidate and already selected neighbor
+        float d_neighbor = _distance->distance(
+            /* x = */ getNodeData(candidate),
+            /* y = */ getNodeData(already_selected));
+
+        // Prune if too close to existing neighbor
+        if (d_neighbor < d_query / (1.0f + alpha)) {
+          keep = false;
+          break;
+        }
+      }
+
+      if (keep) {
+        selected.push_back({d_query, candidate});
+      }
+    }
+
+    // Put selected neighbors back into the priority queue
+    for (const auto& [dist, id] : selected) {
+      neighbors.emplace(dist, id);
+    }
+  }
+
   void selectNeighbors(PriorityQueue& neighbors, int M) {
     if (neighbors.size() < M) {
       return;
@@ -739,7 +846,7 @@ class Index {
       bool should_keep_candidate = true;
       for (const auto& [_, second_pair_node_id] : saved_candidates) {
         float cur_dist = _distance->distance(/* x = */ getNodeData(second_pair_node_id),
-                                       /* y = */ getNodeData(current_node_id));
+                                             /* y = */ getNodeData(current_node_id));
 
         if (cur_dist < distance_to_query) {
           should_keep_candidate = false;
@@ -759,7 +866,6 @@ class Index {
     for (const dist_node_t& current_pair : saved_candidates) {
       neighbors.emplace(-current_pair.first, current_pair.second);
     }
-
   }
 
   void connectNeighbors(PriorityQueue& neighbors, node_id_t new_node_id) {
@@ -810,7 +916,7 @@ class Index {
           }
         }
         // 2X larger than the previous call to selectNeighbors.
-        selectNeighbors(candidates, _M);
+        selectNeighborsUnified(candidates, _M);
         // connect the pruned set of candidates, including self-loops:
         size_t j = 0;
         while (candidates.size() > 0) {  // candidates
