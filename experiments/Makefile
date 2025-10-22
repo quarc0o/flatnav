@@ -361,7 +361,7 @@ mnist-bench-flatnav-alpha-0.5:
 		--num-build-threads 16 \
 		--num-search-threads 1 \
 		--pruning-strategy alpha_diversity \
-		--alpha 0.005
+		--alpha 0.5
 
 mnist-bench-hnsw: 
 	poetry run python run-benchmark.py \
