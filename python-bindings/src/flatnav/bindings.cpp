@@ -294,11 +294,17 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
       _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::HNSW_HEURISTIC);
     } else if (strat == "alpha_diversity" || strat == "alpha") {
       _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY);
+    } else if (strat == "ssg") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::SSG);
     } else {
       throw std::invalid_argument("Invalid pruning strategy: '" + strategy +
-                                  "'. Valid options: 'hnsw', 'alpha_diversity'");
+                                  "'. Valid options: 'hnsw', 'alpha_diversity', 'ssg'");
     }
   }
+
+  void setAngleThreshold(float threshold) { _index->setAngleThreshold(threshold); }
+
+  float getAngleThreshold() const { return _index->getAngleThreshold(); }
 
   void setAlpha(float alpha) { _index->setAlpha(alpha); }
 
@@ -309,6 +315,8 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
         return "hnsw_heuristic";
       case Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY:
         return "alpha_diversity";
+      case Index<dist_t, label_t>::PruningStrategy::SSG:
+        return "ssg";
       case Index<dist_t, label_t>::PruningStrategy::RNG:
         return "rng";
       default:
@@ -517,6 +525,16 @@ void bindSpecialization(py::module_& index_submodule) {
            "Count the actual number of edges (excluding self-loops)")
       .def("get_average_out_degree", &IndexType::getAverageOutDegree, "Get average out-degree per node")
       .def("get_edge_statistics", &IndexType::getEdgeStatistics, "Print detailed edge statistics")
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw', 'alpha_diversity', 'ssg'")
+      .def("set_alpha", &IndexType::setAlpha, py::arg("alpha"),
+           "Set alpha parameter for alpha-diversity pruning (typically 0.5-1.5)")
+      .def("set_angle_threshold", &IndexType::setAngleThreshold, py::arg("threshold"),
+           "Set angle threshold for SSG pruning in degrees (typically 30-90)")
+      .def("get_pruning_strategy", &IndexType::getPruningStrategy, "Get the current pruning strategy")
+      .def("get_alpha", &IndexType::getAlpha, "Get the current alpha parameter")
+      .def("get_angle_threshold", &IndexType::getAngleThreshold, "Get the current angle threshold")
 
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);

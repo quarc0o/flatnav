@@ -13,11 +13,13 @@
 #include <cereal/archives/binary.hpp>
 #include <cereal/cereal.hpp>
 #include <cereal/types/memory.hpp>
+#include <cmath>
 #include <cstring>
 #include <fstream>
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <numbers>
 #include <optional>
 #include <queue>
 #include <thread>
@@ -144,11 +146,13 @@ class Index {
   enum class PruningStrategy {
     HNSW_HEURISTIC,
     ALPHA_DIVERSITY,
+    SSG,
     RNG  // For future implementation
   };
 
   PruningStrategy _pruning_strategy;
   float _alpha;
+  float _angle_threshold;
   /**
    * @brief Construct a new Index object for approximate near neighbor search.
    *
@@ -166,7 +170,8 @@ class Index {
    */
   Index(std::unique_ptr<DistanceInterface<dist_t>> dist, int dataset_size, int max_edges_per_node,
         bool collect_stats = false, DataType data_type = DataType::float32,
-        PruningStrategy strategy = PruningStrategy::HNSW_HEURISTIC, float alpha = 1.2f)
+        PruningStrategy strategy = PruningStrategy::HNSW_HEURISTIC, float alpha = 1.2f,
+        float angle_threshold = 60.0f)
       : _M(max_edges_per_node),
         _max_node_count(dataset_size),
         _cur_num_nodes(0),
@@ -179,7 +184,8 @@ class Index {
         _collect_stats(collect_stats),
         _data_type(data_type),
         _pruning_strategy(strategy),
-        _alpha(alpha) {
+        _alpha(alpha),
+        _angle_threshold(angle_threshold) {
 
     // Get the size in bytes of the _node_links_mutexes vector.
     size_t mutexes_size_bytes = _node_links_mutexes.size() * sizeof(std::mutex);
@@ -247,6 +253,15 @@ class Index {
 
     input_file.close();
   }
+
+  void setAngleThreshold(float threshold) {
+    if (threshold <= 0.0f || threshold > 180.0f) {
+      throw std::invalid_argument("Angle threshold must be between 0 and 180 degrees");
+    }
+    _angle_threshold = threshold;
+  }
+
+  float getAngleThreshold() const { return _angle_threshold; }
 
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() {
     std::vector<std::vector<uint32_t>> outdegree_table(_cur_num_nodes);
@@ -417,7 +432,7 @@ class Index {
         /* buffer_size = */ ef_construction);
 
     int selection_M = std::max(static_cast<int>(_M / 2), 1);
-    selectNeighborsUnified(/* neighbors = */ neighbors, /* M = */ selection_M);
+    selectNeighborsUnified(/* neighbors = */ neighbors, /* M = */ selection_M, data);
     connectNeighbors(neighbors, new_node_id);
   }
 
@@ -602,6 +617,91 @@ class Index {
   // Default constructor for cereal
   Index() = default;
 
+  float computeAngle(const void* vec1, const void* vec2, const void* center) const {
+    // Compute vectors from center to vec1 and vec2
+    // angle = arccos(dot(v1-c, v2-c) / (norm(v1-c) * norm(v2-c)))
+
+    // For L2 distance, we can use the law of cosines:
+    // cos(angle) = (d1² + d2² - d12²) / (2 * d1 * d2)
+    // where d1 = dist(center, vec1), d2 = dist(center, vec2), d12 = dist(vec1, vec2)
+
+    float d1 = _distance->distance(center, vec1, false);
+    float d2 = _distance->distance(center, vec2, false);
+    float d12 = _distance->distance(vec1, vec2, false);
+
+    if (d1 < 1e-10f || d2 < 1e-10f)
+      return 0.0f;  // Avoid division by zero
+
+    float cos_angle = (d1 * d1 + d2 * d2 - d12 * d12) / (2.0f * d1 * d2);
+
+    // Clamp to [-1, 1] to handle numerical errors
+    cos_angle = std::max(-1.0f, std::min(1.0f, cos_angle));
+
+    // Convert to degrees
+    float angle_rad = std::acos(cos_angle);
+    float angle_deg = angle_rad * 180.0f / M_PI;
+
+    return angle_deg;
+  }
+
+  void selectNeighborsSSG(PriorityQueue& neighbors, int M, const void* query) {
+    if (neighbors.size() <= M) {
+      return;
+    }
+
+    std::priority_queue<std::pair<float, node_id_t>, std::vector<std::pair<float, node_id_t>>,
+                        std::greater<std::pair<float, node_id_t>>>
+        candidates;
+
+    while (!neighbors.empty()) {
+      auto [dist, id] = neighbors.top();
+      candidates.emplace(dist, id);
+      neighbors.pop();
+    }
+
+    std::vector<dist_node_t> selected;
+    selected.reserve(M);
+
+    // DEBUG: Track pruning stats
+    int total_candidates = candidates.size();
+    int pruned_count = 0;
+
+    while (!candidates.empty() && selected.size() < M) {
+      auto [d_query, candidate] = candidates.top();
+      candidates.pop();
+
+      bool keep = true;
+
+      for (const auto& [_, already_selected] : selected) {
+        float angle = computeAngle(getNodeData(candidate), getNodeData(already_selected), query);
+
+        // DEBUG: Print first few angles
+        if (selected.size() < 3 && !selected.empty()) {
+          std::cout << "Angle between candidates: " << angle << "° (threshold: " << _angle_threshold << "°)"
+                    << std::endl;
+        }
+
+        if (angle < _angle_threshold) {
+          keep = false;
+          pruned_count++;
+          break;
+        }
+      }
+
+      if (keep) {
+        selected.push_back({d_query, candidate});
+      }
+    }
+
+    // DEBUG: Print pruning statistics
+    std::cout << "SSG pruned " << pruned_count << "/" << total_candidates
+              << " candidates. Selected: " << selected.size() << "/" << M << std::endl;
+
+    for (const auto& [dist, id] : selected) {
+      neighbors.emplace(dist, id);
+    }
+  }
+
   char* getNodeData(const node_id_t& n) const {
     uint64_t byte_offset = static_cast<uint64_t>(n) * static_cast<uint64_t>(_node_size_bytes);
     return _index_memory + byte_offset;
@@ -755,9 +855,14 @@ class Index {
     }
   }
 
-  void selectNeighborsUnified(PriorityQueue& neighbors, int M) {
+  void selectNeighborsUnified(PriorityQueue& neighbors, int M, const void* query = nullptr) {
     if (_pruning_strategy == PruningStrategy::ALPHA_DIVERSITY) {
       selectNeighborsAlphaDiversity(neighbors, M, _alpha);
+    } else if (_pruning_strategy == PruningStrategy::SSG) {
+      if (query == nullptr) {
+        throw std::runtime_error("SSG pruning requires query vector");
+      }
+      selectNeighborsSSG(neighbors, M, query);
     } else {
       selectNeighbors(neighbors, M);
     }
@@ -875,6 +980,7 @@ class Index {
     std::unique_lock<std::mutex> lock(_node_links_mutexes[new_node_id]);
 
     node_id_t* new_node_links = getNodeLinks(new_node_id);
+    void* new_node_data = getNodeData(new_node_id);
     int i = 0;  // iterates through links for "new_node_id"
 
     while (neighbors.size() > 0) {
@@ -885,6 +991,7 @@ class Index {
 
       std::unique_lock<std::mutex> neighbor_lock(_node_links_mutexes[neighbor_node_id]);
       node_id_t* neighbor_node_links = getNodeLinks(neighbor_node_id);
+      void* neighbor_data = getNodeData(neighbor_node_id);
       bool is_inserted = false;
       for (size_t j = 0; j < _M; j++) {
         if (neighbor_node_links[j] == neighbor_node_id) {
@@ -916,7 +1023,7 @@ class Index {
           }
         }
         // 2X larger than the previous call to selectNeighbors.
-        selectNeighborsUnified(candidates, _M);
+        selectNeighborsUnified(candidates, _M, neighbor_data);
         // connect the pruned set of candidates, including self-loops:
         size_t j = 0;
         while (candidates.size() > 0) {  // candidates

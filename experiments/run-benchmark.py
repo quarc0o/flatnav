@@ -171,6 +171,7 @@ def train_index(
     num_build_threads: int = 1,
     pruning_strategy: str = "hnsw",
     alpha: float = 1.0,
+    angle_threshold: float = 60.0, 
 ) -> Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat, hnswlib.Index]:
     """
     Creates and trains an index on the given dataset.
@@ -255,6 +256,10 @@ def train_index(
             index.set_pruning_strategy("alpha_diversity")
             index.set_alpha(alpha)
             logging.info(f"Using alpha-diversity pruning with alpha={alpha}")
+        elif pruning_strategy.lower() == "ssg":  
+            index.set_pruning_strategy("ssg")
+            index.set_angle_threshold(angle_threshold)
+            logging.info(f"Using SSG pruning with angle_threshold={angle_threshold}°")
         else:
             index.set_pruning_strategy("hnsw")
             logging.info("Using HNSW heuristic pruning")
@@ -310,6 +315,7 @@ def main(
     num_search_threads: int = 1,
     pruning_strategy: str = "hnsw",     
     alpha: float = 1.0,  
+    angle_threshold: float = 60.0, 
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
@@ -333,6 +339,7 @@ def main(
             num_build_threads=num_build_threads,
             pruning_strategy=pruning_strategy,  
             alpha=alpha, 
+            angle_threshold=angle_threshold, 
         )
         
         if reordering_strategies is not None:
@@ -538,8 +545,8 @@ def parse_arguments() -> argparse.Namespace:
         "--pruning-strategy",
         required=False,
         default="hnsw",
-        choices=["hnsw", "alpha_diversity"],
-        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity'.",
+        choices=["hnsw", "alpha_diversity", "ssg"],
+        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity', 'ssg'.",
     )
     
     parser.add_argument(
@@ -549,6 +556,15 @@ def parse_arguments() -> argparse.Namespace:
         type=float,
         help="Alpha parameter for alpha-diversity pruning (default: 1.0). "
              "Typical range: 0.5 to 1.5. Lower = more aggressive pruning.",
+    )
+
+    parser.add_argument(
+        "--angle-threshold",
+        required=False,
+        default=60.0,
+        type=float,
+        help="Angle threshold for SSG pruning in degrees (default: 60.0). "
+             "Typical range: 30 to 90. Lower = more aggressive pruning.",
     )
 
     return parser.parse_args()
@@ -641,6 +657,7 @@ def run_experiment():
         requested_metrics=args.requested_metrics,
         pruning_strategy=args.pruning_strategy,  
         alpha=args.alpha,
+        angle_threshold=args.angle_threshold,
     )
 
     plot_all_metrics(
