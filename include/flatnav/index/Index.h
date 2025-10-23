@@ -644,6 +644,71 @@ class Index {
     return angle_deg;
   }
 
+  /**
+   * @brief RNG (Relative Neighborhood Graph) neighbor selection
+   * 
+   * For each candidate, keep it only if there's no already-selected neighbor
+   * that is closer to both the query and the candidate than they are to each other.
+   * 
+   * Formally, keep edge (query, candidate) if for all selected neighbors s:
+   *   dist(query, candidate) <= max(dist(query, s), dist(candidate, s))
+   * 
+   * This creates a more sparse but well-connected graph.
+   */
+  void selectNeighborsRNG(PriorityQueue& neighbors, int M, const void* query) {
+    if (neighbors.size() <= M) {
+      return;
+    }
+
+    // Convert max-heap to min-heap (sort by distance ascending)
+    std::priority_queue<std::pair<float, node_id_t>, std::vector<std::pair<float, node_id_t>>,
+                        std::greater<std::pair<float, node_id_t>>>
+        candidates;
+
+    while (!neighbors.empty()) {
+      auto [dist, id] = neighbors.top();
+      candidates.emplace(dist, id);
+      neighbors.pop();
+    }
+
+    std::vector<dist_node_t> selected;
+    selected.reserve(M);
+
+    while (!candidates.empty() && selected.size() < M) {
+      auto [d_query_candidate, candidate] = candidates.top();
+      candidates.pop();
+
+      bool keep = true;
+
+      // Check RNG condition with all already selected neighbors
+      for (const auto& [d_query_selected, already_selected] : selected) {
+        // Distance between candidate and already_selected neighbor
+        float d_candidate_selected =
+            _distance->distance(getNodeData(candidate), getNodeData(already_selected), false);
+
+        // RNG condition: prune if there exists a neighbor that's closer to both
+        // the query and the candidate than they are to each other
+        // Keep edge if: d(query,candidate) <= max(d(query,selected), d(candidate,selected))
+        float max_dist = std::max(d_query_selected, d_candidate_selected);
+
+        if (d_query_candidate > max_dist) {
+          // There's a shortcut through already_selected - prune this candidate
+          keep = false;
+          break;
+        }
+      }
+
+      if (keep) {
+        selected.push_back({d_query_candidate, candidate});
+      }
+    }
+
+    // Put selected neighbors back into the priority queue
+    for (const auto& [dist, id] : selected) {
+      neighbors.emplace(dist, id);
+    }
+  }
+
   void selectNeighborsSSG(PriorityQueue& neighbors, int M, const void* query) {
     if (neighbors.size() <= M) {
       return;
@@ -662,10 +727,6 @@ class Index {
     std::vector<dist_node_t> selected;
     selected.reserve(M);
 
-    // DEBUG: Track pruning stats
-    int total_candidates = candidates.size();
-    int pruned_count = 0;
-
     while (!candidates.empty() && selected.size() < M) {
       auto [d_query, candidate] = candidates.top();
       candidates.pop();
@@ -675,15 +736,13 @@ class Index {
       for (const auto& [_, already_selected] : selected) {
         float angle = computeAngle(getNodeData(candidate), getNodeData(already_selected), query);
 
-        // DEBUG: Print first few angles
-        if (selected.size() < 3 && !selected.empty()) {
-          std::cout << "Angle between candidates: " << angle << "° (threshold: " << _angle_threshold << "°)"
-                    << std::endl;
-        }
+        // USE COMPLEMENTARY ANGLE: how much the angle deviates from 180°
+        // This measures "similarity" in direction rather than difference
+        float angular_deviation = 180.0f - angle;
 
-        if (angle < _angle_threshold) {
+        // Prune if directions are too similar (small deviation from opposite)
+        if (angular_deviation < _angle_threshold) {
           keep = false;
-          pruned_count++;
           break;
         }
       }
@@ -692,10 +751,6 @@ class Index {
         selected.push_back({d_query, candidate});
       }
     }
-
-    // DEBUG: Print pruning statistics
-    std::cout << "SSG pruned " << pruned_count << "/" << total_candidates
-              << " candidates. Selected: " << selected.size() << "/" << M << std::endl;
 
     for (const auto& [dist, id] : selected) {
       neighbors.emplace(dist, id);
@@ -863,6 +918,11 @@ class Index {
         throw std::runtime_error("SSG pruning requires query vector");
       }
       selectNeighborsSSG(neighbors, M, query);
+    } else if (_pruning_strategy == PruningStrategy::RNG) {  // ADD THIS
+      if (query == nullptr) {
+        throw std::runtime_error("RNG pruning requires query vector");
+      }
+      selectNeighborsRNG(neighbors, M, query);
     } else {
       selectNeighbors(neighbors, M);
     }

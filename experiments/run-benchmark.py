@@ -260,6 +260,9 @@ def train_index(
             index.set_pruning_strategy("ssg")
             index.set_angle_threshold(angle_threshold)
             logging.info(f"Using SSG pruning with angle_threshold={angle_threshold}°")
+        elif pruning_strategy.lower() == "rng":  # ADD THIS
+            index.set_pruning_strategy("rng")
+            logging.info("Using RNG (Relative Neighborhood Graph) pruning")
         else:
             index.set_pruning_strategy("hnsw")
             logging.info("Using HNSW heuristic pruning")
@@ -545,8 +548,8 @@ def parse_arguments() -> argparse.Namespace:
         "--pruning-strategy",
         required=False,
         default="hnsw",
-        choices=["hnsw", "alpha_diversity", "ssg"],
-        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity', 'ssg'.",
+        choices=["hnsw", "alpha_diversity", "ssg", "rng"],
+        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity', 'ssg', 'rng'.",
     )
     
     parser.add_argument(
@@ -566,6 +569,8 @@ def parse_arguments() -> argparse.Namespace:
         help="Angle threshold for SSG pruning in degrees (default: 60.0). "
              "Typical range: 30 to 90. Lower = more aggressive pruning.",
     )
+
+ 
 
     return parser.parse_args()
 

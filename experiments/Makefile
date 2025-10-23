@@ -315,6 +315,37 @@ mnist-bench-flatnav-hnsw:
 		--num-search-threads 1 \
 		--pruning-strategy hnsw
 
+mnist-bench-flatnav-rng:
+	python run-benchmark.py \
+		--dataset-name mnist-784-rng \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy rng
+
+mnist-bench-flatnav-ssg-160:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-160 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 160.0
+
 mnist-bench-flatnav-ssg-30:
 	python run-benchmark.py \
 		--dataset-name mnist-784-ssg-30 \

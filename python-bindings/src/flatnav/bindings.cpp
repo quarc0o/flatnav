@@ -296,9 +296,11 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
       _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY);
     } else if (strat == "ssg") {
       _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::SSG);
+    } else if (strat == "rng") {  // ADD THIS
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::RNG);
     } else {
       throw std::invalid_argument("Invalid pruning strategy: '" + strategy +
-                                  "'. Valid options: 'hnsw', 'alpha_diversity', 'ssg'");
+                                  "'. Valid options: 'hnsw', 'alpha_diversity', 'ssg', 'rng'");
     }
   }
 
@@ -535,6 +537,9 @@ void bindSpecialization(py::module_& index_submodule) {
       .def("get_pruning_strategy", &IndexType::getPruningStrategy, "Get the current pruning strategy")
       .def("get_alpha", &IndexType::getAlpha, "Get the current alpha parameter")
       .def("get_angle_threshold", &IndexType::getAngleThreshold, "Get the current angle threshold")
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw', 'alpha_diversity', 'ssg', 'rng'")
 
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
