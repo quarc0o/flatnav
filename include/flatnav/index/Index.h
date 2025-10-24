@@ -16,6 +16,7 @@
 #include <cmath>
 #include <cstring>
 #include <fstream>
+#include <iostream>
 #include <limits>
 #include <memory>
 #include <mutex>
@@ -23,6 +24,8 @@
 #include <optional>
 #include <queue>
 #include <thread>
+#include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -185,7 +188,8 @@ class Index {
         _data_type(data_type),
         _pruning_strategy(strategy),
         _alpha(alpha),
-        _angle_threshold(angle_threshold) {
+        _angle_threshold(angle_threshold),
+        _track_edges(false) {
 
     // Get the size in bytes of the _node_links_mutexes vector.
     size_t mutexes_size_bytes = _node_links_mutexes.size() * sizeof(std::mutex);
@@ -252,6 +256,140 @@ class Index {
     }
 
     input_file.close();
+  }
+
+  void enableEdgeTracking() {
+    _track_edges = true;
+
+    // Count total edges
+    size_t total_edges = 0;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+      for (size_t i = 0; i < _M; i++) {
+        if (links[i] != node) {
+          total_edges++;
+        }
+      }
+    }
+
+    // Initialize visit counts (no longer atomic, so resize works)
+    _edge_visit_counts.clear();
+    _edge_visit_counts.resize(total_edges, 0);  // Now works!
+
+    // Build edge index map
+    _edge_index_map.clear();
+    size_t edge_idx = 0;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+      for (size_t i = 0; i < _M; i++) {
+        if (links[i] != node) {
+          uint64_t edge_id = getEdgeId(node, links[i]);
+          _edge_index_map[edge_id] = edge_idx++;
+        }
+      }
+    }
+
+    std::cout << "Edge tracking enabled. Tracking " << total_edges << " edges." << std::endl;
+  }
+
+  void disableEdgeTracking() { _track_edges = false; }
+
+  struct EdgeUsageStats {
+    size_t total_edges;
+    size_t edges_with_visits;
+    size_t edges_never_used;
+    uint64_t total_visits;
+    double avg_visits_per_edge;
+    std::vector<std::pair<uint64_t, size_t>> top_edges;  // (visit_count, edge_idx)
+  };
+
+  EdgeUsageStats getEdgeUsageStats(int top_k = 10) const {
+    EdgeUsageStats stats;
+    stats.total_edges = _edge_visit_counts.size();
+    stats.edges_with_visits = 0;
+    stats.total_visits = 0;
+
+    std::vector<std::pair<uint64_t, size_t>> edge_visits;
+
+    for (size_t i = 0; i < _edge_visit_counts.size(); i++) {
+      uint64_t visits = _edge_visit_counts[i];  // No .load() needed
+      stats.total_visits += visits;
+
+      if (visits > 0) {
+        stats.edges_with_visits++;
+        edge_visits.push_back({visits, i});
+      }
+    }
+
+    stats.edges_never_used = stats.total_edges - stats.edges_with_visits;
+    stats.avg_visits_per_edge =
+        stats.total_edges > 0 ? static_cast<double>(stats.total_visits) / stats.total_edges : 0.0;
+
+    // Get top-k
+    std::partial_sort(edge_visits.begin(), edge_visits.begin() + std::min(top_k, (int)edge_visits.size()),
+                      edge_visits.end(), std::greater<std::pair<uint64_t, size_t>>());
+
+    for (int i = 0; i < std::min(top_k, (int)edge_visits.size()); i++) {
+      stats.top_edges.push_back(edge_visits[i]);
+    }
+
+    return stats;
+  }
+
+  void pruneUnusedEdges(float keep_ratio) {
+    if (!_track_edges || _edge_visit_counts.empty()) {
+      throw std::runtime_error("Edge tracking must be enabled before pruning");
+    }
+
+    if (keep_ratio <= 0.0f || keep_ratio > 1.0f) {
+      throw std::invalid_argument("keep_ratio must be between 0 and 1");
+    }
+
+    std::cout << "Pruning edges with keep_ratio=" << keep_ratio << std::endl;
+
+    // Create list of (visit_count, edge_id, from_node, to_node)
+    std::vector<std::tuple<uint64_t, uint64_t, node_id_t, node_id_t>> edge_scores;
+
+    for (const auto& [edge_id, edge_idx] : _edge_index_map) {
+      uint64_t visits = _edge_visit_counts[edge_idx];  // No .load()
+      node_id_t from = static_cast<node_id_t>(edge_id >> 32);
+      node_id_t to = static_cast<node_id_t>(edge_id & 0xFFFFFFFF);
+      edge_scores.push_back({visits, edge_id, from, to});
+    }
+
+    // Sort by visit count (descending)
+    std::sort(edge_scores.begin(), edge_scores.end(),
+              [](const auto& a, const auto& b) { return std::get<0>(a) > std::get<0>(b); });
+
+    // Determine cutoff
+    size_t keep_count = static_cast<size_t>(edge_scores.size() * keep_ratio);
+
+    std::cout << "Keeping top " << keep_count << " edges out of " << edge_scores.size() << std::endl;
+
+    // Create set of edges to keep
+    std::unordered_set<uint64_t> edges_to_keep;
+    for (size_t i = 0; i < keep_count; i++) {
+      edges_to_keep.insert(std::get<1>(edge_scores[i]));
+    }
+
+    // Prune edges
+    size_t pruned_count = 0;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+
+      for (size_t i = 0; i < _M; i++) {
+        if (links[i] != node) {
+          uint64_t edge_id = getEdgeId(node, links[i]);
+
+          if (edges_to_keep.find(edge_id) == edges_to_keep.end()) {
+            links[i] = node;  // Replace with self-loop
+            pruned_count++;
+          }
+        }
+      }
+    }
+
+    std::cout << "Pruned " << pruned_count << " edges" << std::endl;
   }
 
   void setAngleThreshold(float threshold) {
@@ -644,6 +782,43 @@ class Index {
     return angle_deg;
   }
 
+  bool _track_edges;
+  std::vector<uint64_t> _edge_visit_counts;  // Change from atomic<uint64_t>
+  std::unordered_map<uint64_t, size_t> _edge_index_map;
+  std::mutex _edge_tracking_mutex;
+
+  // Helper to get unique edge identifier
+  uint64_t getEdgeId(node_id_t from, node_id_t to) const {
+    return (static_cast<uint64_t>(from) << 32) | static_cast<uint64_t>(to);
+  }
+
+  void trackEdgesForNode(node_id_t from_node, const VisitedSet* visited_set) {
+    if (!_track_edges) {
+      return;
+    }
+
+    node_id_t* links = getNodeLinks(from_node);
+
+    for (size_t i = 0; i < _M; i++) {
+      node_id_t to_node = links[i];
+
+      // Skip self-loops and already visited nodes
+      if (to_node == from_node || visited_set->isVisited(to_node)) {
+        continue;
+      }
+
+      // Track this edge
+      uint64_t edge_id = getEdgeId(from_node, to_node);
+      auto it = _edge_index_map.find(edge_id);
+
+      if (it != _edge_index_map.end()) {
+        // Thread-safe increment
+        std::lock_guard<std::mutex> lock(_edge_tracking_mutex);
+        _edge_visit_counts[it->second]++;
+      }
+    }
+  }
+
   /**
    * @brief RNG (Relative Neighborhood Graph) neighbor selection
    * 
@@ -811,7 +986,6 @@ class Index {
   PriorityQueue beamSearch(const void* query, const node_id_t entry_node, const int buffer_size) {
     PriorityQueue neighbors;
     PriorityQueue candidates;
-
     auto* visited_set = _visited_set_pool->pollAvailableSet();
     visited_set->clear();
 
@@ -822,7 +996,6 @@ class Index {
 
     float dist = _distance->distance(/* x = */ query, /* y = */ getNodeData(entry_node),
                                      /* asymmetric = */ true);
-
     float max_dist = dist;
     candidates.emplace(-dist, entry_node);
     neighbors.emplace(dist, entry_node);
@@ -834,20 +1007,21 @@ class Index {
       if (-distance > max_dist && neighbors.size() >= buffer_size) {
         break;
       }
+
       candidates.pop();
 
       // Prefetching the next candidate node data and visited set marker
-      // before processing it. Note that this might not be useful if the current
-      // iteration finds a neighbor that is closer than the current max
-      // distance. In that case we would have prefetched data that is not used
-      // immediately, but I think the cost of prefetching is low enough that
-      // it's probably worth it.
 #ifdef USE_SSE
       if (!candidates.empty()) {
         _mm_prefetch(getNodeData(candidates.top().second), _MM_HINT_T0);
         visited_set->prefetch(candidates.top().second);
       }
 #endif
+
+      // TRACK EDGES BEFORE PROCESSING
+      if (_track_edges) {
+        trackEdgesForNode(node, visited_set);
+      }
 
       processCandidateNode(
           /* query = */ query, /* node = */ node,
@@ -856,9 +1030,7 @@ class Index {
           /* neighbors = */ neighbors, /* candidates = */ candidates);
     }
 
-    _visited_set_pool->pushVisitedSet(
-        /* visited_set = */ visited_set);
-
+    _visited_set_pool->pushVisitedSet(/* visited_set = */ visited_set);
     return neighbors;
   }
 

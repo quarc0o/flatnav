@@ -281,6 +281,37 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
 
   void getEdgeStatistics() const { _index->getEdgeStatistics(); }
 
+  void enableEdgeTracking() { _index->enableEdgeTracking(); }
+
+  void disableEdgeTracking() { _index->disableEdgeTracking(); }
+
+  py::dict getEdgeUsageStats(int top_k = 10) {
+    auto stats = _index->getEdgeUsageStats(top_k);
+
+    py::dict result;
+    result["total_edges"] = stats.total_edges;
+    result["edges_with_visits"] = stats.edges_with_visits;
+    result["edges_never_used"] = stats.edges_never_used;
+    result["total_visits"] = stats.total_visits;
+    result["avg_visits_per_edge"] = stats.avg_visits_per_edge;
+    result["utilization_pct"] =
+        stats.total_edges > 0 ? (stats.edges_with_visits * 100.0 / stats.total_edges) : 0.0;
+
+    // Convert top edges to list of dicts
+    py::list top_edges;
+    for (const auto& [visits, idx] : stats.top_edges) {
+      py::dict edge_info;
+      edge_info["visits"] = visits;
+      edge_info["edge_idx"] = idx;
+      top_edges.append(edge_info);
+    }
+    result["top_edges"] = top_edges;
+
+    return result;
+  }
+
+  void pruneUnusedEdges(float keep_ratio) { _index->pruneUnusedEdges(keep_ratio); }
+
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() { return _index->getGraphOutdegreeTable(); }
 
   uint32_t getMaxEdgesPerNode() { return _index->maxEdgesPerNode(); }
@@ -540,6 +571,14 @@ void bindSpecialization(py::module_& index_submodule) {
 
       .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
            "Set the pruning strategy. Options: 'hnsw', 'alpha_diversity', 'ssg', 'rng'")
+
+      .def("enable_edge_tracking", &IndexType::enableEdgeTracking,
+           "Enable tracking of edge usage during search queries")
+      .def("disable_edge_tracking", &IndexType::disableEdgeTracking, "Disable edge tracking")
+      .def("get_edge_usage_stats", &IndexType::getEdgeUsageStats, py::arg("top_k") = 10,
+           "Get statistics about edge usage during queries")
+      .def("prune_unused_edges", &IndexType::pruneUnusedEdges, py::arg("keep_ratio"),
+           "Prune edges based on query usage. keep_ratio: fraction of edges to keep (0.0-1.0)")
 
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
