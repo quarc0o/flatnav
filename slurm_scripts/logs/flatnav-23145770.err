@@ -87,3 +87,30 @@ INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.995963
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9976589999999703, 'qps': 1494.2052798765335, 'latency_p50': 0.6535053253173828, 'latency_p95': 0.9739518165588377, 'latency_p99': 1.13346815109253, 'latency_p999': 1.2958114147186293, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9985289999999776, 'qps': 1004.2213265012924, 'latency_p50': 0.9731054306030273, 'latency_p95': 1.4529347419738767, 'latency_p99': 1.674180030822754, 'latency_p999': 1.9164104461669926, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9988949999999811, 'qps': 570.2834255478518, 'latency_p50': 1.7230510711669922, 'latency_p95': 2.537262439727783, 'latency_p99': 2.895357608795166, 'latency_p999': 3.2334382534027113, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9989839999999823, 'qps': 218.42848368036962, 'latency_p50': 4.575371742248535, 'latency_p95': 6.1550140380859375, 'latency_p99': 6.822619438171388, 'latency_p999': 7.447290420532236, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using SSG pruning with angle_threshold=30.0°
+INFO:root:Indexing time = 5.069008827209473 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 25.02 / 32
+INFO:root:Total edges used: 1,501,338
+INFO:root:Edge utilization: 78.2%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9870519999999374, 'qps': 3289.687866229684, 'latency_p50': 0.2980232238769531, 'latency_p95': 0.4317879676818846, 'latency_p99': 0.5066442489624025, 'latency_p999': 0.593194246292116, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9959359999999591, 'qps': 2024.5612549748153, 'latency_p50': 0.4825592041015625, 'latency_p95': 0.7140636444091797, 'latency_p99': 0.8277964591979982, 'latency_p999': 0.9651341438293489, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9976079999999693, 'qps': 1499.422295944632, 'latency_p50': 0.6499290466308594, 'latency_p95': 0.9744167327880859, 'latency_p99': 1.128675937652588, 'latency_p999': 1.2910468578338643, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9984489999999767, 'qps': 1006.7270124644125, 'latency_p50': 0.9691715240478516, 'latency_p95': 1.4474868774414056, 'latency_p99': 1.673228740692139, 'latency_p999': 1.9180872440338155, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9988069999999798, 'qps': 570.5410264420885, 'latency_p50': 1.723170280456543, 'latency_p95': 2.5391578674316406, 'latency_p99': 2.9020524024963383, 'latency_p999': 3.251086473464968, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9988789999999806, 'qps': 212.78037254797843, 'latency_p50': 4.691123962402344, 'latency_p95': 6.351518630981444, 'latency_p99': 7.028372287750245, 'latency_p999': 7.808469057083134, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

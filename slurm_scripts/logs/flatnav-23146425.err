@@ -1,0 +1,16 @@
+INFO:root:Building index_type='flatnav'
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 677, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    main(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 400, in main
+    build_and_run_knn_search(ef_cons=ef_cons, node_links=node_links)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 331, in build_and_run_knn_search
+    index = train_index(
+            ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 264, in train_index
+    index.set_pruning_strategy("rng")
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'set_pruning_strategy'
+make: *** [Makefile:321: mnist-bench-flatnav-rng] Error 1
