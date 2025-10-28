@@ -282,76 +282,76 @@ def train_index(
         logging.info(f"Indexing time = {end - start} seconds")
 
         # QUERY-AWARE PRUNING PHASE
-    if query_aware_pruning:
-        if training_queries is None or len(training_queries) == 0:
-            logging.warning("Query-aware pruning requested but no training queries provided")
-        else:
-            logging.info("\n" + "="*50)
-            logging.info("QUERY-AWARE PRUNING PHASE")
-            logging.info("="*50)
-            
-            # Enable edge tracking
-            index.enable_edge_tracking()
-            
-            # Run training queries to track edge usage
-            logging.info(f"Running {len(training_queries)} training queries to track edge usage...")
-            start = time.time()
-            
-            for i, query in enumerate(training_queries):
-                # FIX: Use correct parameter names
-                index.search_single(
-                    query=query,
-                    K=10,  # Changed from k to K
-                    ef_search=100,
-                    num_initializations=100  # Add this parameter
-                )
+        if query_aware_pruning:
+            if training_queries is None or len(training_queries) == 0:
+                logging.warning("Query-aware pruning requested but no training queries provided")
+            else:
+                logging.info("\n" + "="*50)
+                logging.info("QUERY-AWARE PRUNING PHASE")
+                logging.info("="*50)
                 
-                if (i + 1) % 1000 == 0:
-                    logging.info(f"  Processed {i + 1}/{len(training_queries)} queries")
-            
-            end = time.time()
-            logging.info(f"Training query time = {end - start:.2f} seconds")
-            
-            # Get edge usage statistics
-            stats = index.get_edge_usage_stats(top_k=10)
-            logging.info(f"\nEdge Usage Statistics (BEFORE pruning):")
-            logging.info(f"  Total edges: {stats['total_edges']:,}")
-            logging.info(f"  Edges visited: {stats['edges_with_visits']:,} ({stats['utilization_pct']:.1f}%)")
-            logging.info(f"  Edges never used: {stats['edges_never_used']:,}")
-            logging.info(f"  Total visits: {stats['total_visits']:,}")
-            logging.info(f"  Avg visits per edge: {stats['avg_visits_per_edge']:.2f}")
-            
-            # Prune unused edges
-            logging.info(f"\nPruning edges (keeping top {query_pruning_keep_ratio*100:.0f}%)...")
-            index.prune_unused_edges(query_pruning_keep_ratio)
-            
-            # Get statistics after pruning
-            index.disable_edge_tracking()
-            index.enable_edge_tracking()
-            
-            # Re-run queries to get post-pruning stats (sample for speed)
-            logging.info("Re-running sample queries to verify pruned graph...")
-            sample_size = min(1000, len(training_queries))
-            for query in training_queries[:sample_size]:
-                index.search_single(
-                    query=query,
-                    K=10,
-                    ef_search=100,
-                    num_initializations=100
-                )
-            
-            stats_after = index.get_edge_usage_stats()
-            logging.info(f"\nEdge Usage Statistics (AFTER pruning):")
-            logging.info(f"  Edges visited: {stats_after['edges_with_visits']:,}")
-            logging.info(f"  Utilization: {stats_after['utilization_pct']:.1f}%")
-            
-            index.disable_edge_tracking()
-            logging.info("="*50 + "\n")
+                # Enable edge tracking
+                index.enable_edge_tracking()
+                
+                # Run training queries to track edge usage
+                logging.info(f"Running {len(training_queries)} training queries to track edge usage...")
+                start = time.time()
+                
+                for i, query in enumerate(training_queries):
+                    # FIX: Use correct parameter names
+                    index.search_single(
+                        query=query,
+                        K=10,  # Changed from k to K
+                        ef_search=100,
+                        num_initializations=100  # Add this parameter
+                    )
+                    
+                    if (i + 1) % 1000 == 0:
+                        logging.info(f"  Processed {i + 1}/{len(training_queries)} queries")
+                
+                end = time.time()
+                logging.info(f"Training query time = {end - start:.2f} seconds")
+                
+                # Get edge usage statistics
+                stats = index.get_edge_usage_stats(top_k=10)
+                logging.info(f"\nEdge Usage Statistics (BEFORE pruning):")
+                logging.info(f"  Total edges: {stats['total_edges']:,}")
+                logging.info(f"  Edges visited: {stats['edges_with_visits']:,} ({stats['utilization_pct']:.1f}%)")
+                logging.info(f"  Edges never used: {stats['edges_never_used']:,}")
+                logging.info(f"  Total visits: {stats['total_visits']:,}")
+                logging.info(f"  Avg visits per edge: {stats['avg_visits_per_edge']:.2f}")
+                
+                # Prune unused edges
+                logging.info(f"\nPruning edges (keeping top {query_pruning_keep_ratio*100:.0f}%)...")
+                index.prune_unused_edges(query_pruning_keep_ratio)
+                
+                # Get statistics after pruning
+                index.disable_edge_tracking()
+                index.enable_edge_tracking()
+                
+                # Re-run queries to get post-pruning stats (sample for speed)
+                logging.info("Re-running sample queries to verify pruned graph...")
+                sample_size = min(1000, len(training_queries))
+                for query in training_queries[:sample_size]:
+                    index.search_single(
+                        query=query,
+                        K=10,
+                        ef_search=100,
+                        num_initializations=100
+                    )
+                
+                stats_after = index.get_edge_usage_stats()
+                logging.info(f"\nEdge Usage Statistics (AFTER pruning):")
+                logging.info(f"  Edges visited: {stats_after['edges_with_visits']:,}")
+                logging.info(f"  Utilization: {stats_after['utilization_pct']:.1f}%")
+                
+                index.disable_edge_tracking()
+                logging.info("="*50 + "\n")
 
-        logging.info("\n" + "="*50)
-        logging.info("POST-BUILD INDEX STATISTICS")
-        logging.info("="*50)
-
+            logging.info("\n" + "="*50)
+            logging.info("POST-BUILD INDEX STATISTICS")
+            logging.info("="*50)
+        logging.info(f"inside here now")
         try:
             index.get_edge_statistics()
             avg_degree = index.get_average_out_degree()
