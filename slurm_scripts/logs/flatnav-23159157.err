@@ -1,0 +1,23 @@
+INFO:root:Using 10000 queries for query-aware pruning
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0407330989837646 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 782, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 746, in run_experiment
+    main(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 476, in main
+    build_and_run_knn_search(ef_cons=ef_cons, node_links=node_links)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 404, in build_and_run_knn_search
+    index = train_index(
+            ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 294, in train_index
+    index.enable_edge_tracking()
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'enable_edge_tracking'
+make: *** [Makefile:304: mnist-bench-flatnav-query-aware-80-32] Error 1

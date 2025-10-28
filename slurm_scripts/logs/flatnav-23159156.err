@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 782, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 725, in run_experiment
+    data_loader = get_data_loader(
+                  ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 241, in get_data_loader
+    return loader(**kwargs)
+           ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 69, in __init__
+    self.verify_paths([train_dataset_path, queries_path, ground_truth_path])
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 85, in verify_paths
+    raise FileNotFoundError(f"File {path} not found")
+FileNotFoundError: File /root/data/gist-960-euclidean/gist-960-euclidean.train.npy not found
+make: *** [Makefile:690: gist-bench-flatnav-query-aware-80-16] Error 1

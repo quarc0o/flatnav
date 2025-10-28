@@ -300,9 +300,9 @@ deep-image-bench-hnsw:
 		--num-build-threads 16 \
         --num-search-threads 1
 
-mnist-bench-flatnav-query-aware-80:
+mnist-bench-flatnav-query-aware-80-32:
 	python run-benchmark.py \
-		--dataset-name mnist-784-query-aware-80 \
+		--dataset-name mnist-784-query-aware-80-32 \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
 		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
@@ -311,6 +311,65 @@ mnist-bench-flatnav-query-aware-80:
 		--ef-construction 30 40 50 100 200 300 \
 		--ef-search 100 200 300 500 1000 3000 \
 		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-80-16:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-80-16-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename mnist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+
+mnist-bench-flatnav-query-aware-80-16-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename mnist.mtx \
 		--num-build-threads 16 \
 		--num-search-threads 1 \
 		--pruning-strategy hnsw \
@@ -649,6 +708,46 @@ gist-bench-flatnav:
 		--num-build-threads 16 \
 		--num-search-threads 1 
 
+
+gist-bench-flatnav-query-aware-80-32-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name gist-query-aware-80-32 \
+		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename gist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+gist-bench-flatnav-query-aware-80-16-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name gist-query-aware-80-16 \
+		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename gist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
 
 gist-bench-hnsw: 
 	poetry run python run-benchmark.py \
