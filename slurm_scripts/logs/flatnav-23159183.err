@@ -1,0 +1,62 @@
+Makefile:361: warning: overriding recipe for target 'mnist-bench-flatnav-query-aware-80-16-hnsw-base'
+Makefile:340: warning: ignoring old recipe for target 'mnist-bench-flatnav-query-aware-80-16-hnsw-base'
+INFO:root:Using 10000 queries for query-aware pruning
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0205516815185547 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 2.81 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 576,809
+INFO:root:  Edges visited: 548,895 (95.2%)
+INFO:root:  Edges never used: 27,914
+INFO:root:  Total visits: 5,414,020
+INFO:root:  Avg visits per edge: 9.39
+INFO:root:
+Pruning edges (keeping top 80%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 268,416
+INFO:root:  Utilization: 58.2%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 7.69 / 16
+INFO:root:Total edges used: 461,447
+INFO:root:Edge utilization: 48.1%
+INFO:root:==================================================
+
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 782, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 746, in run_experiment
+    main(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 476, in main
+    build_and_run_knn_search(ef_cons=ef_cons, node_links=node_links)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 433, in build_and_run_knn_search
+    compute_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 69, in compute_metrics
+    _, indices = index.search_single(
+                 ^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Search did not return the expected number of results. Expected 100 but got 1.
+make: *** [Makefile:322: mnist-bench-flatnav-query-aware-80-16] Error 1

@@ -347,49 +347,47 @@ class Index {
 
     std::cout << "Pruning edges with keep_ratio=" << keep_ratio << std::endl;
 
-    // Create list of (visit_count, edge_id, from_node, to_node)
-    std::vector<std::tuple<uint64_t, uint64_t, node_id_t, node_id_t>> edge_scores;
-
-    for (const auto& [edge_id, edge_idx] : _edge_index_map) {
-      uint64_t visits = _edge_visit_counts[edge_idx];  // No .load()
-      node_id_t from = static_cast<node_id_t>(edge_id >> 32);
-      node_id_t to = static_cast<node_id_t>(edge_id & 0xFFFFFFFF);
-      edge_scores.push_back({visits, edge_id, from, to});
-    }
-
-    // Sort by visit count (descending)
-    std::sort(edge_scores.begin(), edge_scores.end(),
-              [](const auto& a, const auto& b) { return std::get<0>(a) > std::get<0>(b); });
-
-    // Determine cutoff
-    size_t keep_count = static_cast<size_t>(edge_scores.size() * keep_ratio);
-
-    std::cout << "Keeping top " << keep_count << " edges out of " << edge_scores.size() << std::endl;
-
-    // Create set of edges to keep
-    std::unordered_set<uint64_t> edges_to_keep;
-    for (size_t i = 0; i < keep_count; i++) {
-      edges_to_keep.insert(std::get<1>(edge_scores[i]));
-    }
-
-    // Prune edges
+    // PER-NODE pruning to maintain connectivity
     size_t pruned_count = 0;
+    size_t min_edges_per_node = std::max(1, static_cast<int>(_M * keep_ratio));
+
+    std::cout << "Minimum edges per node: " << min_edges_per_node << " (out of " << _M << ")" << std::endl;
+
     for (node_id_t node = 0; node < _cur_num_nodes; node++) {
       node_id_t* links = getNodeLinks(node);
+
+      // Collect (visit_count, edge_id, link_index) for this node's edges
+      std::vector<std::tuple<uint64_t, uint64_t, size_t>> node_edges;
 
       for (size_t i = 0; i < _M; i++) {
         if (links[i] != node) {
           uint64_t edge_id = getEdgeId(node, links[i]);
+          auto it = _edge_index_map.find(edge_id);
 
-          if (edges_to_keep.find(edge_id) == edges_to_keep.end()) {
-            links[i] = node;  // Replace with self-loop
-            pruned_count++;
+          if (it != _edge_index_map.end()) {
+            uint64_t visits = _edge_visit_counts[it->second];
+            node_edges.push_back({visits, edge_id, i});
           }
         }
       }
+
+      // Sort this node's edges by visit count (descending)
+      std::sort(node_edges.begin(), node_edges.end(),
+                [](const auto& a, const auto& b) { return std::get<0>(a) > std::get<0>(b); });
+
+      // Keep top edges per node (at least min_edges_per_node)
+      size_t keep_for_this_node = std::max(min_edges_per_node,
+                                           static_cast<size_t>(node_edges.size() * keep_ratio));
+
+      // Mark edges to prune (those beyond keep_for_this_node)
+      for (size_t j = keep_for_this_node; j < node_edges.size(); j++) {
+        size_t link_idx = std::get<2>(node_edges[j]);
+        links[link_idx] = node;  // Replace with self-loop
+        pruned_count++;
+      }
     }
 
-    std::cout << "Pruned " << pruned_count << " edges" << std::endl;
+    std::cout << "Pruned " << pruned_count << " edges while maintaining connectivity" << std::endl;
   }
 
   void setAngleThreshold(float threshold) {
