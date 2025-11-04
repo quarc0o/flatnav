@@ -915,10 +915,16 @@ class Index {
       return;
     }
 
+    int adjusted_ef_construction = ef_construction;
+    if (_hub_aware_construction && _hubs_identified && is_predicted_hub) {
+      // Give hubs 3x the search budget to find other hubs
+      adjusted_ef_construction = std::min(ef_construction * 3, static_cast<int>(_max_node_count / 10));
+    }
+
     auto neighbors = beamSearch(
         /* query = */ data,
         /* entry_node = */ entry_node,
-        /* buffer_size = */ ef_construction);
+        /* buffer_size = */ adjusted_ef_construction);
 
     // Determine M based on hub status (if hub-aware is enabled and hubs identified)
     int selection_M;
@@ -1160,16 +1166,11 @@ class Index {
   size_t _M_hub = 32;  // Max edges for hub nodes
   size_t _M_feeder = 16;
 
- private:
   /**
-   * @brief Hub-aware neighbor selection strategy
-   * 
-   * Hubs: Prioritize diversity and connections to other hubs (highway formation)
-   * Feeders: Prioritize local neighbors and connections to hubs (highway access)
+   * @brief Hub-aware neighbor selection strategy (AGGRESSIVE VERSION - FIXED)
    */
   void selectNeighborsHubAware(PriorityQueue& neighbors, int M, const void* query, node_id_t node_id) {
     if (!_hubs_identified) {
-      // Fall back to standard selection if hubs not identified
       selectNeighborsUnified(neighbors, M, query);
       return;
     }
@@ -1195,17 +1196,8 @@ class Index {
     selected.reserve(M);
 
     if (is_hub) {
-      // HUB STRATEGY: Ensure diversity and hub-to-hub connections
+      // ===== HUB STRATEGY: AGGRESSIVELY BUILD HUB HIGHWAY =====
 
-      // Phase 1: Select closest neighbors for local connectivity
-      int local_count = M / 3;
-      while (!candidates.empty() && selected.size() < local_count) {
-        auto [dist, candidate] = candidates.top();
-        candidates.pop();
-        selected.push_back({dist, candidate});
-      }
-
-      // Phase 2: Prioritize other hubs for highway formation
       std::vector<std::pair<float, node_id_t>> hub_candidates;
       std::vector<std::pair<float, node_id_t>> feeder_candidates;
 
@@ -1220,30 +1212,31 @@ class Index {
         }
       }
 
-      // Add hub candidates (for highway connectivity)
-      int hub_target = M / 3;
+      // Phase 1: PRIORITIZE HUB CONNECTIONS (up to 75% of edges)
+      int hub_target = static_cast<int>(M * 0.75);
+
       for (const auto& [dist, candidate] : hub_candidates) {
         if (selected.size() >= M)
           break;
-        if (selected.size() - local_count >= hub_target)
+        if (selected.size() >= hub_target)
           break;
+
+        // Add hub connection without diversity check
         selected.push_back({dist, candidate});
       }
 
-      // Fill remaining with diverse feeder connections
+      // Phase 2: Fill remaining with closest feeders
       for (const auto& [dist, candidate] : feeder_candidates) {
         if (selected.size() >= M)
           break;
 
-        // Check diversity with already selected
+        // Apply diversity check for feeders
         bool keep = true;
         for (const auto& [_, already_selected] : selected) {
           float d_neighbor =
               _distance->distance(getNodeData(candidate), getNodeData(already_selected), false);
-          float d_query = dist;
 
-          // HNSW heuristic: prune if too close
-          if (d_neighbor < d_query) {
+          if (d_neighbor < dist) {
             keep = false;
             break;
           }
@@ -1255,11 +1248,10 @@ class Index {
       }
 
     } else {
-      // FEEDER STRATEGY: Prioritize hub connections for highway access
+      // ===== FEEDER STRATEGY: AGGRESSIVELY CONNECT TO HIGHWAY =====
 
-      // Separate hub and non-hub neighbors
       std::vector<std::pair<float, node_id_t>> hub_neighbors;
-      std::vector<std::pair<float, node_id_t>> regular_neighbors;
+      std::vector<std::pair<float, node_id_t>> regular_neighbors;  // FIXED: was feeder_neighbors
 
       while (!candidates.empty()) {
         auto [dist, candidate] = candidates.top();
@@ -1268,18 +1260,19 @@ class Index {
         if (_hub_mask[candidate]) {
           hub_neighbors.push_back({dist, candidate});
         } else {
-          regular_neighbors.push_back({dist, candidate});
+          regular_neighbors.push_back({dist, candidate});  // FIXED
         }
       }
 
-      // Phase 1: Connect to nearby hubs (highway access)
-      int hub_target = std::min(M / 2, (int)hub_neighbors.size());
-      for (int i = 0; i < hub_target && i < hub_neighbors.size(); i++) {
+      // Phase 1: MAXIMIZE hub connections (66% of edges)
+      int hub_target = static_cast<int>(M * 0.66);
+
+      for (size_t i = 0; i < hub_neighbors.size() && selected.size() < hub_target; i++) {
         selected.push_back(hub_neighbors[i]);
       }
 
-      // Phase 2: Add local neighbors with diversity
-      for (const auto& [dist, candidate] : regular_neighbors) {
+      // Phase 2: Add diverse local connections
+      for (const auto& [dist, candidate] : regular_neighbors) {  // FIXED
         if (selected.size() >= M)
           break;
 
