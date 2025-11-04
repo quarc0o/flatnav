@@ -279,15 +279,22 @@ def train_index(
 
         if enable_hub_aware:
             logging.info("\n" + "="*50)
-            logging.info("HUB-AWARE CONSTRUCTION ENABLED")
+            logging.info("HUB-AWARE CONSTRUCTION (TWO-PASS)")
             logging.info("="*50)
             
-            # Enable hub-aware construction
+            # PASS 1: Pre-identify hubs from raw data
+            logging.info("PASS 1: Pre-identifying hubs from raw data...")
+            index.pre_identify_hubs(data=train_dataset, hub_percentile=hub_percentile)
+            
+            # Now enable hub-aware construction with the pre-identified hubs
             index.enable_hub_aware_construction(M_hub=M_hub, M_feeder=M_feeder)
+            
             logging.info(f"Hub-aware construction configured:")
             logging.info(f"  M_hub = {M_hub if M_hub > 0 else f'{max_edges_per_node*2} (2*M)'}")
             logging.info(f"  M_feeder = {M_feeder if M_feeder > 0 else max_edges_per_node}")
-            logging.info(f"  Hub percentile = {hub_percentile}")
+            logging.info("="*50 + "\n")
+
+        logging.info("PASS 2: Building graph with hub-aware neighbor selection...")
 
         # Train the index.
         start = time.time()

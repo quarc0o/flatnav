@@ -638,6 +638,20 @@ void bindSpecialization(py::module_& index_submodule) {
           [](IndexType& index) { return index.getIndex()->isHubAwareConstructionEnabled(); },
           "Check if hub-aware construction is enabled")
 
+      .def(
+          "pre_identify_hubs",
+          [](IndexType& index, const py::array_t<float>& data, float hub_percentile) {
+            if (data.ndim() != 2) {
+              throw std::invalid_argument("Data must be 2D array");
+            }
+
+            size_t num_points = data.shape(0);
+            index.getIndex()->preIdentifyHubs(data.data(0), num_points, hub_percentile);
+          },
+          py::arg("data"), py::arg("hub_percentile") = 95.0f,
+          "Pre-identify hubs from raw data before construction. "
+          "Must be called before adding any nodes.")
+
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
 }

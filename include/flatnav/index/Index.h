@@ -568,6 +568,81 @@ class Index {
   }
 
   /**
+   * @brief Pre-identify hubs BEFORE construction starts
+   * 
+   * This computes the centroid from raw data and marks which nodes will be hubs.
+   * Must be called BEFORE any nodes are added to the index.
+   * 
+   * @param data Raw dataset pointer
+   * @param num_points Number of points in dataset
+   * @param hub_percentile Percentile threshold (95 = top 5% are hubs)
+   */
+  void preIdentifyHubs(const void* data, size_t num_points, float hub_percentile = 95.0f) {
+    if (_cur_num_nodes > 0) {
+      throw std::runtime_error("preIdentifyHubs must be called before adding any nodes");
+    }
+
+    if (hub_percentile <= 0.0f || hub_percentile >= 100.0f) {
+      throw std::invalid_argument("hub_percentile must be between 0 and 100");
+    }
+
+    _hub_percentile = hub_percentile;
+
+    std::cout << "Pre-identifying hubs from raw data..." << std::flush;
+
+    // Step 1: Compute centroid from raw data
+    size_t dim = _distance->dimension();
+    std::vector<float> centroid(dim, 0.0f);
+
+    const float* float_data = reinterpret_cast<const float*>(data);
+
+    for (size_t point = 0; point < num_points; point++) {
+      for (size_t d = 0; d < dim; d++) {
+        centroid[d] += float_data[point * dim + d];
+      }
+    }
+
+    for (size_t d = 0; d < dim; d++) {
+      centroid[d] /= static_cast<float>(num_points);
+    }
+
+    std::cout << " computing distances..." << std::flush;
+
+    // Step 2: Compute distances to centroid
+    _hub_scores.resize(num_points);
+    for (size_t point = 0; point < num_points; point++) {
+      const void* point_data = &float_data[point * dim];
+      _hub_scores[point] = _distance->distance(centroid.data(), point_data, false);
+    }
+
+    std::cout << " marking hubs..." << std::flush;
+
+    // Step 3: Determine threshold
+    std::vector<float> sorted_scores = _hub_scores;
+    std::sort(sorted_scores.begin(), sorted_scores.end());
+
+    size_t threshold_idx = static_cast<size_t>((hub_percentile / 100.0f) * num_points);
+    float threshold = sorted_scores[threshold_idx];
+
+    // Step 4: Mark hubs
+    _hub_mask.resize(num_points);
+    size_t hub_count = 0;
+    for (size_t point = 0; point < num_points; point++) {
+      _hub_mask[point] = (_hub_scores[point] >= threshold);
+      if (_hub_mask[point]) {
+        hub_count++;
+      }
+    }
+
+    _hubs_identified = true;
+
+    std::cout << " done." << std::endl;
+    std::cout << "Pre-identified " << hub_count << " hub nodes (" << (100.0f * hub_count / num_points)
+              << "% of dataset)" << std::endl;
+    std::cout << "Hub threshold distance: " << threshold << std::endl;
+  }
+
+  /**
    * @brief Check if a node is a hub
    */
   bool isHub(node_id_t node_id) const {
@@ -826,6 +901,13 @@ class Index {
     std::unique_lock<std::mutex> global_lock(_index_data_guard);
     auto entry_node = initializeSearch(data, num_initializations);
     node_id_t new_node_id;
+
+    bool is_predicted_hub = false;
+    if (_hub_aware_construction && _hubs_identified) {
+      // _cur_num_nodes is the index of the node we're about to add
+      is_predicted_hub = (_cur_num_nodes < _hub_mask.size()) && _hub_mask[_cur_num_nodes];
+    }
+
     allocateNode(data, label, new_node_id);
     global_lock.unlock();
 
@@ -1224,41 +1306,24 @@ class Index {
     }
   }
 
- private:
   /**
    * @brief Predict if a node will be a hub based on its distance to centroid
    * Used during construction to apply hub-aware strategies before full hub identification
    */
   bool predictHubStatus(const void* data) {
-    if (!_hubs_identified || _hub_scores.empty()) {
-      return false;  // Can't predict without hub identification
+    if (!_hubs_identified || _hub_mask.empty()) {
+      return false;  // Default to feeder if hubs not pre-identified
     }
 
-    // Recompute centroid (cached version would be better for production)
-    size_t dim = _distance->dimension();
-    std::vector<float> centroid(dim, 0.0f);
+    // During construction, _cur_num_nodes represents the node being added
+    // We subtract 1 because allocateNode already incremented _cur_num_nodes
+    node_id_t node_idx = _cur_num_nodes - 1;
 
-    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
-      float* node_data = reinterpret_cast<float*>(getNodeData(node));
-      for (size_t d = 0; d < dim; d++) {
-        centroid[d] += node_data[d];
-      }
+    if (node_idx >= _hub_mask.size()) {
+      return false;  // Safety check
     }
 
-    for (size_t d = 0; d < dim; d++) {
-      centroid[d] /= static_cast<float>(_cur_num_nodes);
-    }
-
-    // Compute this node's distance to centroid
-    float dist_to_centroid = _distance->distance(centroid.data(), data, false);
-
-    // Determine threshold from existing scores
-    std::vector<float> sorted_scores = _hub_scores;
-    std::sort(sorted_scores.begin(), sorted_scores.end());
-    size_t threshold_idx = static_cast<size_t>((_hub_percentile / 100.0f) * _cur_num_nodes);
-    float threshold = sorted_scores[threshold_idx];
-
-    return dist_to_centroid >= threshold;
+    return _hub_mask[node_idx];
   }
 
   // Helper to get unique edge identifier
