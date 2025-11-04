@@ -13,6 +13,7 @@ matplotlib = "^3.8.2"
 psutil = "^5.9.8"
 pydantic = "^2.6.4"
 flatnav = "^0.1.0"
+hnswlib = {path = "hnswlib-original/python_bindings/dist/hnswlib-0.8.0-cp311-cp311-linux_x86_64.whl"}
 
 [build-system]
 requires = ["poetry-core"]

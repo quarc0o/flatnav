@@ -1,0 +1,16 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Using alpha-diversity pruning with alpha=5e-07
+INFO:root:Indexing time = 1.0736989974975586 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 12.27 / 32
+INFO:root:Total edges used: 736,355
+INFO:root:Edge utilization: 38.4%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9711989999999275, 'qps': 4220.140969054844, 'latency_p50': 0.23412704467773438, 'latency_p95': 0.32067298889160156, 'latency_p99': 0.36502122879028326, 'latency_p999': 0.45705008506774936, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9888089999999534, 'qps': 2627.5088886555723, 'latency_p50': 0.38123130798339844, 'latency_p95': 0.5106925964355469, 'latency_p99': 0.5679130554199219, 'latency_p999': 0.6265680789947518, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9929649999999587, 'qps': 1928.0291399057476, 'latency_p50': 0.5190372467041016, 'latency_p95': 0.6990551948547361, 'latency_p99': 0.7701039314270022, 'latency_p999': 0.8492488861083989, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+[2025-10-23T20:56:21.678] error: *** JOB 23146954 ON idun-03-30 CANCELLED AT 2025-10-23T20:56:21 DUE to SIGNAL Terminated ***

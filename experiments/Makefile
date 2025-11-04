@@ -300,21 +300,507 @@ deep-image-bench-hnsw:
 		--num-build-threads 16 \
         --num-search-threads 1
 
-mnist-bench-flatnav: 
-	poetry run python run-benchmark.py \
-		--dataset-name mnist-784 \
-		--dataset /root/data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
-		--queries /root/data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
-		--gtruth /root/data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+mnist-bench-flatnav-query-aware-30-32:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-30-32 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
 		--index-type flatnav \
-		--use-hnsw-base-layer \
-		--hnsw-base-layer-filename mnist.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
 		--ef-search 100 200 300 500 1000 3000 \
 		--metric l2 \
 		--num-build-threads 16 \
-		--num-search-threads 1 
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.3 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-50-32:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-50-32 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.5 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-80-32:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-32 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-80-16:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-80-16-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-16-hnsw-base \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename mnist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+
+mnist-bench-flatnav-query-aware-80-32-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-80-32-hnsw-base \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename mnist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav-query-aware-60:
+	python run-benchmark.py \
+		--dataset-name mnist-784-query-aware-60 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.6 \
+		--num-training-queries 10000
+
+mnist-bench-flatnav: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-base \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw
+
+mnist-bench-flatnav-hub-aware-new: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-base-hub-aware-new \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--enable-hub-aware \
+		--M-hub 32 \
+		--M-feeder 16 \
+		--hub-percentile 95 \
+		--analyze-hubs
+
+mnist-bench-flatnav-hub-aware-10: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-base-hub-aware-10 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--enable-hub-aware \
+		--M-hub 32 \
+		--M-feeder 16 \
+		--hub-percentile 90 \
+		--analyze-hubs
+
+mnist-bench-flatnav-base-min: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-base-min \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+
+
+mnist-bench-flatnav-rcm: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-rcm \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--reordering-strategies rcm \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw
+
+mnist-bench-flatnav-gorder: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-gorder \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--reordering-strategies gorder \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw
+
+mnist-bench-flatnav-link-16: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-link-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw
+
+mnist-bench-flatnav-link-64: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-flatnav-link-64 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 64 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000  \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw
+
+mnist-bench-flatnav-rng:
+	python run-benchmark.py \
+		--dataset-name mnist-rng \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy rng
+
+mnist-bench-flatnav-rng-link-16:
+	python run-benchmark.py \
+		--dataset-name mnist-rng-link-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy rng
+
+mnist-bench-flatnav-rng-link-64:
+	python run-benchmark.py \
+		--dataset-name mnist-rng-link-64 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 64 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy rng
+
+mnist-bench-flatnav-ssg-110:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-110 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 110.0
+
+mnist-bench-flatnav-ssg-110-link-16:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-110-link-16 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 110.0
+
+mnist-bench-flatnav-ssg-110-link-64:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-110-link-64 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 64 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 110.0
+
+mnist-bench-flatnav-ssg-30:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-30 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 30.0
+
+mnist-bench-flatnav-ssg-10:
+	python run-benchmark.py \
+		--dataset-name mnist-784-ssg-10 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy ssg \
+		--angle-threshold 10.0
+
+mnist-bench-flatnav-alpha:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-2.0 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 2.0
+
+mnist-bench-flatnav-alpha-1.5:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-1.5 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 1.5
+
+mnist-bench-flatnav-alpha-0.5:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.5 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.5
+
+mnist-bench-flatnav-alpha-0.1:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.1 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.1
+
+mnist-bench-flatnav-alpha-0.005:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.005 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.005
+
+mnist-bench-flatnav-alpha-0.0005:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.0005 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.0005
+
+
+mnist-bench-flatnav-alpha-0.000000000000005:
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-alpha-0.000000000000005 \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy alpha_diversity \
+		--alpha 0.000000000000005
 
 mnist-bench-hnsw: 
 	poetry run python run-benchmark.py \
@@ -346,6 +832,46 @@ gist-bench-flatnav:
 		--num-build-threads 16 \
 		--num-search-threads 1 
 
+
+gist-bench-flatnav-query-aware-80-32-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name gist-query-aware-80-32 \
+		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename gist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
+
+gist-bench-flatnav-query-aware-80-16-hnsw-base:
+	python run-benchmark.py \
+		--dataset-name gist-query-aware-80-16 \
+		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 16 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename gist.mtx \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--pruning-strategy hnsw \
+		--query-aware-pruning \
+		--query-pruning-keep-ratio 0.8 \
+		--num-training-queries 10000
 
 gist-bench-hnsw: 
 	poetry run python run-benchmark.py \

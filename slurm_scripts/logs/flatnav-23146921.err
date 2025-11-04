@@ -1,0 +1,18 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Using alpha-diversity pruning with alpha=0.05
+INFO:root:Indexing time = 0.9726667404174805 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 14.06 / 32
+INFO:root:Total edges used: 843,331
+INFO:root:Edge utilization: 43.9%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9770509999999353, 'qps': 4331.995166777472, 'latency_p50': 0.23055076599121094, 'latency_p95': 0.3077983856201172, 'latency_p99': 0.3509521484375, 'latency_p999': 0.42486405372619673, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9909369999999571, 'qps': 2619.9777249322724, 'latency_p50': 0.3800392150878906, 'latency_p95': 0.5159378051757812, 'latency_p99': 0.5733990669250488, 'latency_p999': 0.6558918952941899, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9942319999999613, 'qps': 1929.2645973085444, 'latency_p50': 0.5159378051757812, 'latency_p95': 0.7050275802612301, 'latency_p99': 0.7820200920104982, 'latency_p999': 0.8754742145538332, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9961929999999689, 'qps': 1288.3696056504766, 'latency_p50': 0.7727146148681641, 'latency_p95': 1.059329509735107, 'latency_p99': 1.1763596534729004, 'latency_p999': 1.2943758964538576, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9977839999999746, 'qps': 725.43431366582, 'latency_p50': 1.3780593872070312, 'latency_p95': 1.8687248229980469, 'latency_p99': 2.0661425590515137, 'latency_p999': 2.242823839187626, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+[2025-10-23T20:20:46.541] error: *** JOB 23146921 ON idun-03-02 CANCELLED AT 2025-10-23T20:20:46 DUE to SIGNAL Terminated ***

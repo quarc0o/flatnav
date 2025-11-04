@@ -1,0 +1,19 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.5063149929046631 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 677, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    main(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 400, in main
+    build_and_run_knn_search(ef_cons=ef_cons, node_links=node_links)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 331, in build_and_run_knn_search
+    index = train_index(
+            ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 212, in train_index
+    create_and_train_hnsw_index(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 154, in create_and_train_hnsw_index
+    hnsw_index.save_base_layer_graph(filename=base_layer_filename)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'hnswlib.Index' object has no attribute 'save_base_layer_graph'
+make: *** [Makefile:321: mnist-bench-flatnav-rng] Error 1

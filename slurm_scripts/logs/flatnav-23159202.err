@@ -1,0 +1,315 @@
+INFO:root:Using 10000 queries for query-aware pruning
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 0.9501075744628906 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.11 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 736,089
+INFO:root:  Edges visited: 696,536 (94.6%)
+INFO:root:  Edges never used: 39,553
+INFO:root:  Total visits: 6,513,022
+INFO:root:  Avg visits per edge: 8.85
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 258,844
+INFO:root:  Utilization: 53.8%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.02 / 32
+INFO:root:Total edges used: 480,972
+INFO:root:Edge utilization: 25.1%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9114729999999643, 'qps': 5231.209172336517, 'latency_p50': 0.19240379333496094, 'latency_p95': 0.2365231513977049, 'latency_p99': 0.2713203430175781, 'latency_p999': 0.35024189949035744, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9691189999999191, 'qps': 3124.4731465261266, 'latency_p50': 0.32329559326171875, 'latency_p95': 0.39887428283691406, 'latency_p99': 0.4336833953857422, 'latency_p999': 0.5123615264892578, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.983581999999927, 'qps': 2264.2381728177343, 'latency_p50': 0.44465065002441406, 'latency_p95': 0.5543351173400877, 'latency_p99': 0.5965256690979004, 'latency_p999': 0.6730570793151859, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9917639999999454, 'qps': 1491.5511388042362, 'latency_p50': 0.6742477416992188, 'latency_p95': 0.8509278297424314, 'latency_p99': 0.9105300903320315, 'latency_p999': 0.978719234466555, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9959969999999603, 'qps': 827.3633942338332, 'latency_p50': 1.2173652648925781, 'latency_p95': 1.5440106391906736, 'latency_p99': 1.653435230255127, 'latency_p999': 1.749517679214478, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9983319999999761, 'qps': 310.45107381084745, 'latency_p50': 3.2494068145751953, 'latency_p95': 4.000699520111083, 'latency_p99': 4.245054721832276, 'latency_p999': 4.49135565757752, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.033630132675171 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.24 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 802,722
+INFO:root:  Edges visited: 759,108 (94.6%)
+INFO:root:  Edges never used: 43,614
+INFO:root:  Total visits: 6,934,622
+INFO:root:  Avg visits per edge: 8.64
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 270,664
+INFO:root:  Utilization: 54.4%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.29 / 32
+INFO:root:Total edges used: 497,474
+INFO:root:Edge utilization: 25.9%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9030829999999691, 'qps': 5163.976377443801, 'latency_p50': 0.19598007202148438, 'latency_p95': 0.2384185791015625, 'latency_p99': 0.26631832122802745, 'latency_p999': 0.3216271400451661, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9675279999999162, 'qps': 3058.4998146730118, 'latency_p50': 0.3311634063720703, 'latency_p95': 0.40793418884277344, 'latency_p99': 0.438690185546875, 'latency_p999': 0.4882965087890656, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9835389999999193, 'qps': 2216.035431172572, 'latency_p50': 0.4551410675048828, 'latency_p95': 0.568389892578125, 'latency_p99': 0.608208179473877, 'latency_p999': 0.6535124778747573, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9923999999999431, 'qps': 1459.910285025605, 'latency_p50': 0.6909370422363281, 'latency_p95': 0.8721351623535156, 'latency_p99': 0.9317493438720705, 'latency_p999': 0.9985060691833515, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.996582999999961, 'qps': 810.6416351045394, 'latency_p50': 1.2432336807250977, 'latency_p95': 1.5833497047424314, 'latency_p99': 1.6913437843322754, 'latency_p999': 1.7972106933593772, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.998295999999973, 'qps': 305.7121194159978, 'latency_p50': 3.3022165298461914, 'latency_p95': 4.060792922973632, 'latency_p99': 4.319670200347901, 'latency_p999': 4.553093910217288, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0874519348144531 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.41 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 851,411
+INFO:root:  Edges visited: 804,609 (94.5%)
+INFO:root:  Edges never used: 46,802
+INFO:root:  Total visits: 7,245,017
+INFO:root:  Avg visits per edge: 8.51
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 278,151
+INFO:root:  Utilization: 54.9%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.45 / 32
+INFO:root:Total edges used: 507,062
+INFO:root:Edge utilization: 26.4%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.8928159999999747, 'qps': 4964.205042078471, 'latency_p50': 0.2040863037109375, 'latency_p95': 0.2460479736328125, 'latency_p99': 0.26893854141235357, 'latency_p999': 0.32472705841064475, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9627369999999215, 'qps': 2935.032235080582, 'latency_p50': 0.3447532653808594, 'latency_p95': 0.423431396484375, 'latency_p99': 0.4527568817138672, 'latency_p999': 0.492811679840088, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9814329999999171, 'qps': 2127.093068385244, 'latency_p50': 0.4749298095703125, 'latency_p95': 0.5922436714172361, 'latency_p99': 0.634438991546631, 'latency_p999': 0.6840324401855489, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9919289999999377, 'qps': 1403.613228909044, 'latency_p50': 0.7195472717285156, 'latency_p95': 0.9069442749023438, 'latency_p99': 0.9663128852844238, 'latency_p999': 1.027108430862427, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9965739999999611, 'qps': 781.3218232144029, 'latency_p50': 1.2928247451782227, 'latency_p95': 1.6401052474975581, 'latency_p99': 1.7559647560119631, 'latency_p999': 1.8501336574554454, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9982799999999724, 'qps': 296.60455745483193, 'latency_p50': 3.409862518310547, 'latency_p95': 4.194295406341552, 'latency_p99': 4.450559616088867, 'latency_p999': 4.708295822143556, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.3354566097259521 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.96 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 970,378
+INFO:root:  Edges visited: 917,142 (94.5%)
+INFO:root:  Edges never used: 53,236
+INFO:root:  Total visits: 8,164,766
+INFO:root:  Avg visits per edge: 8.41
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 298,276
+INFO:root:  Utilization: 57.0%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.72 / 32
+INFO:root:Total edges used: 523,488
+INFO:root:Edge utilization: 27.3%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.8491429999999879, 'qps': 4379.916998547861, 'latency_p50': 0.232696533203125, 'latency_p95': 0.2830028533935547, 'latency_p99': 0.30470132827758795, 'latency_p999': 0.3423693180084229, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9406999999999476, 'qps': 2560.037188040207, 'latency_p50': 0.3986358642578125, 'latency_p95': 0.4890084266662596, 'latency_p99': 0.5157017707824707, 'latency_p999': 0.553370237350464, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9684799999999268, 'qps': 1849.3635458221788, 'latency_p50': 0.5496740341186523, 'latency_p95': 0.6847500801086424, 'latency_p99': 0.7233643531799316, 'latency_p999': 0.7705755233764662, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.986047999999919, 'qps': 1219.9627755079246, 'latency_p50': 0.8304119110107422, 'latency_p95': 1.0514259338378906, 'latency_p99': 1.1167526245117188, 'latency_p999': 1.1801772117614757, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9943159999999367, 'qps': 696.2822831230834, 'latency_p50': 1.4584064483642578, 'latency_p95': 1.8579959869384766, 'latency_p99': 1.981496810913086, 'latency_p999': 2.1123943328857435, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9970629999999552, 'qps': 266.87654003215226, 'latency_p50': 3.7980079650878906, 'latency_p95': 4.683530330657958, 'latency_p99': 4.96673583984375, 'latency_p999': 5.254041671752932, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 2.0769078731536865 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 4.38 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 1,056,957
+INFO:root:  Edges visited: 1,000,333 (94.6%)
+INFO:root:  Edges never used: 56,624
+INFO:root:  Total visits: 8,978,534
+INFO:root:  Avg visits per edge: 8.49
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 312,410
+INFO:root:  Utilization: 58.9%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.84 / 32
+INFO:root:Total edges used: 530,538
+INFO:root:Edge utilization: 27.6%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7918969999999909, 'qps': 4039.5504385204567, 'latency_p50': 0.2536773681640625, 'latency_p95': 0.3018379211425781, 'latency_p99': 0.325920581817627, 'latency_p999': 0.370503902435303, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9068489999999679, 'qps': 2347.554354761507, 'latency_p50': 0.43654441833496094, 'latency_p95': 0.5247592926025391, 'latency_p99': 0.5526542663574219, 'latency_p999': 0.5860333442687989, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9464989999999419, 'qps': 1694.8157831594717, 'latency_p50': 0.6039142608642578, 'latency_p95': 0.735056400299072, 'latency_p99': 0.7720041275024415, 'latency_p999': 0.8106248378753665, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9742619999999249, 'qps': 1116.4245530972187, 'latency_p50': 0.9151697158813477, 'latency_p95': 1.130819320678711, 'latency_p99': 1.1899518966674805, 'latency_p999': 1.2598068714141852, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9896779999999203, 'qps': 627.2635052614157, 'latency_p50': 1.631021499633789, 'latency_p95': 2.034425735473633, 'latency_p99': 2.1512579917907715, 'latency_p999': 2.2714161872863774, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9955509999999392, 'qps': 243.25811499319727, 'latency_p50': 4.188299179077148, 'latency_p95': 5.127203464508057, 'latency_p99': 5.415685176849365, 'latency_p999': 5.702502489089968, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 2.966718912124634 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 4.50 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 1,096,106
+INFO:root:  Edges visited: 1,037,988 (94.7%)
+INFO:root:  Edges never used: 58,118
+INFO:root:  Total visits: 9,379,546
+INFO:root:  Avg visits per edge: 8.56
+INFO:root:
+Pruning edges (keeping top 30%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 318,324
+INFO:root:  Utilization: 59.8%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 8.88 / 32
+INFO:root:Total edges used: 532,661
+INFO:root:Edge utilization: 27.7%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7592939999999897, 'qps': 3981.5290944291587, 'latency_p50': 0.2570152282714844, 'latency_p95': 0.30517578125, 'latency_p99': 0.33068895339965826, 'latency_p999': 0.37265229225158775, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8851839999999797, 'qps': 2302.3909260973455, 'latency_p50': 0.4464387893676758, 'latency_p95': 0.5295276641845703, 'latency_p99': 0.5562329292297363, 'latency_p999': 0.5948562622070317, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9318879999999538, 'qps': 1658.8486139038378, 'latency_p50': 0.6194114685058594, 'latency_p95': 0.7436275482177734, 'latency_p99': 0.7789158821105957, 'latency_p999': 0.81801438331604, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9660389999999277, 'qps': 1104.6403938450233, 'latency_p50': 0.9276866912841797, 'latency_p95': 1.1375069618225095, 'latency_p99': 1.1971020698547363, 'latency_p999': 1.2609994411468513, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9862649999999136, 'qps': 637.8381669719826, 'latency_p50': 1.6093254089355469, 'latency_p95': 1.9750595092773438, 'latency_p99': 2.084019184112549, 'latency_p999': 2.1986978054046635, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9943849999999309, 'qps': 249.13676122055978, 'latency_p50': 4.096865653991699, 'latency_p95': 4.969620704650879, 'latency_p99': 5.229713916778565, 'latency_p999': 5.50319051742554, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

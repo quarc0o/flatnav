@@ -1,0 +1,116 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 0.9991734027862549 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 12.27 / 32
+INFO:root:Total edges used: 736,196
+INFO:root:Edge utilization: 38.3%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9708309999999283, 'qps': 4446.501565067831, 'latency_p50': 0.22482872009277344, 'latency_p95': 0.29969215393066406, 'latency_p99': 0.3426074981689453, 'latency_p999': 0.4384539127349858, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9885219999999517, 'qps': 2671.8029853100343, 'latency_p50': 0.37360191345214844, 'latency_p95': 0.5037903785705564, 'latency_p99': 0.5583810806274415, 'latency_p999': 0.6332459449768079, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9924419999999571, 'qps': 1955.3935907086282, 'latency_p50': 0.5103349685668945, 'latency_p95': 0.6923675537109375, 'latency_p99': 0.7648539543151857, 'latency_p999': 0.8442435264587409, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9950229999999618, 'qps': 1299.5215356070978, 'latency_p50': 0.766754150390625, 'latency_p95': 1.04522705078125, 'latency_p99': 1.153712272644043, 'latency_p999': 1.260043859481812, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9970649999999681, 'qps': 726.1247482962971, 'latency_p50': 1.3775825500488281, 'latency_p95': 1.8572926521301267, 'latency_p99': 2.039916515350342, 'latency_p999': 2.186304807662965, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.99867399999998, 'qps': 275.11202246131444, 'latency_p50': 3.658294677734375, 'latency_p95': 4.660665988922118, 'latency_p99': 5.044236183166504, 'latency_p999': 5.428325414657595, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0548627376556396 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 13.38 / 32
+INFO:root:Total edges used: 802,932
+INFO:root:Edge utilization: 41.8%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9780279999999278, 'qps': 4416.887293186661, 'latency_p50': 0.2269744873046875, 'latency_p95': 0.3006458282470703, 'latency_p99': 0.33831834793090826, 'latency_p999': 0.39888095855713024, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.991961999999952, 'qps': 2643.855432562084, 'latency_p50': 0.377655029296875, 'latency_p95': 0.5090236663818359, 'latency_p99': 0.5629086494445801, 'latency_p999': 0.6258504390716556, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.994936999999959, 'qps': 1941.4069023538477, 'latency_p50': 0.5135536193847656, 'latency_p95': 0.6990432739257812, 'latency_p99': 0.7722449302673341, 'latency_p999': 0.8511588573455819, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9966679999999644, 'qps': 1292.6714386023566, 'latency_p50': 0.7717609405517578, 'latency_p95': 1.0533571243286128, 'latency_p99': 1.168026924133301, 'latency_p999': 1.290561437606812, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9977949999999696, 'qps': 726.1149432124573, 'latency_p50': 1.3785362243652344, 'latency_p95': 1.8599271774291988, 'latency_p99': 2.05064058303833, 'latency_p999': 2.2194418907165536, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9986339999999769, 'qps': 278.6686300152823, 'latency_p50': 3.607511520385742, 'latency_p95': 4.612231254577637, 'latency_p99': 4.973204135894776, 'latency_p999': 5.33676290512085, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0735976696014404 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 14.19 / 32
+INFO:root:Total edges used: 851,494
+INFO:root:Edge utilization: 44.3%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9819549999999355, 'qps': 4132.349339295675, 'latency_p50': 0.2422332763671875, 'latency_p95': 0.3197193145751953, 'latency_p99': 0.3571534156799317, 'latency_p999': 0.41890263557434104, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9940869999999586, 'qps': 2481.4158734974294, 'latency_p50': 0.4025697708129883, 'latency_p95': 0.5445599555969236, 'latency_p99': 0.6003451347351075, 'latency_p999': 0.6663811206817629, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.996447999999967, 'qps': 1827.7813523599395, 'latency_p50': 0.5453824996948242, 'latency_p95': 0.7455348968505859, 'latency_p99': 0.8213639259338381, 'latency_p999': 0.9112365245819093, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.997724999999972, 'qps': 1220.8968983054078, 'latency_p50': 0.8165836334228516, 'latency_p95': 1.1234402656555174, 'latency_p99': 1.2469387054443362, 'latency_p999': 1.360418558120728, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9984629999999768, 'qps': 689.703970879303, 'latency_p50': 1.4529228210449219, 'latency_p95': 1.9736409187316892, 'latency_p99': 2.1698522567749023, 'latency_p999': 2.371795892715456, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9988929999999807, 'qps': 266.833873834222, 'latency_p50': 3.766655921936035, 'latency_p95': 4.8308610916137695, 'latency_p99': 5.235910415649414, 'latency_p999': 5.620488166809084, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.2630796432495117 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 16.19 / 32
+INFO:root:Total edges used: 971,193
+INFO:root:Edge utilization: 50.6%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9873319999999342, 'qps': 3802.56249113797, 'latency_p50': 0.263214111328125, 'latency_p95': 0.35262107849121094, 'latency_p99': 0.38862466812133795, 'latency_p999': 0.4360704421997076, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.995791999999957, 'qps': 2240.3278824597874, 'latency_p50': 0.4464387893676758, 'latency_p95': 0.6117939949035642, 'latency_p99': 0.673058032989502, 'latency_p999': 0.7498297691345222, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9971179999999631, 'qps': 1653.2858369357887, 'latency_p50': 0.6046295166015625, 'latency_p95': 0.8370876312255859, 'latency_p99': 0.9238791465759278, 'latency_p999': 1.0278239250183108, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9977229999999665, 'qps': 1108.2389586352706, 'latency_p50': 0.9026527404785156, 'latency_p95': 1.2552857398986814, 'latency_p99': 1.3899827003479004, 'latency_p999': 1.5282645225524905, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9980719999999692, 'qps': 632.0271286043259, 'latency_p50': 1.587510108947754, 'latency_p95': 2.1789312362670894, 'latency_p99': 2.41114616394043, 'latency_p999': 2.6209421157836927, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9981959999999707, 'qps': 248.06480009679623, 'latency_p50': 4.059195518493652, 'latency_p95': 5.236160755157471, 'latency_p99': 5.671744346618652, 'latency_p999': 6.102570533752443, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.9832162857055664 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 17.60 / 32
+INFO:root:Total edges used: 1,056,247
+INFO:root:Edge utilization: 55.0%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9894249999999333, 'qps': 3439.92613470378, 'latency_p50': 0.2923011779785156, 'latency_p95': 0.3879189491271971, 'latency_p99': 0.42557954788208013, 'latency_p999': 0.46682381629943853, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.996371999999955, 'qps': 2058.7271950765726, 'latency_p50': 0.4889965057373047, 'latency_p95': 0.6639957427978516, 'latency_p99': 0.7317137718200685, 'latency_p999': 0.797989130020142, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9973019999999606, 'qps': 1519.7488168449881, 'latency_p50': 0.6623268127441406, 'latency_p95': 0.9072065353393551, 'latency_p99': 1.0068440437316895, 'latency_p999': 1.0893347263336182, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9976519999999635, 'qps': 1021.0784094864504, 'latency_p50': 0.9844303131103516, 'latency_p95': 1.3613820075988767, 'latency_p99': 1.5087175369262695, 'latency_p999': 1.6627326011657717, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9978059999999647, 'qps': 586.8986157710673, 'latency_p50': 1.7175674438476562, 'latency_p95': 2.348911762237549, 'latency_p99': 2.592356204986573, 'latency_p999': 2.827414751052858, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9978409999999652, 'qps': 233.51558087147166, 'latency_p50': 4.325628280639648, 'latency_p95': 5.578100681304931, 'latency_p99': 6.028196811676026, 'latency_p999': 6.484997987747195, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 2.782554864883423 seconds
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:Average out-degree: 18.26 / 32
+INFO:root:Total edges used: 1,095,674
+INFO:root:Edge utilization: 57.1%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.990093999999935, 'qps': 3329.823008997095, 'latency_p50': 0.30303001403808594, 'latency_p95': 0.39839744567871094, 'latency_p99': 0.436546802520752, 'latency_p999': 0.47683882713317904, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.996527999999955, 'qps': 1983.3950699512222, 'latency_p50': 0.5083084106445312, 'latency_p95': 0.6840348243713377, 'latency_p99': 0.7536458969116212, 'latency_p999': 0.8201673030853287, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9973369999999604, 'qps': 1465.8811874426635, 'latency_p50': 0.6871223449707031, 'latency_p95': 0.9360313415527344, 'latency_p99': 1.0373687744140627, 'latency_p999': 1.1348736286163332, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9976249999999627, 'qps': 985.2980876830128, 'latency_p50': 1.0230541229248047, 'latency_p95': 1.402139663696289, 'latency_p99': 1.5564036369323733, 'latency_p999': 1.7089865207672124, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9977379999999635, 'qps': 568.0568437146053, 'latency_p50': 1.7778873443603516, 'latency_p95': 2.416205406188964, 'latency_p99': 2.6643490791320805, 'latency_p999': 2.909427642822267, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9977619999999637, 'qps': 227.65998123249395, 'latency_p50': 4.441738128662109, 'latency_p95': 5.7065606117248535, 'latency_p99': 6.158404350280763, 'latency_p999': 6.652848005294803, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

@@ -1,0 +1,164 @@
+Makefile:361: warning: overriding recipe for target 'mnist-bench-flatnav-query-aware-80-16-hnsw-base'
+Makefile:340: warning: ignoring old recipe for target 'mnist-bench-flatnav-query-aware-80-16-hnsw-base'
+INFO:root:Using 10000 queries for query-aware pruning
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 0.9763092994689941 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.13 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 736,437
+INFO:root:  Edges visited: 696,649 (94.6%)
+INFO:root:  Edges never used: 39,788
+INFO:root:  Total visits: 6,528,446
+INFO:root:  Avg visits per edge: 8.86
+INFO:root:
+Pruning edges (keeping top 80%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 332,387
+INFO:root:  Utilization: 56.4%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 9.82 / 32
+INFO:root:Total edges used: 589,149
+INFO:root:Edge utilization: 30.7%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.967279999999925, 'qps': 4575.692050534932, 'latency_p50': 0.21779537200927734, 'latency_p95': 0.28967857360839844, 'latency_p99': 0.33164024353027344, 'latency_p999': 0.42129850387573503, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9862839999999496, 'qps': 2785.275288967968, 'latency_p50': 0.3581047058105469, 'latency_p95': 0.4770874977111815, 'latency_p99': 0.529770851135254, 'latency_p999': 0.6134519577026369, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9909029999999557, 'qps': 2046.0541505522312, 'latency_p50': 0.48828125, 'latency_p95': 0.6515979766845703, 'latency_p99': 0.7185959815979004, 'latency_p999': 0.7936975955963139, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9942349999999591, 'qps': 1366.9681328852237, 'latency_p50': 0.7297992706298828, 'latency_p95': 0.9765625, 'latency_p99': 1.0724139213562014, 'latency_p999': 1.1858971118927009, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9964169999999647, 'qps': 768.2884786310847, 'latency_p50': 1.3036727905273438, 'latency_p95': 1.7288088798522945, 'latency_p99': 1.89281702041626, 'latency_p999': 2.0482559204101567, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9982209999999752, 'qps': 293.70868515423933, 'latency_p50': 3.4258365631103516, 'latency_p95': 4.324460029602051, 'latency_p99': 4.656558036804199, 'latency_p999': 5.011566877365114, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0668199062347412 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.32 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 803,294
+INFO:root:  Edges visited: 759,742 (94.6%)
+INFO:root:  Edges never used: 43,552
+INFO:root:  Total visits: 6,972,110
+INFO:root:  Avg visits per edge: 8.68
+INFO:root:
+Pruning edges (keeping top 80%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 360,001
+INFO:root:  Utilization: 56.0%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 10.71 / 32
+INFO:root:Total edges used: 642,635
+INFO:root:Edge utilization: 33.5%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9753289999999297, 'qps': 4344.300533375979, 'latency_p50': 0.2295970916748047, 'latency_p95': 0.3028035163879393, 'latency_p99': 0.3414154052734375, 'latency_p999': 0.39005279541015625, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9907789999999551, 'qps': 2646.966016782845, 'latency_p50': 0.37658214569091797, 'latency_p95': 0.5037784576416016, 'latency_p99': 0.5564689636230469, 'latency_p999': 0.6129751205444338, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9941799999999629, 'qps': 1947.686263951428, 'latency_p50': 0.5123615264892578, 'latency_p95': 0.6887912750244141, 'latency_p99': 0.7605576515197754, 'latency_p999': 0.8325583934783937, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9963669999999675, 'qps': 1302.8828745042283, 'latency_p50': 0.766754150390625, 'latency_p95': 1.0357022285461424, 'latency_p99': 1.1353492736816406, 'latency_p999': 1.2547972202301025, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9977289999999728, 'qps': 736.2541276568614, 'latency_p50': 1.3619661331176758, 'latency_p95': 1.82342529296875, 'latency_p99': 1.9898676872253425, 'latency_p999': 2.141007900238039, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9986529999999794, 'qps': 284.0037221156608, 'latency_p50': 3.545522689819336, 'latency_p95': 4.502642154693602, 'latency_p99': 4.849915504455566, 'latency_p999': 5.183020353317269, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.1270835399627686 seconds
+INFO:root:
+==================================================
+INFO:root:QUERY-AWARE PRUNING PHASE
+INFO:root:==================================================
+INFO:root:Running 10000 training queries to track edge usage...
+INFO:root:  Processed 1000/10000 queries
+INFO:root:  Processed 2000/10000 queries
+INFO:root:  Processed 3000/10000 queries
+INFO:root:  Processed 4000/10000 queries
+INFO:root:  Processed 5000/10000 queries
+INFO:root:  Processed 6000/10000 queries
+INFO:root:  Processed 7000/10000 queries
+INFO:root:  Processed 8000/10000 queries
+INFO:root:  Processed 9000/10000 queries
+INFO:root:  Processed 10000/10000 queries
+INFO:root:Training query time = 3.55 seconds
+INFO:root:
+Edge Usage Statistics (BEFORE pruning):
+INFO:root:  Total edges: 851,510
+INFO:root:  Edges visited: 805,107 (94.6%)
+INFO:root:  Edges never used: 46,403
+INFO:root:  Total visits: 7,266,618
+INFO:root:  Avg visits per edge: 8.53
+INFO:root:
+Pruning edges (keeping top 80%)...
+INFO:root:Re-running sample queries to verify pruned graph...
+INFO:root:
+Edge Usage Statistics (AFTER pruning):
+INFO:root:  Edges visited: 378,993
+INFO:root:  Utilization: 55.6%
+INFO:root:==================================================
+
+INFO:root:
+==================================================
+INFO:root:POST-BUILD INDEX STATISTICS
+INFO:root:==================================================
+INFO:root:inside here now
+INFO:root:Average out-degree: 11.35 / 32
+INFO:root:Total edges used: 681,208
+INFO:root:Edge utilization: 35.5%
+INFO:root:==================================================
+
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 782, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 746, in run_experiment
+    main(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 476, in main
+    build_and_run_knn_search(ef_cons=ef_cons, node_links=node_links)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 433, in build_and_run_knn_search
+    compute_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 69, in compute_metrics
+    _, indices = index.search_single(
+                 ^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Search did not return the expected number of results. Expected 100 but got 1.
+make: *** [Makefile:304: mnist-bench-flatnav-query-aware-80-32] Error 1

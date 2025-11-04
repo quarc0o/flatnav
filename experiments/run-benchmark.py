@@ -169,6 +169,17 @@ def train_index(
     use_hnsw_base_layer: bool = False,
     hnsw_base_layer_filename: Optional[str] = None,
     num_build_threads: int = 1,
+    pruning_strategy: str = "hnsw",
+    alpha: float = 1.0,
+    angle_threshold: float = 60.0,
+    query_aware_pruning: bool = False,
+    training_queries: Optional[np.ndarray] = None,
+    query_pruning_keep_ratio: float = 0.8, 
+    enable_hub_aware: bool = False,  
+    hub_percentile: float = 95.0,     
+    M_hub: int = 0,                   
+    M_feeder: int = 0,                
+    analyze_hubs: bool = False, 
 ) -> Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat, hnswlib.Index]:
     """
     Creates and trains an index on the given dataset.
@@ -248,7 +259,42 @@ def train_index(
             verbose=True,
             collect_stats=False,
         )
+
+        if pruning_strategy.lower() == "alpha_diversity":
+            index.set_pruning_strategy("alpha_diversity")
+            index.set_alpha(alpha)
+            logging.info(f"Using alpha-diversity pruning with alpha={alpha}")
+        elif pruning_strategy.lower() == "ssg":  
+            index.set_pruning_strategy("ssg")
+            index.set_angle_threshold(angle_threshold)
+            logging.info(f"Using SSG pruning with angle_threshold={angle_threshold}°")
+        elif pruning_strategy.lower() == "rng":  # ADD THIS
+            index.set_pruning_strategy("rng")
+            logging.info("Using RNG (Relative Neighborhood Graph) pruning")
+        else:
+            index.set_pruning_strategy("hnsw")
+            logging.info("Using HNSW heuristic pruning")
+
         index.set_num_threads(num_build_threads)
+
+        if enable_hub_aware:
+            logging.info("\n" + "="*50)
+            logging.info("HUB-AWARE CONSTRUCTION (TWO-PASS)")
+            logging.info("="*50)
+            
+            # PASS 1: Pre-identify hubs from raw data
+            logging.info("PASS 1: Pre-identifying hubs from raw data...")
+            index.pre_identify_hubs(data=train_dataset, hub_percentile=hub_percentile)
+            
+            # Now enable hub-aware construction with the pre-identified hubs
+            index.enable_hub_aware_construction(M_hub=M_hub, M_feeder=M_feeder)
+            
+            logging.info(f"Hub-aware construction configured:")
+            logging.info(f"  M_hub = {M_hub if M_hub > 0 else f'{max_edges_per_node*2} (2*M)'}")
+            logging.info(f"  M_feeder = {M_feeder if M_feeder > 0 else max_edges_per_node}")
+            logging.info("="*50 + "\n")
+
+        logging.info("PASS 2: Building graph with hub-aware neighbor selection...")
 
         # Train the index.
         start = time.time()
@@ -258,6 +304,107 @@ def train_index(
         end = time.time()
 
         logging.info(f"Indexing time = {end - start} seconds")
+
+
+        if enable_hub_aware or analyze_hubs:
+            logging.info("\n" + "="*50)
+            logging.info("HUB IDENTIFICATION")
+            logging.info("="*50)
+            
+            start = time.time()
+            index.identify_hubs_by_extrema(hub_percentile=hub_percentile)
+            end = time.time()
+            
+            logging.info(f"Hub identification time = {end - start:.2f} seconds")
+            
+            # Print hub statistics
+            index.get_hub_statistics()
+            index.get_hub_connectivity_stats()
+            
+            logging.info("="*50 + "\n")
+
+        # QUERY-AWARE PRUNING PHASE
+        if query_aware_pruning:
+            if training_queries is None or len(training_queries) == 0:
+                logging.warning("Query-aware pruning requested but no training queries provided")
+            else:
+                logging.info("\n" + "="*50)
+                logging.info("QUERY-AWARE PRUNING PHASE")
+                logging.info("="*50)
+                
+                # Enable edge tracking
+                index.enable_edge_tracking()
+                
+                # Run training queries to track edge usage
+                logging.info(f"Running {len(training_queries)} training queries to track edge usage...")
+                start = time.time()
+                
+                for i, query in enumerate(training_queries):
+                    # FIX: Use correct parameter names
+                    index.search_single(
+                        query=query,
+                        K=10,  # Changed from k to K
+                        ef_search=100,
+                        num_initializations=100  # Add this parameter
+                    )
+                    
+                    if (i + 1) % 1000 == 0:
+                        logging.info(f"  Processed {i + 1}/{len(training_queries)} queries")
+                
+                end = time.time()
+                logging.info(f"Training query time = {end - start:.2f} seconds")
+                
+                # Get edge usage statistics
+                stats = index.get_edge_usage_stats(top_k=10)
+                logging.info(f"\nEdge Usage Statistics (BEFORE pruning):")
+                logging.info(f"  Total edges: {stats['total_edges']:,}")
+                logging.info(f"  Edges visited: {stats['edges_with_visits']:,} ({stats['utilization_pct']:.1f}%)")
+                logging.info(f"  Edges never used: {stats['edges_never_used']:,}")
+                logging.info(f"  Total visits: {stats['total_visits']:,}")
+                logging.info(f"  Avg visits per edge: {stats['avg_visits_per_edge']:.2f}")
+                
+                # Prune unused edges
+                logging.info(f"\nPruning edges (keeping top {query_pruning_keep_ratio*100:.0f}%)...")
+                index.prune_unused_edges(query_pruning_keep_ratio)
+                
+                # Get statistics after pruning
+                index.disable_edge_tracking()
+                index.enable_edge_tracking()
+                
+                # Re-run queries to get post-pruning stats (sample for speed)
+                logging.info("Re-running sample queries to verify pruned graph...")
+                sample_size = min(1000, len(training_queries))
+                for query in training_queries[:sample_size]:
+                    index.search_single(
+                        query=query,
+                        K=10,
+                        ef_search=100,
+                        num_initializations=100
+                    )
+                
+                stats_after = index.get_edge_usage_stats()
+                logging.info(f"\nEdge Usage Statistics (AFTER pruning):")
+                logging.info(f"  Edges visited: {stats_after['edges_with_visits']:,}")
+                logging.info(f"  Utilization: {stats_after['utilization_pct']:.1f}%")
+                
+                index.disable_edge_tracking()
+                logging.info("="*50 + "\n")
+
+            logging.info("\n" + "="*50)
+            logging.info("POST-BUILD INDEX STATISTICS")
+            logging.info("="*50)
+        logging.info(f"inside here now")
+        try:
+            index.get_edge_statistics()
+            avg_degree = index.get_average_out_degree()
+            total_edges = index.count_actual_edges()
+            logging.info(f"Average out-degree: {avg_degree:.2f} / {max_edges_per_node}")
+            logging.info(f"Total edges used: {total_edges:,}")
+            logging.info(f"Edge utilization: {(avg_degree/max_edges_per_node)*100:.1f}%")
+        except Exception as e:
+            logging.error(f"Could not get edge statistics: {e}")
+        
+        logging.info("="*50 + "\n")
 
     return index
 
@@ -281,6 +428,17 @@ def main(
     num_initializations: Optional[List[int]] = None,
     num_build_threads: int = 1,
     num_search_threads: int = 1,
+    pruning_strategy: str = "hnsw",     
+    alpha: float = 1.0,  
+    angle_threshold: float = 60.0, 
+    query_aware_pruning: bool = False,  
+    training_queries: Optional[np.ndarray] = None, 
+    query_pruning_keep_ratio: float = 0.8,  
+    enable_hub_aware: bool = False,     
+    hub_percentile: float = 95.0,       
+    M_hub: int = 0,                     
+    M_feeder: int = 0,                  
+    analyze_hubs: bool = False,         
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
@@ -302,6 +460,17 @@ def main(
             use_hnsw_base_layer=use_hnsw_base_layer,
             hnsw_base_layer_filename=hnsw_base_layer_filename,
             num_build_threads=num_build_threads,
+            pruning_strategy=pruning_strategy,  
+            alpha=alpha, 
+            angle_threshold=angle_threshold, 
+            query_aware_pruning=query_aware_pruning,
+            training_queries=training_queries,
+            query_pruning_keep_ratio=query_pruning_keep_ratio,
+             enable_hub_aware=enable_hub_aware,      
+            hub_percentile=hub_percentile,          
+            M_hub=M_hub,                            
+            M_feeder=M_feeder,                      
+            analyze_hubs=analyze_hubs,  
         )
         
         if reordering_strategies is not None:
@@ -362,6 +531,39 @@ def main(
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Benchmark Flatnav on Big ANN datasets."
+    )
+
+    parser.add_argument(
+        "--enable-hub-aware",
+        action="store_true",
+        help="Enable hub-aware graph construction",
+    )
+
+    parser.add_argument(
+        "--hub-percentile",
+        type=float,
+        default=95.0,
+        help="Percentile threshold for hub identification (default: 95.0 = top 5%%)",
+    )
+
+    parser.add_argument(
+        "--M-hub",
+        type=int,
+        default=0,
+        help="Max edges for hub nodes (default: 0 = 2*M). Only used with --enable-hub-aware",
+    )
+
+    parser.add_argument(
+        "--M-feeder",
+        type=int,
+        default=0,
+        help="Max edges for feeder nodes (default: 0 = M). Only used with --enable-hub-aware",
+    )
+
+    parser.add_argument(
+        "--analyze-hubs",
+        action="store_true",
+        help="Analyze and print hub statistics after construction",
     )
 
     parser.add_argument(
@@ -503,6 +705,54 @@ def parse_arguments() -> argparse.Namespace:
         help="The first element is the start index and the second element is the end index. Must be two integers.",
     )
 
+    parser.add_argument(
+        "--pruning-strategy",
+        required=False,
+        default="hnsw",
+        choices=["hnsw", "alpha_diversity", "ssg", "rng"],
+        help="Pruning strategy to use. Options: 'hnsw' (default), 'alpha_diversity', 'ssg', 'rng'.",
+    )
+    
+    parser.add_argument(
+        "--alpha",
+        required=False,
+        default=1.0,
+        type=float,
+        help="Alpha parameter for alpha-diversity pruning (default: 1.0). "
+             "Typical range: 0.5 to 1.5. Lower = more aggressive pruning.",
+    )
+
+    parser.add_argument(
+        "--angle-threshold",
+        required=False,
+        default=60.0,
+        type=float,
+        help="Angle threshold for SSG pruning in degrees (default: 60.0). "
+             "Typical range: 30 to 90. Lower = more aggressive pruning.",
+    )
+
+    parser.add_argument(
+        "--query-aware-pruning",
+        action="store_true",
+        help="Enable query-aware pruning after initial graph construction",
+    )
+    
+    parser.add_argument(
+        "--query-pruning-keep-ratio",
+        type=float,
+        default=0.8,
+        help="Fraction of edges to keep during query-aware pruning (default: 0.8)",
+    )
+    
+    parser.add_argument(
+        "--num-training-queries",
+        type=int,
+        default=10000,
+        help="Number of training queries to use for query-aware pruning (default: 10000)",
+    )
+
+ 
+
     return parser.parse_args()
 
 
@@ -554,7 +804,7 @@ def plot_all_metrics(
 
 def run_experiment():
     # This is the root directory inside the Docker container not the host machine.
-    ROOT_DIR = "/root"
+    ROOT_DIR = ".."
     args = parse_arguments()
 
     data_loader = get_data_loader(
@@ -564,6 +814,12 @@ def run_experiment():
         range=args.train_dataset_range,
     )
     train_data, queries, ground_truth = data_loader.load_data()
+
+    training_queries = None
+    if args.query_aware_pruning:
+        num_training = min(args.num_training_queries, len(queries))
+        training_queries = queries[:num_training]
+        logging.info(f"Using {num_training} queries for query-aware pruning")
 
     num_initializations = args.num_initializations
     if args.index_type.lower() == "hnsw":
@@ -591,6 +847,17 @@ def run_experiment():
         metrics_file=metrics_file_path,
         num_initializations=num_initializations,
         requested_metrics=args.requested_metrics,
+        pruning_strategy=args.pruning_strategy,  
+        alpha=args.alpha,
+        angle_threshold=args.angle_threshold,
+        query_aware_pruning=args.query_aware_pruning,
+        training_queries=training_queries,
+        query_pruning_keep_ratio=args.query_pruning_keep_ratio,
+        enable_hub_aware=args.enable_hub_aware,      
+        hub_percentile=args.hub_percentile,          
+        M_hub=args.M_hub,                            
+        M_feeder=args.M_feeder,                      
+        analyze_hubs=args.analyze_hubs,              
     )
 
     plot_all_metrics(

@@ -19,10 +19,8 @@
 #include <vector>
 #include "docs.h"
 
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-
 
 using flatnav::Index;
 using flatnav::distances::DistanceInterface;
@@ -277,10 +275,89 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
     _index->buildGraphLinks(/* mtx_filename = */ mtx_filename);
   }
 
+  size_t countActualEdges() const { return _index->countActualEdges(); }
+
+  float getAverageOutDegree() const { return _index->getAverageOutDegree(); }
+
+  void getEdgeStatistics() const { _index->getEdgeStatistics(); }
+
+  void enableEdgeTracking() { _index->enableEdgeTracking(); }
+
+  void disableEdgeTracking() { _index->disableEdgeTracking(); }
+
+  py::dict getEdgeUsageStats(int top_k = 10) {
+    auto stats = _index->getEdgeUsageStats(top_k);
+
+    py::dict result;
+    result["total_edges"] = stats.total_edges;
+    result["edges_with_visits"] = stats.edges_with_visits;
+    result["edges_never_used"] = stats.edges_never_used;
+    result["total_visits"] = stats.total_visits;
+    result["avg_visits_per_edge"] = stats.avg_visits_per_edge;
+    result["utilization_pct"] =
+        stats.total_edges > 0 ? (stats.edges_with_visits * 100.0 / stats.total_edges) : 0.0;
+
+    // Convert top edges to list of dicts
+    py::list top_edges;
+    for (const auto& [visits, idx] : stats.top_edges) {
+      py::dict edge_info;
+      edge_info["visits"] = visits;
+      edge_info["edge_idx"] = idx;
+      top_edges.append(edge_info);
+    }
+    result["top_edges"] = top_edges;
+
+    return result;
+  }
+
+  void pruneUnusedEdges(float keep_ratio) { _index->pruneUnusedEdges(keep_ratio); }
 
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() { return _index->getGraphOutdegreeTable(); }
 
   uint32_t getMaxEdgesPerNode() { return _index->maxEdgesPerNode(); }
+
+  void setPruningStrategy(const std::string& strategy) {
+    auto strat = strategy;
+    std::transform(strat.begin(), strat.end(), strat.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+
+    if (strat == "hnsw" || strat == "hnsw_heuristic") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::HNSW_HEURISTIC);
+    } else if (strat == "alpha_diversity" || strat == "alpha") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY);
+    } else if (strat == "ssg") {
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::SSG);
+    } else if (strat == "rng") {  // ADD THIS
+      _index->setPruningStrategy(Index<dist_t, label_t>::PruningStrategy::RNG);
+    } else {
+      throw std::invalid_argument("Invalid pruning strategy: '" + strategy +
+                                  "'. Valid options: 'hnsw', 'alpha_diversity', 'ssg', 'rng'");
+    }
+  }
+
+  void setAngleThreshold(float threshold) { _index->setAngleThreshold(threshold); }
+
+  float getAngleThreshold() const { return _index->getAngleThreshold(); }
+
+  void setAlpha(float alpha) { _index->setAlpha(alpha); }
+
+  std::string getPruningStrategy() const {
+    auto strategy = _index->getPruningStrategy();
+    switch (strategy) {
+      case Index<dist_t, label_t>::PruningStrategy::HNSW_HEURISTIC:
+        return "hnsw_heuristic";
+      case Index<dist_t, label_t>::PruningStrategy::ALPHA_DIVERSITY:
+        return "alpha_diversity";
+      case Index<dist_t, label_t>::PruningStrategy::SSG:
+        return "ssg";
+      case Index<dist_t, label_t>::PruningStrategy::RNG:
+        return "rng";
+      default:
+        return "unknown";
+    }
+  }
+
+  float getAlpha() const { return _index->getAlpha(); }
 
   void reorder(const std::vector<std::string>& strategies) {
     // validate the given strategies
@@ -469,6 +546,112 @@ void bindSpecialization(py::module_& index_submodule) {
       .def("reorder", &IndexType::reorder, py::arg("strategies"), REORDER_DOCSTRING)
       .def("set_num_threads", &IndexType::setNumThreads, py::arg("num_threads"), SET_NUM_THREADS_DOCSTRING)
       .def_static("load_index", &IndexType::loadIndex, py::arg("filename"), LOAD_INDEX_DOCSTRING)
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw' or 'alpha_diversity'")
+      .def("set_alpha", &IndexType::setAlpha, py::arg("alpha"),
+           "Set alpha parameter for alpha-diversity pruning (typically 0.5-1.5)")
+      .def("get_pruning_strategy", &IndexType::getPruningStrategy, "Get the current pruning strategy")
+      .def("get_alpha", &IndexType::getAlpha, "Get the current alpha parameter")
+
+      .def("count_actual_edges", &IndexType::countActualEdges,
+           "Count the actual number of edges (excluding self-loops)")
+      .def("get_average_out_degree", &IndexType::getAverageOutDegree, "Get average out-degree per node")
+      .def("get_edge_statistics", &IndexType::getEdgeStatistics, "Print detailed edge statistics")
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw', 'alpha_diversity', 'ssg'")
+      .def("set_alpha", &IndexType::setAlpha, py::arg("alpha"),
+           "Set alpha parameter for alpha-diversity pruning (typically 0.5-1.5)")
+      .def("set_angle_threshold", &IndexType::setAngleThreshold, py::arg("threshold"),
+           "Set angle threshold for SSG pruning in degrees (typically 30-90)")
+      .def("get_pruning_strategy", &IndexType::getPruningStrategy, "Get the current pruning strategy")
+      .def("get_alpha", &IndexType::getAlpha, "Get the current alpha parameter")
+      .def("get_angle_threshold", &IndexType::getAngleThreshold, "Get the current angle threshold")
+
+      .def("set_pruning_strategy", &IndexType::setPruningStrategy, py::arg("strategy"),
+           "Set the pruning strategy. Options: 'hnsw', 'alpha_diversity', 'ssg', 'rng'")
+
+      .def("enable_edge_tracking", &IndexType::enableEdgeTracking,
+           "Enable tracking of edge usage during search queries")
+      .def("disable_edge_tracking", &IndexType::disableEdgeTracking, "Disable edge tracking")
+      .def("get_edge_usage_stats", &IndexType::getEdgeUsageStats, py::arg("top_k") = 10,
+           "Get statistics about edge usage during queries")
+      .def("prune_unused_edges", &IndexType::pruneUnusedEdges, py::arg("keep_ratio"),
+           "Prune edges based on query usage. keep_ratio: fraction of edges to keep (0.0-1.0)")
+
+      // Add these inside the bindSpecialization function, in the index_class definitions section:
+
+      // Hub detection and statistics (FIXED VERSION)
+      .def(
+          "identify_hubs_by_extrema",
+          [](IndexType& index, float hub_percentile) {
+            index.getIndex()->identifyHubsByExtrema(hub_percentile);
+          },
+          py::arg("hub_percentile") = 95.0f,
+          "Identify hub nodes based on distance to centroid. "
+          "Points far from centroid (extrema) are marked as hubs.")
+
+      .def(
+          "is_hub", [](IndexType& index, uint32_t node_id) { return index.getIndex()->isHub(node_id); },
+          py::arg("node_id"), "Check if a specific node is a hub")
+
+      .def(
+          "get_hub_score",
+          [](IndexType& index, uint32_t node_id) { return index.getIndex()->getHubScore(node_id); },
+          py::arg("node_id"), "Get hub score (distance to centroid) for a node")
+
+      .def(
+          "get_hub_node_ids", [](IndexType& index) { return index.getIndex()->getHubNodeIds(); },
+          "Get list of all hub node IDs")
+
+      .def(
+          "get_hub_statistics", [](IndexType& index) { index.getIndex()->getHubStatistics(); },
+          "Print hub statistics (count, scores, distribution)")
+
+      .def(
+          "get_hub_connectivity_stats", [](IndexType& index) { index.getIndex()->getHubConnectivityStats(); },
+          "Print hub connectivity statistics (hub-hub, hub-feeder, feeder-feeder edges)")
+
+      .def(
+          "reset_hub_identification", [](IndexType& index) { index.getIndex()->resetHubIdentification(); },
+          "Reset hub identification to re-run with different parameters")
+
+      // Hub-aware construction
+      .def(
+          "enable_hub_aware_construction",
+          [](IndexType& index, size_t M_hub, size_t M_feeder) {
+            index.getIndex()->enableHubAwareConstruction(M_hub, M_feeder);
+          },
+          py::arg("M_hub") = 0, py::arg("M_feeder") = 0,
+          "Enable hub-aware construction with differential M values. "
+          "M_hub: max edges for hubs (default: 2*M), "
+          "M_feeder: max edges for feeders (default: M)")
+
+      .def(
+          "disable_hub_aware_construction",
+          [](IndexType& index) { index.getIndex()->disableHubAwareConstruction(); },
+          "Disable hub-aware construction")
+
+      .def(
+          "is_hub_aware_construction_enabled",
+          [](IndexType& index) { return index.getIndex()->isHubAwareConstructionEnabled(); },
+          "Check if hub-aware construction is enabled")
+
+      .def(
+          "pre_identify_hubs",
+          [](IndexType& index, const py::array_t<float>& data, float hub_percentile) {
+            if (data.ndim() != 2) {
+              throw std::invalid_argument("Data must be 2D array");
+            }
+
+            size_t num_points = data.shape(0);
+            index.getIndex()->preIdentifyHubs(data.data(0), num_points, hub_percentile);
+          },
+          py::arg("data"), py::arg("hub_percentile") = 95.0f,
+          "Pre-identify hubs from raw data before construction. "
+          "Must be called before adding any nodes.")
+
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
 }
@@ -523,10 +706,10 @@ void defineDistanceEnums(py::module_& module) {
 PYBIND11_MODULE(_core, module) {
 #ifdef VERSION_INFO
   module.attr("__version__") = TOSTRING(VERSION_INFO);
-  #pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
+#pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
 #else
   module.attr("__version__") = "dev";
-  #pragma message("VERSION_INFO is not defined")
+#pragma message("VERSION_INFO is not defined")
 #endif
 
   module.doc() = CXX_EXTENSION_MODULE_DOCSTRING;
