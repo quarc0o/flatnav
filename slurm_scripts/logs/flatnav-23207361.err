@@ -1,0 +1,48 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0460536479949951 seconds
+INFO:root:inside here now
+INFO:root:Average out-degree: 12.27 / 32
+INFO:root:Total edges used: 736,128
+INFO:root:Edge utilization: 38.3%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9704879999999232, 'qps': 4203.655030615604, 'latency_p50': 0.23865699768066406, 'latency_p95': 0.3199577331542969, 'latency_p99': 0.3590607643127442, 'latency_p999': 0.4251070022583021, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.988439999999951, 'qps': 2584.298462496993, 'latency_p50': 0.3845691680908203, 'latency_p95': 0.5273818969726562, 'latency_p99': 0.5898499488830566, 'latency_p999': 0.6740131378173836, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9925669999999575, 'qps': 1946.8289643017179, 'latency_p50': 0.5136728286743164, 'latency_p95': 0.6954669952392578, 'latency_p99': 0.7631778717041016, 'latency_p999': 0.8502027988433842, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9952159999999618, 'qps': 1294.5552526537772, 'latency_p50': 0.7691383361816406, 'latency_p95': 1.0514259338378906, 'latency_p99': 1.1592173576354987, 'latency_p999': 1.2719650268554692, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9971579999999676, 'qps': 725.130918655267, 'latency_p50': 1.3804435729980469, 'latency_p95': 1.8546819686889644, 'latency_p99': 2.0365977287292485, 'latency_p999': 2.2044212818145756, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9986959999999799, 'qps': 275.9498340088625, 'latency_p50': 3.644585609436035, 'latency_p95': 4.653286933898925, 'latency_p99': 5.02896547317505, 'latency_p999': 5.3968696594238335, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0259032249450684 seconds
+INFO:root:inside here now
+INFO:root:Average out-degree: 13.38 / 32
+INFO:root:Total edges used: 803,060
+INFO:root:Edge utilization: 41.8%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9782769999999323, 'qps': 4371.21767002846, 'latency_p50': 0.22935867309570312, 'latency_p95': 0.3020763397216797, 'latency_p99': 0.3399848937988281, 'latency_p999': 0.39291501045227073, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.992128999999955, 'qps': 2636.49007402632, 'latency_p50': 0.37860870361328125, 'latency_p95': 0.5092620849609375, 'latency_p99': 0.5643439292907716, 'latency_p999': 0.6265642642974854, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9950709999999614, 'qps': 1932.785682828711, 'latency_p50': 0.5156993865966797, 'latency_p95': 0.7014274597167969, 'latency_p99': 0.7765364646911622, 'latency_p999': 0.8485407829284687, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9968469999999665, 'qps': 1290.1060803115568, 'latency_p50': 0.7729530334472656, 'latency_p95': 1.0566830635070799, 'latency_p99': 1.1727881431579592, 'latency_p999': 1.2903215885162354, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.997969999999972, 'qps': 726.7295672457165, 'latency_p50': 1.3773441314697266, 'latency_p95': 1.8627882003784175, 'latency_p99': 2.0508766174316406, 'latency_p999': 2.2263622283935565, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9987339999999795, 'qps': 279.1690606030306, 'latency_p50': 3.601670265197754, 'latency_p95': 4.6041131019592285, 'latency_p99': 4.972565174102786, 'latency_p999': 5.385411024093631, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 1.0505445003509521 seconds
+INFO:root:inside here now
+INFO:root:Average out-degree: 14.19 / 32
+INFO:root:Total edges used: 851,485
+INFO:root:Edge utilization: 44.3%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9816219999999332, 'qps': 4195.749015961097, 'latency_p50': 0.23865699768066406, 'latency_p95': 0.3159046173095703, 'latency_p99': 0.3552460670471192, 'latency_p999': 0.4169955253601077, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9939089999999587, 'qps': 2533.119618114901, 'latency_p50': 0.3941059112548828, 'latency_p95': 0.5331039428710938, 'latency_p99': 0.5903244018554688, 'latency_p999': 0.6628062725067144, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9962369999999643, 'qps': 1860.473533821126, 'latency_p50': 0.5357265472412109, 'latency_p95': 0.7326602935791016, 'latency_p99': 0.8115768432617188, 'latency_p999': 0.9026560783386237, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9975289999999696, 'qps': 1244.3278013710228, 'latency_p50': 0.8022785186767578, 'latency_p95': 1.1010408401489253, 'latency_p99': 1.2209486961364748, 'latency_p999': 1.348496198654175, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9982969999999748, 'qps': 703.4640122893669, 'latency_p50': 1.4243125915527344, 'latency_p95': 1.9338130950927734, 'latency_p99': 2.130749225616455, 'latency_p999': 2.331508398056033, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9987809999999796, 'qps': 272.02617540077745, 'latency_p50': 3.696322441101074, 'latency_p95': 4.748618602752685, 'latency_p99': 5.128200054168702, 'latency_p999': 5.51368045806885, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+[2025-11-04T15:26:54.932] error: *** JOB 23207361 ON idun-03-06 CANCELLED AT 2025-11-04T15:26:54 DUE to SIGNAL Terminated ***

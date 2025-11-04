@@ -580,6 +580,64 @@ void bindSpecialization(py::module_& index_submodule) {
       .def("prune_unused_edges", &IndexType::pruneUnusedEdges, py::arg("keep_ratio"),
            "Prune edges based on query usage. keep_ratio: fraction of edges to keep (0.0-1.0)")
 
+      // Add these inside the bindSpecialization function, in the index_class definitions section:
+
+      // Hub detection and statistics (FIXED VERSION)
+      .def(
+          "identify_hubs_by_extrema",
+          [](IndexType& index, float hub_percentile) {
+            index.getIndex()->identifyHubsByExtrema(hub_percentile);
+          },
+          py::arg("hub_percentile") = 95.0f,
+          "Identify hub nodes based on distance to centroid. "
+          "Points far from centroid (extrema) are marked as hubs.")
+
+      .def(
+          "is_hub", [](IndexType& index, uint32_t node_id) { return index.getIndex()->isHub(node_id); },
+          py::arg("node_id"), "Check if a specific node is a hub")
+
+      .def(
+          "get_hub_score",
+          [](IndexType& index, uint32_t node_id) { return index.getIndex()->getHubScore(node_id); },
+          py::arg("node_id"), "Get hub score (distance to centroid) for a node")
+
+      .def(
+          "get_hub_node_ids", [](IndexType& index) { return index.getIndex()->getHubNodeIds(); },
+          "Get list of all hub node IDs")
+
+      .def(
+          "get_hub_statistics", [](IndexType& index) { index.getIndex()->getHubStatistics(); },
+          "Print hub statistics (count, scores, distribution)")
+
+      .def(
+          "get_hub_connectivity_stats", [](IndexType& index) { index.getIndex()->getHubConnectivityStats(); },
+          "Print hub connectivity statistics (hub-hub, hub-feeder, feeder-feeder edges)")
+
+      .def(
+          "reset_hub_identification", [](IndexType& index) { index.getIndex()->resetHubIdentification(); },
+          "Reset hub identification to re-run with different parameters")
+
+      // Hub-aware construction
+      .def(
+          "enable_hub_aware_construction",
+          [](IndexType& index, size_t M_hub, size_t M_feeder) {
+            index.getIndex()->enableHubAwareConstruction(M_hub, M_feeder);
+          },
+          py::arg("M_hub") = 0, py::arg("M_feeder") = 0,
+          "Enable hub-aware construction with differential M values. "
+          "M_hub: max edges for hubs (default: 2*M), "
+          "M_feeder: max edges for feeders (default: M)")
+
+      .def(
+          "disable_hub_aware_construction",
+          [](IndexType& index) { index.getIndex()->disableHubAwareConstruction(); },
+          "Disable hub-aware construction")
+
+      .def(
+          "is_hub_aware_construction_enabled",
+          [](IndexType& index) { return index.getIndex()->isHubAwareConstructionEnabled(); },
+          "Check if hub-aware construction is enabled")
+
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);
 }

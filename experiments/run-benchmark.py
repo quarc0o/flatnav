@@ -175,6 +175,11 @@ def train_index(
     query_aware_pruning: bool = False,
     training_queries: Optional[np.ndarray] = None,
     query_pruning_keep_ratio: float = 0.8, 
+    enable_hub_aware: bool = False,  
+    hub_percentile: float = 95.0,     
+    M_hub: int = 0,                   
+    M_feeder: int = 0,                
+    analyze_hubs: bool = False, 
 ) -> Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat, hnswlib.Index]:
     """
     Creates and trains an index on the given dataset.
@@ -272,6 +277,18 @@ def train_index(
 
         index.set_num_threads(num_build_threads)
 
+        if enable_hub_aware:
+            logging.info("\n" + "="*50)
+            logging.info("HUB-AWARE CONSTRUCTION ENABLED")
+            logging.info("="*50)
+            
+            # Enable hub-aware construction
+            index.enable_hub_aware_construction(M_hub=M_hub, M_feeder=M_feeder)
+            logging.info(f"Hub-aware construction configured:")
+            logging.info(f"  M_hub = {M_hub if M_hub > 0 else f'{max_edges_per_node*2} (2*M)'}")
+            logging.info(f"  M_feeder = {M_feeder if M_feeder > 0 else max_edges_per_node}")
+            logging.info(f"  Hub percentile = {hub_percentile}")
+
         # Train the index.
         start = time.time()
         index.add(
@@ -280,6 +297,24 @@ def train_index(
         end = time.time()
 
         logging.info(f"Indexing time = {end - start} seconds")
+
+
+        if enable_hub_aware or analyze_hubs:
+            logging.info("\n" + "="*50)
+            logging.info("HUB IDENTIFICATION")
+            logging.info("="*50)
+            
+            start = time.time()
+            index.identify_hubs_by_extrema(hub_percentile=hub_percentile)
+            end = time.time()
+            
+            logging.info(f"Hub identification time = {end - start:.2f} seconds")
+            
+            # Print hub statistics
+            index.get_hub_statistics()
+            index.get_hub_connectivity_stats()
+            
+            logging.info("="*50 + "\n")
 
         # QUERY-AWARE PRUNING PHASE
         if query_aware_pruning:
@@ -392,6 +427,11 @@ def main(
     query_aware_pruning: bool = False,  
     training_queries: Optional[np.ndarray] = None, 
     query_pruning_keep_ratio: float = 0.8,  
+    enable_hub_aware: bool = False,     
+    hub_percentile: float = 95.0,       
+    M_hub: int = 0,                     
+    M_feeder: int = 0,                  
+    analyze_hubs: bool = False,         
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
@@ -418,7 +458,12 @@ def main(
             angle_threshold=angle_threshold, 
             query_aware_pruning=query_aware_pruning,
             training_queries=training_queries,
-            query_pruning_keep_ratio=query_pruning_keep_ratio
+            query_pruning_keep_ratio=query_pruning_keep_ratio,
+             enable_hub_aware=enable_hub_aware,      
+            hub_percentile=hub_percentile,          
+            M_hub=M_hub,                            
+            M_feeder=M_feeder,                      
+            analyze_hubs=analyze_hubs,  
         )
         
         if reordering_strategies is not None:
@@ -479,6 +524,39 @@ def main(
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Benchmark Flatnav on Big ANN datasets."
+    )
+
+    parser.add_argument(
+        "--enable-hub-aware",
+        action="store_true",
+        help="Enable hub-aware graph construction",
+    )
+
+    parser.add_argument(
+        "--hub-percentile",
+        type=float,
+        default=95.0,
+        help="Percentile threshold for hub identification (default: 95.0 = top 5%%)",
+    )
+
+    parser.add_argument(
+        "--M-hub",
+        type=int,
+        default=0,
+        help="Max edges for hub nodes (default: 0 = 2*M). Only used with --enable-hub-aware",
+    )
+
+    parser.add_argument(
+        "--M-feeder",
+        type=int,
+        default=0,
+        help="Max edges for feeder nodes (default: 0 = M). Only used with --enable-hub-aware",
+    )
+
+    parser.add_argument(
+        "--analyze-hubs",
+        action="store_true",
+        help="Analyze and print hub statistics after construction",
     )
 
     parser.add_argument(
@@ -768,6 +846,11 @@ def run_experiment():
         query_aware_pruning=args.query_aware_pruning,
         training_queries=training_queries,
         query_pruning_keep_ratio=args.query_pruning_keep_ratio,
+        enable_hub_aware=args.enable_hub_aware,      
+        hub_percentile=args.hub_percentile,          
+        M_hub=args.M_hub,                            
+        M_feeder=args.M_feeder,                      
+        analyze_hubs=args.analyze_hubs,              
     )
 
     plot_all_metrics(

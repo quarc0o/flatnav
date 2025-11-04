@@ -71,3 +71,28 @@ INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.989478
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9964159999999567, 'qps': 1725.0284347899938, 'latency_p50': 0.583648681640625, 'latency_p95': 0.7989525794982908, 'latency_p99': 0.8833456039428712, 'latency_p999': 0.9617846012115486, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9973459999999613, 'qps': 1400.6136139727162, 'latency_p50': 0.7154941558837891, 'latency_p95': 0.9884834289550781, 'latency_p99': 1.0919713973999026, 'latency_p999': 1.2145097255706798, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
 INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9976969999999641, 'qps': 946.7631073113414, 'latency_p50': 1.062154769897461, 'latency_p95': 1.4731884002685547, 'latency_p99': 1.6265058517456057, 'latency_p999': 1.7890939712524416, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9978489999999655, 'qps': 546.3953683308723, 'latency_p50': 1.8472671508789062, 'latency_p95': 2.5379896163940425, 'latency_p99': 2.8009748458862314, 'latency_p999': 3.0398461818695086, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9978779999999658, 'qps': 217.7445736121395, 'latency_p50': 4.639029502868652, 'latency_p95': 6.013655662536621, 'latency_p99': 6.502654552459717, 'latency_p999': 7.020013570785526, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Using HNSW heuristic pruning
+INFO:root:Indexing time = 2.851339101791382 seconds
+INFO:root:inside here now
+INFO:root:Average out-degree: 18.25 / 32
+INFO:root:Total edges used: 1,095,230
+INFO:root:Edge utilization: 57.0%
+INFO:root:==================================================
+
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9899529999999318, 'qps': 2780.437954191462, 'latency_p50': 0.36406517028808594, 'latency_p95': 0.48114061355590804, 'latency_p99': 0.5273866653442384, 'latency_p999': 0.5834105014801025, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.996393999999952, 'qps': 1657.8599733188478, 'latency_p50': 0.6093978881835938, 'latency_p95': 0.8247017860412595, 'latency_p99': 0.9074234962463379, 'latency_p999': 0.9894423484802257, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9971919999999571, 'qps': 1230.7261826262932, 'latency_p50': 0.8138418197631836, 'latency_p95': 1.132965087890625, 'latency_p99': 1.2524151802062988, 'latency_p999': 1.375436782836914, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9974839999999598, 'qps': 909.0352092539925, 'latency_p50': 1.1074542999267578, 'latency_p95': 1.5256524085998533, 'latency_p99': 1.6896724700927734, 'latency_p999': 1.8525187969207777, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9975969999999603, 'qps': 525.5156439579591, 'latency_p50': 1.9224882125854492, 'latency_p95': 2.6283502578735347, 'latency_p99': 2.902758121490479, 'latency_p999': 3.1554801464080833, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9976239999999607, 'qps': 210.89662602727472, 'latency_p50': 4.799485206604004, 'latency_p95': 6.200087070465088, 'latency_p99': 6.70100212097168, 'latency_p999': 7.214345693588265, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)

@@ -376,8 +376,8 @@ class Index {
                 [](const auto& a, const auto& b) { return std::get<0>(a) > std::get<0>(b); });
 
       // Keep top edges per node (at least min_edges_per_node)
-      size_t keep_for_this_node = std::max(min_edges_per_node,
-                                           static_cast<size_t>(node_edges.size() * keep_ratio));
+      size_t keep_for_this_node =
+          std::max(min_edges_per_node, static_cast<size_t>(node_edges.size() * keep_ratio));
 
       // Mark edges to prune (those beyond keep_for_this_node)
       for (size_t j = keep_for_this_node; j < node_edges.size(); j++) {
@@ -443,6 +443,276 @@ class Index {
     std::cout << "Max possible edges: " << max_possible << "\n" << std::flush;
     std::cout << "Average out-degree: " << avg_degree << " / " << _M << "\n" << std::flush;
     std::cout << "Edge utilization: " << utilization << "%\n" << std::flush;
+  }
+
+  // Hub stuff
+
+  /**
+   * @brief Enable hub-aware construction with differential M values
+   * 
+   * When enabled, hub nodes will be given more edges (M_hub) while
+   * feeder nodes get fewer edges (M_feeder). This creates an explicit
+   * hub-feeder architecture that maintains the hub highway structure.
+   * 
+   * Must be called BEFORE identifying hubs and BEFORE construction.
+   * 
+   * @param M_hub Maximum edges for hub nodes (default: 2*M)
+   * @param M_feeder Maximum edges for feeder nodes (default: M)
+   */
+  void enableHubAwareConstruction(size_t M_hub = 0, size_t M_feeder = 0) {
+    if (M_hub == 0) {
+      M_hub = _M * 2;  // Default: double the edges for hubs
+    }
+    if (M_feeder == 0) {
+      M_feeder = _M;  // Default: standard M for feeders
+    }
+
+    if (M_hub < M_feeder) {
+      throw std::invalid_argument("M_hub must be >= M_feeder");
+    }
+
+    if (M_hub > _M) {
+      throw std::runtime_error(
+          "M_hub exceeds allocated space. Must reconstruct index with larger max_edges_per_node.");
+    }
+
+    _hub_aware_construction = true;
+    _M_hub = M_hub;
+    _M_feeder = M_feeder;
+
+    std::cout << "Hub-aware construction enabled:\n";
+    std::cout << "  M_hub = " << _M_hub << "\n";
+    std::cout << "  M_feeder = " << _M_feeder << "\n";
+    std::cout << "  Note: Hubs must be identified after construction via identifyHubsByExtrema()\n";
+  }
+
+  void disableHubAwareConstruction() { _hub_aware_construction = false; }
+
+  bool isHubAwareConstructionEnabled() const { return _hub_aware_construction; }
+
+  /**
+   * @brief Identify hub nodes based on distance to centroid.
+   * 
+   * Hubs in high-dimensional spaces tend to be at the extrema of the dataset,
+   * which manifests as points far from the centroid. This method computes
+   * the centroid of all nodes and marks the top percentile as hubs.
+   * 
+   * @param hub_percentile Percentile threshold (95 = top 5% are hubs)
+   */
+  void identifyHubsByExtrema(float hub_percentile = 95.0f) {
+    if (_cur_num_nodes == 0) {
+      throw std::runtime_error("Cannot identify hubs on empty index");
+    }
+
+    if (hub_percentile <= 0.0f || hub_percentile >= 100.0f) {
+      throw std::invalid_argument("hub_percentile must be between 0 and 100");
+    }
+
+    _hub_percentile = hub_percentile;
+
+    std::cout << "Computing dataset centroid..." << std::flush;
+
+    // Step 1: Compute centroid
+    size_t dim = _distance->dimension();
+    std::vector<float> centroid(dim, 0.0f);
+
+    // Sum all vectors
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      float* node_data = reinterpret_cast<float*>(getNodeData(node));
+      for (size_t d = 0; d < dim; d++) {
+        centroid[d] += node_data[d];
+      }
+    }
+
+    // Average
+    for (size_t d = 0; d < dim; d++) {
+      centroid[d] /= static_cast<float>(_cur_num_nodes);
+    }
+
+    std::cout << " done." << std::endl;
+    std::cout << "Computing distances to centroid..." << std::flush;
+
+    // Step 2: Compute distance from each node to centroid
+    _hub_scores.resize(_cur_num_nodes);
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      _hub_scores[node] = _distance->distance(
+          /* x = */ centroid.data(),
+          /* y = */ getNodeData(node),
+          /* asymmetric = */ false);
+    }
+
+    std::cout << " done." << std::endl;
+
+    // Step 3: Determine threshold
+    std::vector<float> sorted_scores = _hub_scores;
+    std::sort(sorted_scores.begin(), sorted_scores.end());
+
+    size_t threshold_idx = static_cast<size_t>((hub_percentile / 100.0f) * _cur_num_nodes);
+    float threshold = sorted_scores[threshold_idx];
+
+    // Step 4: Mark hubs
+    _hub_mask.resize(_cur_num_nodes);
+    size_t hub_count = 0;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      _hub_mask[node] = (_hub_scores[node] >= threshold);
+      if (_hub_mask[node]) {
+        hub_count++;
+      }
+    }
+
+    _hubs_identified = true;
+
+    std::cout << "Identified " << hub_count << " hub nodes (" << (100.0f * hub_count / _cur_num_nodes)
+              << "% of dataset)" << std::endl;
+    std::cout << "Hub threshold distance: " << threshold << std::endl;
+  }
+
+  /**
+   * @brief Check if a node is a hub
+   */
+  bool isHub(node_id_t node_id) const {
+    if (!_hubs_identified) {
+      throw std::runtime_error(
+          "Hubs must be identified before querying. Call identifyHubsByExtrema() first.");
+    }
+    if (node_id >= _cur_num_nodes) {
+      throw std::out_of_range("Node ID out of range");
+    }
+    return _hub_mask[node_id];
+  }
+
+  /**
+   * @brief Get hub score (distance to centroid) for a node
+   */
+  float getHubScore(node_id_t node_id) const {
+    if (!_hubs_identified) {
+      throw std::runtime_error(
+          "Hubs must be identified before querying. Call identifyHubsByExtrema() first.");
+    }
+    if (node_id >= _cur_num_nodes) {
+      throw std::out_of_range("Node ID out of range");
+    }
+    return _hub_scores[node_id];
+  }
+
+  /**
+   * @brief Get vector of hub node IDs
+   */
+  std::vector<node_id_t> getHubNodeIds() const {
+    if (!_hubs_identified) {
+      throw std::runtime_error(
+          "Hubs must be identified before querying. Call identifyHubsByExtrema() first.");
+    }
+
+    std::vector<node_id_t> hub_ids;
+    hub_ids.reserve(_cur_num_nodes * (100.0f - _hub_percentile) / 100.0f);
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      if (_hub_mask[node]) {
+        hub_ids.push_back(node);
+      }
+    }
+
+    return hub_ids;
+  }
+
+  /**
+   * @brief Get hub statistics
+   */
+  void getHubStatistics() const {
+    if (!_hubs_identified) {
+      throw std::runtime_error("Hubs must be identified first. Call identifyHubsByExtrema().");
+    }
+
+    size_t hub_count = 0;
+    float min_hub_score = std::numeric_limits<float>::max();
+    float max_hub_score = std::numeric_limits<float>::lowest();
+    float avg_hub_score = 0.0f;
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      if (_hub_mask[node]) {
+        hub_count++;
+        float score = _hub_scores[node];
+        min_hub_score = std::min(min_hub_score, score);
+        max_hub_score = std::max(max_hub_score, score);
+        avg_hub_score += score;
+      }
+    }
+
+    if (hub_count > 0) {
+      avg_hub_score /= static_cast<float>(hub_count);
+    }
+
+    std::cout << "\nHub Statistics\n";
+    std::cout << "-----------------------------\n";
+    std::cout << "Total hubs: " << hub_count << " / " << _cur_num_nodes << " ("
+              << (100.0f * hub_count / _cur_num_nodes) << "%)\n";
+    std::cout << "Hub percentile threshold: " << _hub_percentile << "\n";
+    std::cout << "Hub score range: [" << min_hub_score << ", " << max_hub_score << "]\n";
+    std::cout << "Average hub score: " << avg_hub_score << "\n";
+    std::cout << std::flush;
+  }
+
+  /**
+   * @brief Reset hub identification (useful for re-running with different parameters)
+   */
+  void resetHubIdentification() {
+    _hubs_identified = false;
+    _hub_mask.clear();
+    _hub_scores.clear();
+  }
+
+  /**
+   * @brief Get hub connectivity statistics
+   * Shows how well-connected hubs are compared to non-hubs
+   */
+  void getHubConnectivityStats() const {
+    if (!_hubs_identified) {
+      throw std::runtime_error("Hubs must be identified first.");
+    }
+
+    size_t hub_to_hub_edges = 0;
+    size_t hub_to_feeder_edges = 0;
+    size_t feeder_to_hub_edges = 0;
+    size_t feeder_to_feeder_edges = 0;
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      bool node_is_hub = _hub_mask[node];
+      node_id_t* links = getNodeLinks(node);
+
+      for (size_t i = 0; i < _M; i++) {
+        node_id_t neighbor = links[i];
+        if (neighbor == node)
+          continue;  // Skip self-loops
+
+        bool neighbor_is_hub = _hub_mask[neighbor];
+
+        if (node_is_hub && neighbor_is_hub) {
+          hub_to_hub_edges++;
+        } else if (node_is_hub && !neighbor_is_hub) {
+          hub_to_feeder_edges++;
+        } else if (!node_is_hub && neighbor_is_hub) {
+          feeder_to_hub_edges++;
+        } else {
+          feeder_to_feeder_edges++;
+        }
+      }
+    }
+
+    size_t total_edges =
+        hub_to_hub_edges + hub_to_feeder_edges + feeder_to_hub_edges + feeder_to_feeder_edges;
+
+    std::cout << "\nHub Connectivity Statistics\n";
+    std::cout << "-----------------------------\n";
+    std::cout << "Hub→Hub edges: " << hub_to_hub_edges << " (" << (100.0f * hub_to_hub_edges / total_edges)
+              << "%)\n";
+    std::cout << "Hub→Feeder edges: " << hub_to_feeder_edges << " ("
+              << (100.0f * hub_to_feeder_edges / total_edges) << "%)\n";
+    std::cout << "Feeder→Hub edges: " << feeder_to_hub_edges << " ("
+              << (100.0f * feeder_to_hub_edges / total_edges) << "%)\n";
+    std::cout << "Feeder→Feeder edges: " << feeder_to_feeder_edges << " ("
+              << (100.0f * feeder_to_feeder_edges / total_edges) << "%)\n";
+    std::cout << std::flush;
   }
 
   /**
@@ -546,13 +816,13 @@ class Index {
    * reached.
    */
   void add(void* data, label_t& label, int ef_construction, int num_initializations) {
-
     if (_cur_num_nodes >= _max_node_count) {
       throw std::runtime_error(
           "Maximum number of nodes reached. Consider "
           "increasing the `max_node_count` parameter to "
           "create a larger index.");
     }
+
     std::unique_lock<std::mutex> global_lock(_index_data_guard);
     auto entry_node = initializeSearch(data, num_initializations);
     node_id_t new_node_id;
@@ -564,11 +834,24 @@ class Index {
     }
 
     auto neighbors = beamSearch(
-        /* query = */ data, /* entry_node = */ entry_node,
+        /* query = */ data,
+        /* entry_node = */ entry_node,
         /* buffer_size = */ ef_construction);
 
-    int selection_M = std::max(static_cast<int>(_M / 2), 1);
-    selectNeighborsUnified(/* neighbors = */ neighbors, /* M = */ selection_M, data);
+    // Determine M based on hub status (if hub-aware is enabled and hubs identified)
+    int selection_M;
+    if (_hub_aware_construction && _hubs_identified) {
+      // Check if this node will be a hub (predict based on centroid distance)
+      // We need to predict hub status for the new node
+      bool predicted_hub = predictHubStatus(data);
+      selection_M = predicted_hub ? std::max(static_cast<int>(_M_hub / 2), 1)
+                                  : std::max(static_cast<int>(_M_feeder / 2), 1);
+    } else {
+      selection_M = std::max(static_cast<int>(_M / 2), 1);
+    }
+
+    selectNeighborsUnified(/* neighbors = */ neighbors, /* M = */ selection_M,
+                           /* query = */ data, /* node_id = */ new_node_id);
     connectNeighbors(neighbors, new_node_id);
   }
 
@@ -784,6 +1067,199 @@ class Index {
   std::vector<uint64_t> _edge_visit_counts;  // Change from atomic<uint64_t>
   std::unordered_map<uint64_t, size_t> _edge_index_map;
   std::mutex _edge_tracking_mutex;
+
+  // Hub stuff
+  std::vector<bool> _hub_mask;
+  std::vector<float> _hub_scores;
+  bool _hubs_identified = false;
+  float _hub_percentile = 95.0f;
+
+  bool _hub_aware_construction = false;
+  size_t _M_hub = 32;  // Max edges for hub nodes
+  size_t _M_feeder = 16;
+
+ private:
+  /**
+   * @brief Hub-aware neighbor selection strategy
+   * 
+   * Hubs: Prioritize diversity and connections to other hubs (highway formation)
+   * Feeders: Prioritize local neighbors and connections to hubs (highway access)
+   */
+  void selectNeighborsHubAware(PriorityQueue& neighbors, int M, const void* query, node_id_t node_id) {
+    if (!_hubs_identified) {
+      // Fall back to standard selection if hubs not identified
+      selectNeighborsUnified(neighbors, M, query);
+      return;
+    }
+
+    if (neighbors.size() <= M) {
+      return;
+    }
+
+    bool is_hub = _hub_mask[node_id];
+
+    // Convert max-heap to min-heap (sort by distance ascending)
+    std::priority_queue<std::pair<float, node_id_t>, std::vector<std::pair<float, node_id_t>>,
+                        std::greater<std::pair<float, node_id_t>>>
+        candidates;
+
+    while (!neighbors.empty()) {
+      auto [dist, id] = neighbors.top();
+      candidates.emplace(dist, id);
+      neighbors.pop();
+    }
+
+    std::vector<dist_node_t> selected;
+    selected.reserve(M);
+
+    if (is_hub) {
+      // HUB STRATEGY: Ensure diversity and hub-to-hub connections
+
+      // Phase 1: Select closest neighbors for local connectivity
+      int local_count = M / 3;
+      while (!candidates.empty() && selected.size() < local_count) {
+        auto [dist, candidate] = candidates.top();
+        candidates.pop();
+        selected.push_back({dist, candidate});
+      }
+
+      // Phase 2: Prioritize other hubs for highway formation
+      std::vector<std::pair<float, node_id_t>> hub_candidates;
+      std::vector<std::pair<float, node_id_t>> feeder_candidates;
+
+      while (!candidates.empty()) {
+        auto [dist, candidate] = candidates.top();
+        candidates.pop();
+
+        if (_hub_mask[candidate]) {
+          hub_candidates.push_back({dist, candidate});
+        } else {
+          feeder_candidates.push_back({dist, candidate});
+        }
+      }
+
+      // Add hub candidates (for highway connectivity)
+      int hub_target = M / 3;
+      for (const auto& [dist, candidate] : hub_candidates) {
+        if (selected.size() >= M)
+          break;
+        if (selected.size() - local_count >= hub_target)
+          break;
+        selected.push_back({dist, candidate});
+      }
+
+      // Fill remaining with diverse feeder connections
+      for (const auto& [dist, candidate] : feeder_candidates) {
+        if (selected.size() >= M)
+          break;
+
+        // Check diversity with already selected
+        bool keep = true;
+        for (const auto& [_, already_selected] : selected) {
+          float d_neighbor =
+              _distance->distance(getNodeData(candidate), getNodeData(already_selected), false);
+          float d_query = dist;
+
+          // HNSW heuristic: prune if too close
+          if (d_neighbor < d_query) {
+            keep = false;
+            break;
+          }
+        }
+
+        if (keep) {
+          selected.push_back({dist, candidate});
+        }
+      }
+
+    } else {
+      // FEEDER STRATEGY: Prioritize hub connections for highway access
+
+      // Separate hub and non-hub neighbors
+      std::vector<std::pair<float, node_id_t>> hub_neighbors;
+      std::vector<std::pair<float, node_id_t>> regular_neighbors;
+
+      while (!candidates.empty()) {
+        auto [dist, candidate] = candidates.top();
+        candidates.pop();
+
+        if (_hub_mask[candidate]) {
+          hub_neighbors.push_back({dist, candidate});
+        } else {
+          regular_neighbors.push_back({dist, candidate});
+        }
+      }
+
+      // Phase 1: Connect to nearby hubs (highway access)
+      int hub_target = std::min(M / 2, (int)hub_neighbors.size());
+      for (int i = 0; i < hub_target && i < hub_neighbors.size(); i++) {
+        selected.push_back(hub_neighbors[i]);
+      }
+
+      // Phase 2: Add local neighbors with diversity
+      for (const auto& [dist, candidate] : regular_neighbors) {
+        if (selected.size() >= M)
+          break;
+
+        bool keep = true;
+        for (const auto& [_, already_selected] : selected) {
+          float d_neighbor =
+              _distance->distance(getNodeData(candidate), getNodeData(already_selected), false);
+
+          if (d_neighbor < dist) {
+            keep = false;
+            break;
+          }
+        }
+
+        if (keep) {
+          selected.push_back({dist, candidate});
+        }
+      }
+    }
+
+    // Put selected neighbors back into priority queue
+    for (const auto& [dist, id] : selected) {
+      neighbors.emplace(dist, id);
+    }
+  }
+
+ private:
+  /**
+   * @brief Predict if a node will be a hub based on its distance to centroid
+   * Used during construction to apply hub-aware strategies before full hub identification
+   */
+  bool predictHubStatus(const void* data) {
+    if (!_hubs_identified || _hub_scores.empty()) {
+      return false;  // Can't predict without hub identification
+    }
+
+    // Recompute centroid (cached version would be better for production)
+    size_t dim = _distance->dimension();
+    std::vector<float> centroid(dim, 0.0f);
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      float* node_data = reinterpret_cast<float*>(getNodeData(node));
+      for (size_t d = 0; d < dim; d++) {
+        centroid[d] += node_data[d];
+      }
+    }
+
+    for (size_t d = 0; d < dim; d++) {
+      centroid[d] /= static_cast<float>(_cur_num_nodes);
+    }
+
+    // Compute this node's distance to centroid
+    float dist_to_centroid = _distance->distance(centroid.data(), data, false);
+
+    // Determine threshold from existing scores
+    std::vector<float> sorted_scores = _hub_scores;
+    std::sort(sorted_scores.begin(), sorted_scores.end());
+    size_t threshold_idx = static_cast<size_t>((_hub_percentile / 100.0f) * _cur_num_nodes);
+    float threshold = sorted_scores[threshold_idx];
+
+    return dist_to_centroid >= threshold;
+  }
 
   // Helper to get unique edge identifier
   uint64_t getEdgeId(node_id_t from, node_id_t to) const {
@@ -1080,15 +1556,19 @@ class Index {
     }
   }
 
-  void selectNeighborsUnified(PriorityQueue& neighbors, int M, const void* query = nullptr) {
-    if (_pruning_strategy == PruningStrategy::ALPHA_DIVERSITY) {
+  void selectNeighborsUnified(PriorityQueue& neighbors, int M, const void* query = nullptr,
+                              node_id_t node_id = 0) {
+    // Hub-aware selection takes precedence if enabled and hubs are identified
+    if (_hub_aware_construction && _hubs_identified) {
+      selectNeighborsHubAware(neighbors, M, query, node_id);
+    } else if (_pruning_strategy == PruningStrategy::ALPHA_DIVERSITY) {
       selectNeighborsAlphaDiversity(neighbors, M, _alpha);
     } else if (_pruning_strategy == PruningStrategy::SSG) {
       if (query == nullptr) {
         throw std::runtime_error("SSG pruning requires query vector");
       }
       selectNeighborsSSG(neighbors, M, query);
-    } else if (_pruning_strategy == PruningStrategy::RNG) {  // ADD THIS
+    } else if (_pruning_strategy == PruningStrategy::RNG) {
       if (query == nullptr) {
         throw std::runtime_error("RNG pruning requires query vector");
       }
@@ -1253,7 +1733,7 @@ class Index {
           }
         }
         // 2X larger than the previous call to selectNeighbors.
-        selectNeighborsUnified(candidates, _M, neighbor_data);
+        selectNeighborsUnified(candidates, _M, neighbor_data, neighbor_node_id);
         // connect the pruned set of candidates, including self-loops:
         size_t j = 0;
         while (candidates.size() > 0) {  // candidates
