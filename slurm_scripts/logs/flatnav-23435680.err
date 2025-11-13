@@ -1,0 +1,12 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.2254512310028076 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9883869999999463, 'qps': 3590.7450076081636, 'latency_p50': 0.2796649932861328, 'latency_p95': 0.3693103790283203, 'latency_p99': 0.40602684020996094, 'latency_p999': 0.46086716651916587, 'distance_computations': 937.4476}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9974549999999813, 'qps': 2156.9178201878017, 'latency_p50': 0.4646778106689453, 'latency_p95': 0.6275177001953125, 'latency_p99': 0.6885552406311035, 'latency_p999': 0.768903017044068, 'distance_computations': 1469.3109, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9988689999999905, 'qps': 1584.1755879616971, 'latency_p50': 0.6322860717773438, 'latency_p95': 0.8607029914855955, 'latency_p99': 0.9479522705078125, 'latency_p999': 1.0447576045990006, 'distance_computations': 1931.3986, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9995119999999948, 'qps': 1058.934470517238, 'latency_p50': 0.9467601776123047, 'latency_p95': 1.2912750244140625, 'latency_p99': 1.4276576042175295, 'latency_p999': 1.5618855953216564, 'distance_computations': 2755.9237, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9998539999999977, 'qps': 601.375576317711, 'latency_p50': 1.6744136810302734, 'latency_p95': 2.2552251815795894, 'latency_p99': 2.477414608001709, 'latency_p999': 2.6958010196685795, 'distance_computations': 4545.5273, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9999529999999992, 'qps': 234.21883096496754, 'latency_p50': 4.304766654968262, 'latency_p95': 5.45743703842163, 'latency_p99': 5.8786988258361825, 'latency_p999': 6.283814191818248, 'distance_computations': 10504.9268, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)

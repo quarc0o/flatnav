@@ -1,0 +1,11 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.2729911804199219 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9883649999999472, 'qps': 3342.9406021479667, 'latency_p50': 0.30040740966796875, 'latency_p95': 0.39386749267578125, 'latency_p99': 0.43678522109985357, 'latency_p999': 0.49424886703491355, 'distance_computations': 939.528}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9974349999999804, 'qps': 2020.729816978701, 'latency_p50': 0.49674510955810547, 'latency_p95': 0.6706714630126953, 'latency_p99': 0.7359981536865234, 'latency_p999': 0.808954954147339, 'distance_computations': 1471.9225, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9988679999999894, 'qps': 1482.5576514595577, 'latency_p50': 0.6763935089111328, 'latency_p95': 0.9207844734191892, 'latency_p99': 1.008751392364502, 'latency_p999': 1.1234288215637207, 'distance_computations': 1934.3478, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9994959999999945, 'qps': 992.785124489048, 'latency_p50': 1.0112524032592773, 'latency_p95': 1.3799786567687986, 'latency_p99': 1.5273165702819826, 'latency_p999': 1.6637041568756143, 'distance_computations': 2760.6806, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9998429999999978, 'qps': 568.0264560341401, 'latency_p50': 1.7696619033813477, 'latency_p95': 2.394688129425049, 'latency_p99': 2.649075984954834, 'latency_p999': 2.895118951797486, 'distance_computations': 4554.7961, 'distance_type': 'l2', 'ef_search': 500}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
