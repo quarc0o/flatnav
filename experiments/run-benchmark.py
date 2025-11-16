@@ -35,6 +35,77 @@ ENVIRONMENT_INFO = {
 }
 
 
+def compute_and_log_hub_stats(
+    index: Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat],
+    hub_percentile: float = 10.0,
+) -> Dict[str, float]:
+    """
+    Compute and log hub node statistics for a FlatNav index.
+
+    :param index: FlatNav index to analyze.
+    :param hub_percentile: Percentile threshold for hub classification (e.g., 10 for top 10%).
+    :return: Dictionary containing hub statistics.
+    """
+    try:
+        stats = index.get_hub_statistics(hub_percentile)
+
+        logging.info("=" * 80)
+        logging.info("Hub Node Statistics")
+        logging.info("=" * 80)
+        logging.info(f"Hub Percentile: {hub_percentile}%")
+        logging.info("-" * 80)
+
+        # Basic node statistics
+        logging.info("NODE CLASSIFICATION:")
+        logging.info(f"  Number of Hubs: {int(stats['num_hubs'])} ({hub_percentile}%)")
+        logging.info(f"  Number of Regular Nodes: {int(stats['num_regular'])} ({100-hub_percentile}%)")
+        logging.info(f"  Hub Threshold (min in-degree): {int(stats['hub_threshold'])}")
+        logging.info("-" * 80)
+
+        # In-degree statistics
+        logging.info("IN-DEGREE STATISTICS:")
+        logging.info(f"  Average Hub In-Degree: {stats['avg_hub_indegree']:.2f}")
+        logging.info(f"  Average Regular In-Degree: {stats['avg_regular_indegree']:.2f}")
+        logging.info(f"  Overall Average In-Degree: {stats['avg_indegree']:.2f}")
+        logging.info(f"  Median In-Degree: {stats['median_indegree']:.2f}")
+        logging.info(f"  Max In-Degree: {int(stats['max_indegree'])}")
+        logging.info(f"  Min In-Degree: {int(stats['min_indegree'])}")
+        logging.info("-" * 80)
+
+        # Connectivity statistics - absolute counts
+        logging.info("CONNECTIVITY PATTERNS (Absolute Counts):")
+        logging.info(f"  Total Edges: {int(stats['total_edges'])}")
+        logging.info(f"  Hub → Hub: {int(stats['hub_to_hub_edges'])}")
+        logging.info(f"  Hub → Regular: {int(stats['hub_to_regular_edges'])}")
+        logging.info(f"  Regular → Hub: {int(stats['regular_to_hub_edges'])}")
+        logging.info(f"  Regular → Regular: {int(stats['regular_to_regular_edges'])}")
+        logging.info("-" * 80)
+
+        # Connectivity statistics - percentages
+        logging.info("CONNECTIVITY PATTERNS (Percentages):")
+        logging.info(f"  Hub → Hub: {stats['hub_to_hub_pct']:.2f}%")
+        logging.info(f"  Hub → Regular: {stats['hub_to_regular_pct']:.2f}%")
+        logging.info(f"  Regular → Hub: {stats['regular_to_hub_pct']:.2f}%")
+        logging.info(f"  Regular → Regular: {stats['regular_to_regular_pct']:.2f}%")
+        total_pct = (stats['hub_to_hub_pct'] + stats['hub_to_regular_pct'] +
+                     stats['regular_to_hub_pct'] + stats['regular_to_regular_pct'])
+        logging.info(f"  TOTAL: {total_pct:.2f}%")
+        logging.info("-" * 80)
+
+        # Average outgoing connections per node type
+        logging.info("AVERAGE OUTGOING CONNECTIONS PER NODE:")
+        logging.info(f"  Avg Hub → Hub: {stats['avg_hub_to_hub']:.2f}")
+        logging.info(f"  Avg Hub → Regular: {stats['avg_hub_to_regular']:.2f}")
+        logging.info(f"  Avg Regular → Hub: {stats['avg_regular_to_hub']:.2f}")
+        logging.info(f"  Avg Regular → Regular: {stats['avg_regular_to_regular']:.2f}")
+        logging.info("=" * 80)
+
+        return stats
+    except Exception as e:
+        logging.error(f"Error computing hub statistics: {e}", exc_info=True)
+        return {}
+
+
 def compute_metrics(
     requested_metrics: List[str],
     index: Union[hnswlib.Index, flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat],
@@ -281,6 +352,7 @@ def main(
     num_initializations: Optional[List[int]] = None,
     num_build_threads: int = 1,
     num_search_threads: int = 1,
+    hub_percentile: float = 10.0,
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
@@ -308,7 +380,16 @@ def main(
             if index_type != "flatnav":
                 raise ValueError("Reordering only applies to the FlatNav index.")
             index.reorder(strategies=reordering_strategies)
-        
+
+        # Compute and log hub statistics for FlatNav indices
+        if index_type == "flatnav":
+            logging.info("\nComputing hub statistics...")
+            hub_stats = compute_and_log_hub_stats(
+                index, hub_percentile=hub_percentile
+            )
+            # Add stats to metrics for later storage
+            metrics.update({f"hub_{k}": v for k, v in hub_stats.items()})
+
         index.set_num_threads(num_search_threads)
         for ef_search in ef_search_params:
             # Extend metrics with computed metrics
@@ -503,6 +584,14 @@ def parse_arguments() -> argparse.Namespace:
         help="The first element is the start index and the second element is the end index. Must be two integers.",
     )
 
+    parser.add_argument(
+        "--hub-percentile",
+        required=False,
+        default=10.0,
+        type=float,
+        help="Percentile threshold for hub classification (e.g., 10 for top 10%). Only applies to FlatNav.",
+    )
+
     return parser.parse_args()
 
 
@@ -591,6 +680,7 @@ def run_experiment():
         metrics_file=metrics_file_path,
         num_initializations=num_initializations,
         requested_metrics=args.requested_metrics,
+        hub_percentile=args.hub_percentile,
     )
 
     plot_all_metrics(
