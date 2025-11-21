@@ -1,0 +1,100 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.163879871368408 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6809 (10.0%)
+INFO:root:  Number of Regular Nodes: 53191 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 27
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 31.38
+INFO:root:  Average Regular In-Degree: 15.90
+INFO:root:  Overall Average In-Degree: 17.66
+INFO:root:  Median In-Degree: 17.00
+INFO:root:  Max In-Degree: 62
+INFO:root:  Min In-Degree: 1
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 1059335
+INFO:root:  Hub → Hub: 29430
+INFO:root:  Hub → Regular: 117135
+INFO:root:  Regular → Hub: 184269
+INFO:root:  Regular → Regular: 728501
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 2.78%
+INFO:root:  Hub → Regular: 11.06%
+INFO:root:  Regular → Hub: 17.39%
+INFO:root:  Regular → Regular: 68.77%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.32
+INFO:root:  Avg Hub → Regular: 17.20
+INFO:root:  Avg Regular → Hub: 3.46
+INFO:root:  Avg Regular → Regular: 13.70
+INFO:root:================================================================================
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.991312999999955, 'qps': 3409.762628133234, 'latency_p50': 0.2951622009277344, 'latency_p95': 0.38909912109375, 'latency_p99': 0.42605638504028326, 'latency_p999': 0.47183108329772966, 'distance_computations': 1007.2416}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.9984699999999862, 'qps': 2038.9405530514637, 'latency_p50': 0.49424171447753906, 'latency_p95': 0.6673336029052734, 'latency_p99': 0.733621120452881, 'latency_p999': 0.795843362808228, 'distance_computations': 1585.2257, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.9994449999999943, 'qps': 1504.9969525482372, 'latency_p50': 0.6690025329589844, 'latency_p95': 0.9124398231506345, 'latency_p99': 1.0106611251831055, 'latency_p999': 1.1010198593139655, 'distance_computations': 2084.1041, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.9998009999999978, 'qps': 1008.8552016715091, 'latency_p50': 0.9970664978027344, 'latency_p95': 1.3690114021301267, 'latency_p99': 1.5153980255126955, 'latency_p999': 1.655825614929201, 'distance_computations': 2966.7621, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.9999619999999994, 'qps': 578.7957097483385, 'latency_p50': 1.7381906509399414, 'latency_p95': 2.3680090904235835, 'latency_p99': 2.610702514648438, 'latency_p999': 2.8262181282043466, 'distance_computations': 4862.264, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.384784843589365, 'hub_avg_hub_to_hub': 4.322220590395065, 'hub_avg_hub_to_regular': 17.202966661771185, 'hub_avg_indegree': 17.655583333333333, 'hub_avg_regular_indegree': 15.898103062548175, 'hub_avg_regular_to_hub': 3.4642890714594574, 'hub_avg_regular_to_regular': 13.695944802692186, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29430.0, 'hub_hub_to_hub_pct': 2.778157995346137, 'hub_hub_to_regular_edges': 117135.0, 'hub_hub_to_regular_pct': 11.057408657318035, 'hub_max_indegree': 62.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6809.0, 'hub_num_regular': 53191.0, 'hub_regular_to_hub_edges': 184269.0, 'hub_regular_to_hub_pct': 17.39478068788438, 'hub_regular_to_regular_edges': 728501.0, 'hub_regular_to_regular_pct': 68.76965265945145, 'hub_total_edges': 1059335.0, 'recall': 0.9999939999999998, 'qps': 229.68341060948188, 'latency_p50': 4.390835762023926, 'latency_p95': 5.623352527618408, 'latency_p99': 6.079680919647217, 'latency_p999': 6.545072793960572, 'distance_computations': 11051.6167, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 3.104714870452881 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6299 (10.0%)
+INFO:root:  Number of Regular Nodes: 53701 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 28
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 32.48
+INFO:root:  Average Regular In-Degree: 16.65
+INFO:root:  Overall Average In-Degree: 18.31
+INFO:root:  Median In-Degree: 17.00
+INFO:root:  Max In-Degree: 66
+INFO:root:  Min In-Degree: 1
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 1098544
+INFO:root:  Hub → Hub: 25168
+INFO:root:  Hub → Regular: 109866
+INFO:root:  Regular → Hub: 179426
+INFO:root:  Regular → Regular: 784084
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 2.29%
+INFO:root:  Hub → Regular: 10.00%
+INFO:root:  Regular → Hub: 16.33%
+INFO:root:  Regular → Regular: 71.37%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.00
+INFO:root:  Avg Hub → Regular: 17.44
+INFO:root:  Avg Regular → Hub: 3.34
+INFO:root:  Avg Regular → Regular: 14.60
+INFO:root:================================================================================
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9921399999999562, 'qps': 3297.8119573579947, 'latency_p50': 0.30612945556640625, 'latency_p95': 0.4005551338195799, 'latency_p99': 0.43964385986328125, 'latency_p999': 0.48089098930358903, 'distance_computations': 1044.126, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9987939999999886, 'qps': 1968.010372173806, 'latency_p50': 0.5128383636474609, 'latency_p95': 0.6871581077575678, 'latency_p99': 0.7577061653137209, 'latency_p999': 0.8208763599395754, 'distance_computations': 1649.0478, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9995949999999953, 'qps': 1451.8897845598801, 'latency_p50': 0.6949901580810547, 'latency_p95': 0.9420156478881833, 'latency_p99': 1.041414737701416, 'latency_p999': 1.1379756927490243, 'distance_computations': 2170.3678, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9998929999999988, 'qps': 974.449730785373, 'latency_p50': 1.0346174240112305, 'latency_p95': 1.4095306396484375, 'latency_p99': 1.5697479248046875, 'latency_p999': 1.7161502838134792, 'distance_computations': 3089.322, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9999799999999998, 'qps': 561.0677964902309, 'latency_p50': 1.7998218536376953, 'latency_p95': 2.4404525756835938, 'latency_p99': 2.6831674575805664, 'latency_p999': 2.928023338317872, 'distance_computations': 5049.0516, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.480393713287825, 'hub_avg_hub_to_hub': 3.9955548499761866, 'hub_avg_hub_to_regular': 17.441816161295442, 'hub_avg_indegree': 18.309066666666666, 'hub_avg_regular_indegree': 16.646803597698366, 'hub_avg_regular_to_hub': 3.341204074412022, 'hub_avg_regular_to_regular': 14.600919908381595, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25168.0, 'hub_hub_to_hub_pct': 2.291032493919224, 'hub_hub_to_regular_edges': 109866.0, 'hub_hub_to_regular_pct': 10.001055943139283, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6299.0, 'hub_num_regular': 53701.0, 'hub_regular_to_hub_edges': 179426.0, 'hub_regular_to_hub_pct': 16.333073595595625, 'hub_regular_to_regular_edges': 784084.0, 'hub_regular_to_regular_pct': 71.37483796734587, 'hub_total_edges': 1098544.0, 'recall': 0.9999969999999999, 'qps': 224.49340197537842, 'latency_p50': 4.501461982727051, 'latency_p95': 5.7730913162231445, 'latency_p99': 6.215837001800537, 'latency_p999': 6.710308790206913, 'distance_computations': 11372.6275, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)

@@ -1,11 +1,11 @@
 #pragma once
 
 #include <flatnav/distances/DistanceInterface.h>
+#include <flatnav/util/Datatype.h>
 #include <flatnav/util/Macros.h>
 #include <flatnav/util/Multithreading.h>
 #include <flatnav/util/Reordering.h>
 #include <flatnav/util/VisitedSetPool.h>
-#include <flatnav/util/Datatype.h>
 #include <algorithm>
 #include <atomic>
 #include <cassert>
@@ -16,18 +16,20 @@
 #include <cstring>
 #include <fstream>
 #include <limits>
+#include <map>
 #include <memory>
 #include <mutex>
+#include <numeric>
+#include <optional>
 #include <queue>
 #include <thread>
 #include <utility>
 #include <vector>
-#include <optional>
 
 using flatnav::distances::DistanceInterface;
+using flatnav::util::DataType;
 using flatnav::util::VisitedSet;
 using flatnav::util::VisitedSetPool;
-using flatnav::util::DataType;
 
 namespace flatnav {
 
@@ -45,7 +47,7 @@ class Index {
   // min-heap depending on the context.
 
   struct CompareByFirst {
-    constexpr bool operator()(dist_node_t const& a, dist_node_t const& b) const noexcept{
+    constexpr bool operator()(dist_node_t const& a, dist_node_t const& b) const noexcept {
       return a.first < b.first;
     }
   };
@@ -76,8 +78,8 @@ class Index {
   DataType _data_type;
 
   // NOTE: These metrics are meaningful the most with single-threaded search.
-  // With multi-threaded search, for instance, the number of distance computations will 
-  // accumulate across queries, which means at the end of the batched search, the number 
+  // With multi-threaded search, for instance, the number of distance computations will
+  // accumulate across queries, which means at the end of the batched search, the number
   // you get is the cumulative sum of all distance computations across all queries.
   // Maybe that's what you want, but it's worth noting
   mutable std::atomic<uint64_t> _distance_computations = 0;
@@ -167,7 +169,8 @@ class Index {
             /* initial_pool_size = */ 1,
             /* num_elements = */ dataset_size)),
         _node_links_mutexes(dataset_size),
-        _collect_stats(collect_stats), _data_type(data_type) {
+        _collect_stats(collect_stats),
+        _data_type(data_type) {
 
     // Get the size in bytes of the _node_links_mutexes vector.
     size_t mutexes_size_bytes = _node_links_mutexes.size() * sizeof(std::mutex);
@@ -182,7 +185,6 @@ class Index {
     delete[] _index_memory;
     delete _visited_set_pool;
   }
-
 
   void buildGraphLinks(const std::string& mtx_filename) {
     std::ifstream input_file(mtx_filename);
@@ -251,6 +253,150 @@ class Index {
   }
 
   /**
+   * @brief Computes the in-degree for each node in the graph.
+   * In-degree is the number of incoming edges to a node.
+   *
+   * @return Vector where index i contains the in-degree of node i.
+   */
+  std::vector<uint32_t> getGraphIndegreeTable() {
+    std::vector<uint32_t> indegree_table(_cur_num_nodes, 0);
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+      for (int i = 0; i < _M; i++) {
+        if (links[i] != node) {
+          indegree_table[links[i]]++;
+        }
+      }
+    }
+    return indegree_table;
+  }
+
+  /**
+   * @brief Computes hub node statistics based on in-degree distribution.
+   * Hubs are defined as nodes in the top hub_percentile of in-degree.
+   * All other nodes are considered regular nodes.
+   *
+   * @param hub_percentile Percentile threshold for hub classification (e.g., 10 for top 10%)
+   * @return Map containing statistics: num_hubs, num_regular, avg_hub_indegree, avg_regular_indegree,
+   *         and connectivity statistics: hub_to_hub_edges, hub_to_regular_edges, etc.
+   */
+  std::map<std::string, double> getHubStatistics(double hub_percentile = 10.0) {
+    if (hub_percentile < 0 || hub_percentile > 100) {
+      throw std::invalid_argument("Percentile must be between 0 and 100");
+    }
+
+    auto indegree_table = getGraphIndegreeTable();
+    std::vector<uint32_t> sorted_indegrees = indegree_table;
+    std::sort(sorted_indegrees.begin(), sorted_indegrees.end());
+
+    // Calculate hub threshold
+    size_t hub_threshold_idx = static_cast<size_t>(_cur_num_nodes * (100.0 - hub_percentile) / 100.0);
+    hub_threshold_idx = std::min(hub_threshold_idx, _cur_num_nodes - 1);
+    uint32_t hub_threshold = sorted_indegrees[hub_threshold_idx];
+
+    // Classify nodes as hubs or regular
+    std::vector<bool> is_hub(_cur_num_nodes, false);
+    uint32_t num_hubs = 0;
+    uint64_t hub_indegree_sum = 0;
+    uint64_t regular_indegree_sum = 0;
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      if (indegree_table[node] >= hub_threshold) {
+        is_hub[node] = true;
+        num_hubs++;
+        hub_indegree_sum += indegree_table[node];
+      } else {
+        regular_indegree_sum += indegree_table[node];
+      }
+    }
+
+    uint32_t num_regular = _cur_num_nodes - num_hubs;
+
+    // Count connectivity patterns
+    uint64_t hub_to_hub_edges = 0;
+    uint64_t hub_to_regular_edges = 0;
+    uint64_t regular_to_hub_edges = 0;
+    uint64_t regular_to_regular_edges = 0;
+
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      node_id_t* links = getNodeLinks(node);
+      bool node_is_hub = is_hub[node];
+
+      for (int i = 0; i < _M; i++) {
+        node_id_t neighbor = links[i];
+        // Skip self-loops (unused edges)
+        if (neighbor == node) {
+          continue;
+        }
+
+        bool neighbor_is_hub = is_hub[neighbor];
+
+        // Count edge types
+        if (node_is_hub && neighbor_is_hub) {
+          hub_to_hub_edges++;
+        } else if (node_is_hub && !neighbor_is_hub) {
+          hub_to_regular_edges++;
+        } else if (!node_is_hub && neighbor_is_hub) {
+          regular_to_hub_edges++;
+        } else {
+          regular_to_regular_edges++;
+        }
+      }
+    }
+
+    uint64_t total_edges = hub_to_hub_edges + hub_to_regular_edges +
+                           regular_to_hub_edges + regular_to_regular_edges;
+
+    // Calculate median
+    size_t median_idx = _cur_num_nodes / 2;
+    double median_indegree = _cur_num_nodes % 2 == 0
+                                 ? (sorted_indegrees[median_idx - 1] + sorted_indegrees[median_idx]) / 2.0
+                                 : sorted_indegrees[median_idx];
+
+    std::map<std::string, double> stats;
+
+    // Basic statistics
+    stats["num_hubs"] = static_cast<double>(num_hubs);
+    stats["num_regular"] = static_cast<double>(num_regular);
+    stats["hub_percentile"] = hub_percentile;
+    stats["hub_threshold"] = static_cast<double>(hub_threshold);
+    stats["avg_hub_indegree"] = num_hubs > 0 ? static_cast<double>(hub_indegree_sum) / num_hubs : 0.0;
+    stats["avg_regular_indegree"] = num_regular > 0 ? static_cast<double>(regular_indegree_sum) / num_regular : 0.0;
+    stats["avg_indegree"] = static_cast<double>(std::accumulate(indegree_table.begin(), indegree_table.end(), 0ULL)) / _cur_num_nodes;
+    stats["median_indegree"] = median_indegree;
+    stats["max_indegree"] = static_cast<double>(sorted_indegrees[_cur_num_nodes - 1]);
+    stats["min_indegree"] = static_cast<double>(sorted_indegrees[0]);
+
+    // Connectivity statistics (absolute counts)
+    stats["hub_to_hub_edges"] = static_cast<double>(hub_to_hub_edges);
+    stats["hub_to_regular_edges"] = static_cast<double>(hub_to_regular_edges);
+    stats["regular_to_hub_edges"] = static_cast<double>(regular_to_hub_edges);
+    stats["regular_to_regular_edges"] = static_cast<double>(regular_to_regular_edges);
+    stats["total_edges"] = static_cast<double>(total_edges);
+
+    // Connectivity statistics (percentages)
+    if (total_edges > 0) {
+      stats["hub_to_hub_pct"] = 100.0 * hub_to_hub_edges / total_edges;
+      stats["hub_to_regular_pct"] = 100.0 * hub_to_regular_edges / total_edges;
+      stats["regular_to_hub_pct"] = 100.0 * regular_to_hub_edges / total_edges;
+      stats["regular_to_regular_pct"] = 100.0 * regular_to_regular_edges / total_edges;
+    } else {
+      stats["hub_to_hub_pct"] = 0.0;
+      stats["hub_to_regular_pct"] = 0.0;
+      stats["regular_to_hub_pct"] = 0.0;
+      stats["regular_to_regular_pct"] = 0.0;
+    }
+
+    // Average outgoing connections per node type
+    stats["avg_hub_to_hub"] = num_hubs > 0 ? static_cast<double>(hub_to_hub_edges) / num_hubs : 0.0;
+    stats["avg_hub_to_regular"] = num_hubs > 0 ? static_cast<double>(hub_to_regular_edges) / num_hubs : 0.0;
+    stats["avg_regular_to_hub"] = num_regular > 0 ? static_cast<double>(regular_to_hub_edges) / num_regular : 0.0;
+    stats["avg_regular_to_regular"] = num_regular > 0 ? static_cast<double>(regular_to_regular_edges) / num_regular : 0.0;
+
+    return stats;
+  }
+
+  /**
    * @brief Store the new node in the global data structure. In a
    * multi-threaded setting, the index data guard should be held by the caller
    * with an exclusive lock.
@@ -300,32 +446,32 @@ class Index {
   template <typename data_type>
   void addBatch(void* data, std::vector<label_t>& labels, int ef_construction,
                 int num_initializations = 100) {
-      if (num_initializations <= 0) {
-          throw std::invalid_argument("num_initializations must be greater than 0.");
-      }
-      uint32_t total_num_nodes = labels.size();
-      uint32_t data_dimension = _distance->dimension();
+    if (num_initializations <= 0) {
+      throw std::invalid_argument("num_initializations must be greater than 0.");
+    }
+    uint32_t total_num_nodes = labels.size();
+    uint32_t data_dimension = _distance->dimension();
 
-      // Don't spawn any threads if we are only using one.
-      if (_num_threads == 1) {
-          for (uint32_t row_index = 0; row_index < total_num_nodes; row_index++) {
-              uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
-              void* vector = (data_type*)data + offset;
-              label_t label = labels[row_index];
-              this->add(vector, label, ef_construction, num_initializations);
-          }
-          return;
+    // Don't spawn any threads if we are only using one.
+    if (_num_threads == 1) {
+      for (uint32_t row_index = 0; row_index < total_num_nodes; row_index++) {
+        uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
+        void* vector = (data_type*)data + offset;
+        label_t label = labels[row_index];
+        this->add(vector, label, ef_construction, num_initializations);
       }
+      return;
+    }
 
-      flatnav::executeInParallel(
-          /* start_index = */ 0, /* end_index = */ total_num_nodes,
-          /* num_threads = */ _num_threads, /* function = */
-          [&](uint32_t row_index) {
-              uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
-              void* vector = (data_type*)data + offset;
-              label_t label = labels[row_index];
-              this->add(vector, label, ef_construction, num_initializations);
-          });
+    flatnav::executeInParallel(
+        /* start_index = */ 0, /* end_index = */ total_num_nodes,
+        /* num_threads = */ _num_threads, /* function = */
+        [&](uint32_t row_index) {
+          uint64_t offset = static_cast<uint64_t>(row_index) * static_cast<uint64_t>(data_dimension);
+          void* vector = (data_type*)data + offset;
+          label_t label = labels[row_index];
+          this->add(vector, label, ef_construction, num_initializations);
+        });
   }
 
   /**
@@ -408,7 +554,6 @@ class Index {
     return results;
   }
 
-
   void doGraphReordering(const std::vector<std::string>& reordering_methods) {
 
     for (const auto& method : reordering_methods) {
@@ -452,14 +597,8 @@ class Index {
     std::unique_ptr<DistanceInterface<dist_t>> dist = std::make_unique<dist_t>();
 
     // 1. Deserialize metadata
-    archive(index->_data_type, 
-            index->_M, 
-            index->_data_size_bytes, 
-            index->_node_size_bytes, 
-            index->_max_node_count,
-            index->_cur_num_nodes, 
-            *dist
-    );
+    archive(index->_data_type, index->_M, index->_data_size_bytes, index->_node_size_bytes,
+            index->_max_node_count, index->_cur_num_nodes, *dist);
     index->_visited_set_pool = new VisitedSetPool(
         /* initial_pool_size = */ 1,
         /* num_elements = */ index->_max_node_count);
@@ -468,7 +607,8 @@ class Index {
     index->_node_links_mutexes = std::vector<std::mutex>(index->_max_node_count);
 
     // 2. Allocate memory using deserialized metadata
-    uint64_t mem_size = static_cast<uint64_t>(index->_node_size_bytes) * static_cast<uint64_t>(index->_max_node_count);
+    uint64_t mem_size =
+        static_cast<uint64_t>(index->_node_size_bytes) * static_cast<uint64_t>(index->_max_node_count);
 
     index->_index_memory = new char[mem_size];
 
@@ -500,7 +640,6 @@ class Index {
       _visited_set_pool->setPoolSize(1);
     }
   }
-
 
   inline uint64_t getTotalIndexMemory() const {
     return static_cast<uint64_t>(_node_size_bytes) * static_cast<uint64_t>(_max_node_count);
@@ -603,8 +742,7 @@ class Index {
    * @return PriorityQueue
    */
 
-  PriorityQueue beamSearch(const void* query, const node_id_t entry_node, 
-          const int buffer_size) {
+  PriorityQueue beamSearch(const void* query, const node_id_t entry_node, const int buffer_size) {
     PriorityQueue neighbors;
     PriorityQueue candidates;
 
@@ -683,8 +821,8 @@ class Index {
       }
       visited_set->insert(/* num = */ neighbor_node_id);
       float dist = _distance->distance(/* x = */ query,
-                                 /* y = */ getNodeData(neighbor_node_id),
-                                 /* asymmetric = */ true);
+                                       /* y = */ getNodeData(neighbor_node_id),
+                                       /* asymmetric = */ true);
 
       if (_collect_stats) {
         _distance_computations.fetch_add(1);
@@ -739,7 +877,7 @@ class Index {
       bool should_keep_candidate = true;
       for (const auto& [_, second_pair_node_id] : saved_candidates) {
         float cur_dist = _distance->distance(/* x = */ getNodeData(second_pair_node_id),
-                                       /* y = */ getNodeData(current_node_id));
+                                             /* y = */ getNodeData(current_node_id));
 
         if (cur_dist < distance_to_query) {
           should_keep_candidate = false;
@@ -759,7 +897,6 @@ class Index {
     for (const dist_node_t& current_pair : saved_candidates) {
       neighbors.emplace(-current_pair.first, current_pair.second);
     }
-
   }
 
   void connectNeighbors(PriorityQueue& neighbors, node_id_t new_node_id) {

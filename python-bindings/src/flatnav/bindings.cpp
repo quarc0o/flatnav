@@ -19,10 +19,8 @@
 #include <vector>
 #include "docs.h"
 
-
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
-
 
 using flatnav::Index;
 using flatnav::distances::DistanceInterface;
@@ -277,8 +275,13 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
     _index->buildGraphLinks(/* mtx_filename = */ mtx_filename);
   }
 
-
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() { return _index->getGraphOutdegreeTable(); }
+
+  std::vector<uint32_t> getGraphIndegreeTable() { return _index->getGraphIndegreeTable(); }
+
+  std::map<std::string, double> getHubStatistics(double hub_percentile = 10.0) {
+    return _index->getHubStatistics(hub_percentile);
+  }
 
   uint32_t getMaxEdgesPerNode() { return _index->maxEdgesPerNode(); }
 
@@ -466,6 +469,10 @@ void bindSpecialization(py::module_& index_submodule) {
            BUILD_GRAPH_LINKS_DOCSTRING)
       .def("get_graph_outdegree_table", &IndexType::getGraphOutdegreeTable,
            GET_GRAPH_OUTDEGREE_TABLE_DOCSTRING)
+      .def("get_graph_indegree_table", &IndexType::getGraphIndegreeTable,
+           "Get the in-degree table for all nodes in the graph")
+      .def("get_hub_statistics", &IndexType::getHubStatistics, py::arg("hub_percentile") = 10.0,
+           "Compute hub node statistics based on in-degree distribution")
       .def("reorder", &IndexType::reorder, py::arg("strategies"), REORDER_DOCSTRING)
       .def("set_num_threads", &IndexType::setNumThreads, py::arg("num_threads"), SET_NUM_THREADS_DOCSTRING)
       .def_static("load_index", &IndexType::loadIndex, py::arg("filename"), LOAD_INDEX_DOCSTRING)
@@ -523,10 +530,10 @@ void defineDistanceEnums(py::module_& module) {
 PYBIND11_MODULE(_core, module) {
 #ifdef VERSION_INFO
   module.attr("__version__") = TOSTRING(VERSION_INFO);
-  #pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
+#pragma message("VERSION_INFO: " TOSTRING(VERSION_INFO))
 #else
   module.attr("__version__") = "dev";
-  #pragma message("VERSION_INFO is not defined")
+#pragma message("VERSION_INFO is not defined")
 #endif
 
   module.doc() = CXX_EXTENSION_MODULE_DOCSTRING;
