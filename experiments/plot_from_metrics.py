@@ -12,6 +12,8 @@ import json
 import argparse
 import os
 import re
+import matplotlib.pyplot as plt
+import numpy as np
 from typing import List, Dict, Optional
 from plotting.plot import create_plot, create_linestyles
 from plotting.metrics import metric_manager
@@ -211,6 +213,129 @@ def create_comparison_plot(
     print(f"✓ Plot saved to: {output_path}")
 
 
+def plot_indegree_distribution(
+    distribution_file: str,
+    output_file: str = "indegree_distribution.png",
+    experiment_keys: Optional[List[str]] = None,
+    pattern: Optional[str] = None,
+    log_scale: bool = False,
+    friendly_names: Optional[Dict[str, str]] = None,
+    cumulative: bool = False,
+) -> None:
+    """
+    Plot in-degree distribution from the distribution metrics file.
+
+    Args:
+        distribution_file: Path to the in-degree distribution JSON file
+        output_file: Output plot filename
+        experiment_keys: List of experiment keys to plot
+        pattern: Regex pattern to match experiment keys
+        log_scale: Whether to use log scale for y-axis
+        friendly_names: Optional dict to rename experiments in legend
+        cumulative: If True, plot cumulative distribution
+    """
+    # Load distribution data
+    with open(distribution_file, 'r') as f:
+        all_distributions = json.load(f)
+
+    if not all_distributions:
+        print("No distribution data found in file.")
+        return
+
+    # Filter by experiment keys or pattern
+    if pattern:
+        regex = re.compile(pattern)
+        selected = [d for d in all_distributions if regex.search(d['experiment_key'])]
+        print(f"Found {len(selected)} experiments matching pattern '{pattern}'")
+    elif experiment_keys:
+        selected = [d for d in all_distributions if d['experiment_key'] in experiment_keys]
+        print(f"Selected {len(selected)} experiments")
+    else:
+        selected = all_distributions
+        print(f"Plotting all {len(selected)} experiments")
+
+    if not selected:
+        print("No experiments selected. Nothing to plot.")
+        return
+
+    # Create the plot
+    fig, ax = plt.subplots(figsize=(12, 8))
+
+    # Color map for different experiments
+    colors = plt.cm.tab10(np.linspace(0, 1, len(selected)))
+
+    for idx, experiment in enumerate(selected):
+        exp_key = experiment['experiment_key']
+        node_links = experiment['node_links']
+        ef_cons = experiment['ef_construction']
+        distribution = experiment['distribution']
+
+        # Create label
+        if friendly_names and exp_key in friendly_names:
+            label = friendly_names[exp_key]
+        else:
+            label = f"{exp_key} (M={node_links}, ef={ef_cons})"
+
+        # Sort by in-degree and convert to arrays
+        sorted_items = sorted([(int(k), v) for k, v in distribution.items()])
+        indegrees = np.array([item[0] for item in sorted_items])
+        percentages = np.array([item[1] for item in sorted_items])
+
+        if cumulative:
+            # Compute cumulative distribution
+            percentages = np.cumsum(percentages)
+            ylabel = "Cumulative Percentage of Nodes (%)"
+        else:
+            ylabel = "Percentage of Nodes (%)"
+
+        # Plot
+        ax.plot(indegrees, percentages, marker='o', markersize=3,
+                label=label, color=colors[idx], linewidth=1.5, alpha=0.8)
+
+    # Styling
+    ax.set_xlabel("In-Degree", fontsize=12)
+    ax.set_ylabel(ylabel, fontsize=12)
+
+    title = "Cumulative In-Degree Distribution" if cumulative else "In-Degree Distribution"
+    ax.set_title(title, fontsize=14)
+
+    if log_scale:
+        ax.set_yscale('log')
+
+    ax.grid(True, alpha=0.3)
+    ax.legend(loc='best', fontsize=9)
+
+    # Set x-axis to start at 0
+    ax.set_xlim(left=0)
+
+    # Determine output path
+    metrics_dir = os.path.dirname(os.path.abspath(distribution_file))
+    output_path = os.path.join(metrics_dir, output_file)
+
+    # Save plot
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=150, bbox_inches='tight')
+    plt.close()
+
+    print(f"✓ In-degree distribution plot saved to: {output_path}")
+
+
+def list_indegree_experiments(distribution_file: str) -> None:
+    """List all experiments in the in-degree distribution file."""
+    with open(distribution_file, 'r') as f:
+        all_distributions = json.load(f)
+
+    print("\nAvailable experiments in distribution file:")
+    print("=" * 80)
+    for exp in all_distributions:
+        exp_key = exp['experiment_key']
+        node_links = exp['node_links']
+        ef_cons = exp['ef_construction']
+        num_degrees = len(exp['distribution'])
+        print(f"  {exp_key:<40} M={node_links:<4} ef={ef_cons:<4} ({num_degrees} unique in-degrees)")
+    print("=" * 80)
+
+
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Generate comparison plots from metrics JSON file",
@@ -260,13 +385,64 @@ Examples:
     --x-metric recall \\
     --y-metric latency_p99 \\
     --output latency_comparison.png
+
+  # Plot in-degree distribution
+  python plot_from_metrics.py \\
+    --indegree-distribution ../metrics/metrics_indegree_distribution.json \\
+    --output indegree_plot.png
+
+  # Plot in-degree distribution for specific experiments
+  python plot_from_metrics.py \\
+    --indegree-distribution ../metrics/metrics_indegree_distribution.json \\
+    --experiments mnist-flatnav-base-1_flatnav mnist-flatnav-hnsw-base-1_flatnav \\
+    --output comparison_indegree.png
+
+  # Plot cumulative in-degree distribution
+  python plot_from_metrics.py \\
+    --indegree-distribution ../metrics/metrics_indegree_distribution.json \\
+    --cumulative \\
+    --output cumulative_indegree.png
+
+  # List experiments in distribution file
+  python plot_from_metrics.py \\
+    --indegree-distribution ../metrics/metrics_indegree_distribution.json \\
+    --list-indegree
         """
     )
     
     parser.add_argument(
         "--metrics",
-        required=True,
-        help="Path to metrics JSON file"
+        help="Path to metrics JSON file (for standard plots)"
+    )
+
+    # In-degree distribution arguments
+    parser.add_argument(
+        "--indegree-distribution",
+        help="Path to in-degree distribution JSON file"
+    )
+
+    parser.add_argument(
+        "--experiments",
+        nargs="+",
+        help="Experiment keys to plot from in-degree distribution file"
+    )
+
+    parser.add_argument(
+        "--list-indegree",
+        action="store_true",
+        help="List available experiments in the in-degree distribution file"
+    )
+
+    parser.add_argument(
+        "--cumulative",
+        action="store_true",
+        help="Plot cumulative in-degree distribution"
+    )
+
+    parser.add_argument(
+        "--log-y",
+        action="store_true",
+        help="Use log scale for y-axis (in-degree distribution plots)"
     )
     
     parser.add_argument(
@@ -342,26 +518,65 @@ Examples:
 
 def main():
     args = parse_arguments()
-    
+
+    # Handle in-degree distribution mode
+    if args.indegree_distribution:
+        if not os.path.exists(args.indegree_distribution):
+            print(f"Error: In-degree distribution file not found: {args.indegree_distribution}")
+            return 1
+
+        # List experiments if requested
+        if args.list_indegree:
+            list_indegree_experiments(args.indegree_distribution)
+            return 0
+
+        # Parse friendly names for experiments
+        friendly_names = None
+        if args.friendly_names:
+            if not args.experiments:
+                print("Error: --friendly-names requires --experiments")
+                return 1
+            if len(args.friendly_names) != len(args.experiments):
+                print("Error: Number of friendly names must match number of experiments")
+                return 1
+            friendly_names = dict(zip(args.experiments, args.friendly_names))
+
+        # Plot in-degree distribution
+        plot_indegree_distribution(
+            distribution_file=args.indegree_distribution,
+            output_file=args.output,
+            experiment_keys=args.experiments,
+            pattern=args.pattern,
+            log_scale=args.log_y,
+            friendly_names=friendly_names,
+            cumulative=args.cumulative,
+        )
+        return 0
+
+    # Standard metrics plotting mode
+    if not args.metrics:
+        print("Error: Must provide either --metrics or --indegree-distribution")
+        return 1
+
     # Check if metrics file exists
     if not os.path.exists(args.metrics):
         print(f"Error: Metrics file not found: {args.metrics}")
         return 1
-    
+
     # Load metrics
     metrics = load_metrics(args.metrics)
-    
+
     # List datasets if requested
     if args.list:
         list_available_datasets(metrics)
         return 0
-    
+
     # Check that either datasets or pattern is provided
     if not args.datasets and not args.pattern:
         print("Error: Must provide either --datasets or --pattern")
         print("Use --list to see available datasets")
         return 1
-    
+
     # Parse friendly names if provided
     friendly_names = None
     if args.friendly_names:
@@ -372,7 +587,7 @@ def main():
             print("Error: Number of friendly names must match number of datasets")
             return 1
         friendly_names = dict(zip(args.datasets, args.friendly_names))
-    
+
     # Create plot
     create_comparison_plot(
         metrics_file=args.metrics,
@@ -387,7 +602,7 @@ def main():
         friendly_names=friendly_names,
         recall_percentile=args.recall_percentile,
     )
-    
+
     return 0
 
 

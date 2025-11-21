@@ -283,6 +283,8 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
     return _index->getHubStatistics(hub_percentile);
   }
 
+  std::map<uint32_t, double> getIndegreeDistribution() { return _index->getIndegreeDistribution(); }
+
   uint32_t getMaxEdgesPerNode() { return _index->maxEdgesPerNode(); }
 
   void reorder(const std::vector<std::string>& strategies) {
@@ -473,6 +475,8 @@ void bindSpecialization(py::module_& index_submodule) {
            "Get the in-degree table for all nodes in the graph")
       .def("get_hub_statistics", &IndexType::getHubStatistics, py::arg("hub_percentile") = 10.0,
            "Compute hub node statistics based on in-degree distribution")
+      .def("get_indegree_distribution", &IndexType::getIndegreeDistribution,
+           "Get the distribution of in-degrees across all nodes as a map from in-degree to percentage")
       .def("reorder", &IndexType::reorder, py::arg("strategies"), REORDER_DOCSTRING)
       .def("set_num_threads", &IndexType::setNumThreads, py::arg("num_threads"), SET_NUM_THREADS_DOCSTRING)
       .def_static("load_index", &IndexType::loadIndex, py::arg("filename"), LOAD_INDEX_DOCSTRING)

@@ -35,6 +35,44 @@ ENVIRONMENT_INFO = {
 }
 
 
+def compute_and_log_indegree_distribution(
+    index: Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat],
+) -> Dict[int, float]:
+    """
+    Compute and log in-degree distribution for a FlatNav index.
+
+    :param index: FlatNav index to analyze.
+    :return: Dictionary mapping in-degree values to percentage of nodes.
+    """
+    try:
+        distribution = index.get_indegree_distribution()
+
+        logging.info("=" * 80)
+        logging.info("In-Degree Distribution")
+        logging.info("=" * 80)
+
+        # Sort by in-degree value for cleaner output
+        sorted_distribution = sorted(distribution.items())
+
+        logging.info(f"{'In-Degree':<15} {'Percentage':<15} {'Bar'}")
+        logging.info("-" * 80)
+
+        for indegree, percentage in sorted_distribution:
+            # Create a simple bar visualization
+            bar_length = int(percentage / 2)  # Scale down for display
+            bar = "█" * bar_length
+            logging.info(f"{indegree:<15} {percentage:>10.4f}%    {bar}")
+
+        logging.info("=" * 80)
+        logging.info(f"Total unique in-degree values: {len(distribution)}")
+        logging.info("=" * 80)
+
+        return distribution
+    except Exception as e:
+        logging.error(f"Error computing in-degree distribution: {e}", exc_info=True)
+        return {}
+
+
 def compute_and_log_hub_stats(
     index: Union[flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat],
     hub_percentile: float = 10.0,
@@ -389,6 +427,34 @@ def main(
             )
             # Add stats to metrics for later storage
             metrics.update({f"hub_{k}": v for k, v in hub_stats.items()})
+
+            # Compute and save in-degree distribution
+            logging.info("\nComputing in-degree distribution...")
+            indegree_distribution = compute_and_log_indegree_distribution(index)
+
+            # Save distribution to a separate file
+            distribution_file = metrics_file.replace(".json", "_indegree_distribution.json")
+            distribution_data = {
+                "experiment_key": experiment_key,
+                "node_links": node_links,
+                "ef_construction": ef_cons,
+                "distribution": {str(k): v for k, v in indegree_distribution.items()}
+            }
+
+            # Load existing distribution data or create new
+            all_distributions = []
+            if os.path.exists(distribution_file) and os.path.getsize(distribution_file) > 0:
+                with open(distribution_file, "r") as file:
+                    try:
+                        all_distributions = json.load(file)
+                    except json.JSONDecodeError:
+                        logging.error(f"Error reading {distribution_file=}")
+
+            all_distributions.append(distribution_data)
+            with open(distribution_file, "w") as file:
+                json.dump(all_distributions, file, indent=4)
+
+            logging.info(f"In-degree distribution saved to {distribution_file}")
 
         index.set_num_threads(num_search_threads)
         for ef_search in ef_search_params:

@@ -1,0 +1,241 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.583364963531494 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6799 (10.0%)
+INFO:root:  Number of Regular Nodes: 53201 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 27
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 31.39
+INFO:root:  Average Regular In-Degree: 15.90
+INFO:root:  Overall Average In-Degree: 17.65
+INFO:root:  Median In-Degree: 17.00
+INFO:root:  Max In-Degree: 63
+INFO:root:  Min In-Degree: 1
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 1059227
+INFO:root:  Hub → Hub: 29546
+INFO:root:  Hub → Regular: 117075
+INFO:root:  Regular → Hub: 183852
+INFO:root:  Regular → Regular: 728754
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 2.79%
+INFO:root:  Hub → Regular: 11.05%
+INFO:root:  Regular → Hub: 17.36%
+INFO:root:  Regular → Regular: 68.80%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.35
+INFO:root:  Avg Hub → Regular: 17.22
+INFO:root:  Avg Regular → Hub: 3.46
+INFO:root:  Avg Regular → Regular: 13.70
+INFO:root:================================================================================
+INFO:root:
+Computing in-degree distribution...
+INFO:root:================================================================================
+INFO:root:In-Degree Distribution
+INFO:root:================================================================================
+INFO:root:In-Degree       Percentage      Bar
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:1                   0.0283%    
+INFO:root:2                   0.0650%    
+INFO:root:3                   0.1133%    
+INFO:root:4                   0.3300%    
+INFO:root:5                   0.6400%    
+INFO:root:6                   1.1250%    
+INFO:root:7                   1.7233%    
+INFO:root:8                   2.5167%    █
+INFO:root:9                   3.2450%    █
+INFO:root:10                  4.1917%    ██
+INFO:root:11                  4.7783%    ██
+INFO:root:12                  5.3967%    ██
+INFO:root:13                  5.9700%    ██
+INFO:root:14                  6.2850%    ███
+INFO:root:15                  6.1667%    ███
+INFO:root:16                  6.5783%    ███
+INFO:root:17                  5.9967%    ██
+INFO:root:18                  5.6183%    ██
+INFO:root:19                  5.0383%    ██
+INFO:root:20                  4.5133%    ██
+INFO:root:21                  3.9750%    █
+INFO:root:22                  3.6617%    █
+INFO:root:23                  3.2683%    █
+INFO:root:24                  2.6950%    █
+INFO:root:25                  2.4550%    █
+INFO:root:26                  2.2933%    █
+INFO:root:27                  1.8933%    
+INFO:root:28                  1.6133%    
+INFO:root:29                  1.3933%    
+INFO:root:30                  1.1717%    
+INFO:root:31                  1.0417%    
+INFO:root:32                  0.7933%    
+INFO:root:33                  0.6367%    
+INFO:root:34                  0.5867%    
+INFO:root:35                  0.4333%    
+INFO:root:36                  0.3883%    
+INFO:root:37                  0.2683%    
+INFO:root:38                  0.2283%    
+INFO:root:39                  0.2083%    
+INFO:root:40                  0.1317%    
+INFO:root:41                  0.1350%    
+INFO:root:42                  0.0900%    
+INFO:root:43                  0.0667%    
+INFO:root:44                  0.0633%    
+INFO:root:45                  0.0383%    
+INFO:root:46                  0.0350%    
+INFO:root:47                  0.0267%    
+INFO:root:48                  0.0300%    
+INFO:root:49                  0.0133%    
+INFO:root:50                  0.0133%    
+INFO:root:51                  0.0067%    
+INFO:root:52                  0.0050%    
+INFO:root:53                  0.0083%    
+INFO:root:54                  0.0033%    
+INFO:root:58                  0.0033%    
+INFO:root:59                  0.0017%    
+INFO:root:60                  0.0017%    
+INFO:root:63                  0.0017%    
+INFO:root:================================================================================
+INFO:root:Total unique in-degree values: 58
+INFO:root:================================================================================
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9913569999999552, 'qps': 2693.661440417432, 'latency_p50': 0.37741661071777344, 'latency_p95': 0.48828125, 'latency_p99': 0.5342984199523926, 'latency_p999': 0.5834162235260022, 'distance_computations': 1005.8007}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9984849999999867, 'qps': 1620.8368399326703, 'latency_p50': 0.6270408630371094, 'latency_p95': 0.8347034454345703, 'latency_p99': 0.9207749366760254, 'latency_p999': 1.0108954906463625, 'distance_computations': 1582.612, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9994519999999945, 'qps': 1193.2498815015776, 'latency_p50': 0.849604606628418, 'latency_p95': 1.1468052864074705, 'latency_p99': 1.2640953063964844, 'latency_p999': 1.3763921260833745, 'distance_computations': 2080.178, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9997959999999977, 'qps': 804.7520444909285, 'latency_p50': 1.2586116790771484, 'latency_p95': 1.7144918441772456, 'latency_p99': 1.8942499160766604, 'latency_p999': 2.0701956748962416, 'distance_computations': 2960.2571, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9999539999999992, 'qps': 461.7395385044149, 'latency_p50': 2.193927764892578, 'latency_p95': 2.9630899429321285, 'latency_p99': 3.2870841026306152, 'latency_p999': 3.5905973911285427, 'distance_computations': 4848.3378, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.386674510957494, 'hub_avg_hub_to_hub': 4.345639064568319, 'hub_avg_hub_to_regular': 17.21944403588763, 'hub_avg_indegree': 17.653783333333333, 'hub_avg_regular_indegree': 15.898742504840135, 'hub_avg_regular_to_hub': 3.4557997030131014, 'hub_avg_regular_to_regular': 13.698125975075657, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 29546.0, 'hub_hub_to_hub_pct': 2.7893926419926984, 'hub_hub_to_regular_edges': 117075.0, 'hub_hub_to_regular_pct': 11.052871575214755, 'hub_max_indegree': 63.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6799.0, 'hub_num_regular': 53201.0, 'hub_regular_to_hub_edges': 183852.0, 'hub_regular_to_hub_pct': 17.357185947865755, 'hub_regular_to_regular_edges': 728754.0, 'hub_regular_to_regular_pct': 68.80054983492678, 'hub_total_edges': 1059227.0, 'recall': 0.9999819999999996, 'qps': 183.64703744724284, 'latency_p50': 5.503177642822266, 'latency_p95': 7.012379169464111, 'latency_p99': 7.538576126098633, 'latency_p999': 8.062849521636965, 'distance_computations': 11020.9872, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 3.577514171600342 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6289 (10.0%)
+INFO:root:  Number of Regular Nodes: 53711 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 28
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 32.48
+INFO:root:  Average Regular In-Degree: 16.65
+INFO:root:  Overall Average In-Degree: 18.31
+INFO:root:  Median In-Degree: 17.00
+INFO:root:  Max In-Degree: 66
+INFO:root:  Min In-Degree: 1
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 1098541
+INFO:root:  Hub → Hub: 25167
+INFO:root:  Hub → Regular: 109985
+INFO:root:  Regular → Hub: 179126
+INFO:root:  Regular → Regular: 784263
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 2.29%
+INFO:root:  Hub → Regular: 10.01%
+INFO:root:  Regular → Hub: 16.31%
+INFO:root:  Regular → Regular: 71.39%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.00
+INFO:root:  Avg Hub → Regular: 17.49
+INFO:root:  Avg Regular → Hub: 3.33
+INFO:root:  Avg Regular → Regular: 14.60
+INFO:root:================================================================================
+INFO:root:
+Computing in-degree distribution...
+INFO:root:================================================================================
+INFO:root:In-Degree Distribution
+INFO:root:================================================================================
+INFO:root:In-Degree       Percentage      Bar
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:1                   0.0117%    
+INFO:root:2                   0.0450%    
+INFO:root:3                   0.0617%    
+INFO:root:4                   0.2300%    
+INFO:root:5                   0.4933%    
+INFO:root:6                   0.8817%    
+INFO:root:7                   1.3233%    
+INFO:root:8                   1.9283%    
+INFO:root:9                   2.7050%    █
+INFO:root:10                  3.4400%    █
+INFO:root:11                  4.2783%    ██
+INFO:root:12                  4.7867%    ██
+INFO:root:13                  5.5350%    ██
+INFO:root:14                  5.8433%    ██
+INFO:root:15                  6.2183%    ███
+INFO:root:16                  6.9717%    ███
+INFO:root:17                  6.5533%    ███
+INFO:root:18                  5.9833%    ██
+INFO:root:19                  5.4950%    ██
+INFO:root:20                  4.9117%    ██
+INFO:root:21                  4.3800%    ██
+INFO:root:22                  3.8650%    █
+INFO:root:23                  3.3850%    █
+INFO:root:24                  2.9867%    █
+INFO:root:25                  2.7333%    █
+INFO:root:26                  2.4283%    █
+INFO:root:27                  2.0433%    █
+INFO:root:28                  1.7533%    
+INFO:root:29                  1.4400%    
+INFO:root:30                  1.3783%    
+INFO:root:31                  1.0633%    
+INFO:root:32                  0.8700%    
+INFO:root:33                  0.7717%    
+INFO:root:34                  0.6117%    
+INFO:root:35                  0.4900%    
+INFO:root:36                  0.4083%    
+INFO:root:37                  0.3583%    
+INFO:root:38                  0.2433%    
+INFO:root:39                  0.2267%    
+INFO:root:40                  0.1617%    
+INFO:root:41                  0.1533%    
+INFO:root:42                  0.1083%    
+INFO:root:43                  0.1000%    
+INFO:root:44                  0.0617%    
+INFO:root:45                  0.0517%    
+INFO:root:46                  0.0567%    
+INFO:root:47                  0.0417%    
+INFO:root:48                  0.0183%    
+INFO:root:49                  0.0250%    
+INFO:root:50                  0.0200%    
+INFO:root:51                  0.0150%    
+INFO:root:52                  0.0117%    
+INFO:root:53                  0.0083%    
+INFO:root:54                  0.0100%    
+INFO:root:55                  0.0050%    
+INFO:root:56                  0.0050%    
+INFO:root:58                  0.0050%    
+INFO:root:59                  0.0017%    
+INFO:root:61                  0.0033%    
+INFO:root:62                  0.0017%    
+INFO:root:66                  0.0017%    
+INFO:root:================================================================================
+INFO:root:Total unique in-degree values: 61
+INFO:root:================================================================================
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9922079999999567, 'qps': 2602.896638981814, 'latency_p50': 0.3910064697265625, 'latency_p95': 0.5037784576416016, 'latency_p99': 0.5529022216796877, 'latency_p999': 0.6055891513824475, 'distance_computations': 1042.8779, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9987609999999885, 'qps': 1562.2203971566223, 'latency_p50': 0.6511211395263672, 'latency_p95': 0.86212158203125, 'latency_p99': 0.9462952613830569, 'latency_p999': 1.0433237552642831, 'distance_computations': 1646.254, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9995629999999954, 'qps': 1149.54436093296, 'latency_p50': 0.8835792541503906, 'latency_p95': 1.1820793151855469, 'latency_p99': 1.3049101829528817, 'latency_p999': 1.42669677734375, 'distance_computations': 2165.7581, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9998599999999985, 'qps': 775.8174259899496, 'latency_p50': 1.3083219528198242, 'latency_p95': 1.7697930335998533, 'latency_p99': 1.9619464874267578, 'latency_p999': 2.1526899337768572, 'distance_computations': 3081.1497, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9999799999999998, 'qps': 446.72451752349616, 'latency_p50': 2.2673606872558594, 'latency_p95': 3.0684590339660645, 'latency_p99': 3.3781719207763676, 'latency_p999': 3.7026460170745863, 'distance_computations': 5029.879, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'hub_avg_hub_indegree': 32.48417872475751, 'hub_avg_hub_to_hub': 4.0017490857052, 'hub_avg_hub_to_regular': 17.48847193512482, 'hub_avg_indegree': 18.30901666666667, 'hub_avg_regular_indegree': 16.64925248086984, 'hub_avg_regular_to_hub': 3.334996555640372, 'hub_avg_regular_to_regular': 14.60153413639664, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 28.0, 'hub_hub_to_hub_edges': 25167.0, 'hub_hub_to_hub_pct': 2.2909477206585827, 'hub_hub_to_regular_edges': 109985.0, 'hub_hub_to_regular_pct': 10.01191580469004, 'hub_max_indegree': 66.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 1.0, 'hub_num_hubs': 6289.0, 'hub_num_regular': 53711.0, 'hub_regular_to_hub_edges': 179126.0, 'hub_regular_to_hub_pct': 16.30580925063334, 'hub_regular_to_regular_edges': 784263.0, 'hub_regular_to_regular_pct': 71.39132722401804, 'hub_total_edges': 1098541.0, 'recall': 0.9999979999999999, 'qps': 179.53874514381076, 'latency_p50': 5.637168884277344, 'latency_p95': 7.173323631286621, 'latency_p99': 7.728607654571534, 'latency_p999': 8.213998317718506, 'distance_computations': 11318.2933, 'distance_type': 'l2', 'ef_search': 1000}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)

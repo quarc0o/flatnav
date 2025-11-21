@@ -397,6 +397,31 @@ class Index {
   }
 
   /**
+   * @brief Computes the distribution of in-degrees across all nodes.
+   * Returns a map where keys are in-degree values (0, 1, 2, ..., max)
+   * and values are the percentage of nodes with that in-degree.
+   *
+   * @return Map from in-degree value to percentage of nodes with that in-degree.
+   */
+  std::map<uint32_t, double> getIndegreeDistribution() {
+    auto indegree_table = getGraphIndegreeTable();
+
+    // Count occurrences of each in-degree value
+    std::map<uint32_t, uint32_t> indegree_counts;
+    for (node_id_t node = 0; node < _cur_num_nodes; node++) {
+      indegree_counts[indegree_table[node]]++;
+    }
+
+    // Convert counts to percentages
+    std::map<uint32_t, double> distribution;
+    for (const auto& [indegree, count] : indegree_counts) {
+      distribution[indegree] = 100.0 * static_cast<double>(count) / _cur_num_nodes;
+    }
+
+    return distribution;
+  }
+
+  /**
    * @brief Store the new node in the global data structure. In a
    * multi-threaded setting, the index data guard should be held by the caller
    * with an exclusive lock.
