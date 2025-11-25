@@ -8,9 +8,9 @@
 bigann-100m-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-100m \
-		--dataset /root/data/bigann/train_100m.npy \
-		--queries /root/data/bigann/queries.npy \
-		--gtruth /root/data/bigann/ground_truth_100m.npy \
+		--dataset ../data/bigann/train_100m.npy \
+		--queries ../data/bigann/queries.npy \
+		--gtruth ../data/bigann/ground_truth_100m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename bigann-100m.mtx \
@@ -24,9 +24,9 @@ bigann-100m-bench-flatnav:
 bigann-100m-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-100m \
-		--dataset /root/data/bigann/train_100m.npy \
-		--queries /root/data/bigann/queries.npy \
-		--gtruth /root/data/bigann/ground_truth_100m.npy \
+		--dataset ../data/bigann/train_100m.npy \
+		--queries ../data/bigann/queries.npy \
+		--gtruth ../data/bigann/ground_truth_100m.npy \
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
@@ -38,9 +38,9 @@ bigann-100m-bench-hnsw:
 yandex-deep-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-100m \
-		--dataset /root/data/deep/train_100m.npy \
-		--queries /root/data/deep/queries.npy \
-		--gtruth /root/data/deep/ground_truth_100m.npy \
+		--dataset ../data/deep/train_100m.npy \
+		--queries ../data/deep/queries.npy \
+		--gtruth ../data/deep/ground_truth_100m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename yandex-deep-100m.mtx \
@@ -55,9 +55,9 @@ yandex-deep-100m-bench-flatnav:
 yandex-deep-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-100m \
-		--dataset /root/data/deep/train_100m.npy \
-		--queries /root/data/deep/queries.npy \
-		--gtruth /root/data/deep/ground_truth_100m.npy \
+		--dataset ../data/deep/train_100m.npy \
+		--queries ../data/deep/queries.npy \
+		--gtruth ../data/deep/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
@@ -70,9 +70,9 @@ yandex-deep-100m-bench-hnsw:
 spacev-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-100m \
-		--dataset /root/data/msspacev/train_100m.npy \
-		--queries /root/data/msspacev/queries.npy \
-		--gtruth /root/data/msspacev/ground_truth_100m.npy \
+		--dataset ../data/msspacev/train_100m.npy \
+		--queries ../data/msspacev/queries.npy \
+		--gtruth ../data/msspacev/ground_truth_100m.npy \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename spacev-100m.mtx \
 		--index-type flatnav \
@@ -86,9 +86,9 @@ spacev-100m-bench-flatnav:
 spacev-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-100m \
-		--dataset /root/data/msspacev/train_100m.npy \
-		--queries /root/data/msspacev/queries.npy \
-		--gtruth /root/data/msspacev/ground_truth_100m.npy \
+		--dataset ../data/msspacev/train_100m.npy \
+		--queries ../data/msspacev/queries.npy \
+		--gtruth ../data/msspacev/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
@@ -101,9 +101,9 @@ spacev-100m-bench-hnsw:
 tti-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name tti-100m \
-		--dataset /root/data/text2image/train_100m.npy \
-		--queries /root/data/text2image/queries.npy \
-		--gtruth /root/data/text2image/ground_truth_100m.npy \
+		--dataset ../data/text2image/train_100m.npy \
+		--queries ../data/text2image/queries.npy \
+		--gtruth ../data/text2image/ground_truth_100m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename tti-100m.mtx \
@@ -117,9 +117,9 @@ tti-100m-bench-flatnav:
 tti-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name tti-100m \
-		--dataset /root/data/text2image/train_100m.npy \
-		--queries /root/data/text2image/queries.npy \
-		--gtruth /root/data/text2image/ground_truth_100m.npy \
+		--dataset ../data/text2image/train_100m.npy \
+		--queries ../data/text2image/queries.npy \
+		--gtruth ../data/text2image/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
@@ -138,9 +138,9 @@ tti-100m-bench-hnsw:
 bigann-10m-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-10m \
-		--dataset /root/data/bigann/train_10m.npy \
-		--queries /root/data/bigann/queries.npy \
-		--gtruth /root/data/bigann/ground_truth_10m.npy \
+		--dataset ../data/bigann/train_10m.npy \
+		--queries ../data/bigann/queries.npy \
+		--gtruth ../data/bigann/ground_truth_10m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename bigann-10m.mtx \
@@ -155,9 +155,9 @@ bigann-10m-bench-flatnav:
 bigann-10m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-10m \
-		--dataset /root/data/bigann/train_10m.npy \
-		--queries /root/data/bigann/queries.npy \
-		--gtruth /root/data/bigann/ground_truth_10m.npy \
+		--dataset ../data/bigann/train_10m.npy \
+		--queries ../data/bigann/queries.npy \
+		--gtruth ../data/bigann/ground_truth_10m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 300 \
@@ -170,9 +170,9 @@ bigann-10m-bench-hnsw:
 yandex-deep-10m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-10m \
-		--dataset /root/data/deep/train_10m.npy \
-		--queries /root/data/deep/queries.npy \
-		--gtruth /root/data/deep/ground_truth_10m.npy \
+		--dataset ../data/deep/train_10m.npy \
+		--queries ../data/deep/queries.npy \
+		--gtruth ../data/deep/ground_truth_10m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename yandex-deep-10m.mtx \
@@ -187,9 +187,9 @@ yandex-deep-10m-bench-flatnav:
 yandex-deep-10m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-10m \
-		--dataset /root/data/deep/train_10m.npy \
-		--queries /root/data/deep/queries.npy \
-		--gtruth /root/data/deep/ground_truth_10m.npy \
+		--dataset ../data/deep/train_10m.npy \
+		--queries ../data/deep/queries.npy \
+		--gtruth ../data/deep/ground_truth_10m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 300 \
@@ -202,9 +202,9 @@ yandex-deep-10m-bench-hnsw:
 spacev-10m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-10m \
-		--dataset /root/data/msspacev/train_10m.npy \
-		--queries /root/data/msspacev/queries.npy \
-		--gtruth /root/data/msspacev/ground_truth_10m.npy \
+		--dataset ../data/msspacev/train_10m.npy \
+		--queries ../data/msspacev/queries.npy \
+		--gtruth ../data/msspacev/ground_truth_10m.npy \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename spacev-10m.mtx \
 		--index-type flatnav \
@@ -219,9 +219,9 @@ spacev-10m-bench-flatnav:
 spacev-10m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-10m \
-		--dataset /root/data/msspacev/train_10m.npy \
-		--queries /root/data/msspacev/queries.npy \
-		--gtruth /root/data/msspacev/ground_truth_10m.npy \
+		--dataset ../data/msspacev/train_10m.npy \
+		--queries ../data/msspacev/queries.npy \
+		--gtruth ../data/msspacev/ground_truth_10m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 300 \
@@ -234,9 +234,9 @@ spacev-10m-bench-hnsw:
 tti-10m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name tti-10m \
-		--dataset /root/data/text2image/train_10m.npy \
-		--queries /root/data/text2image/queries.npy \
-		--gtruth /root/data/text2image/ground_truth_10m.npy \
+		--dataset ../data/text2image/train_10m.npy \
+		--queries ../data/text2image/queries.npy \
+		--gtruth ../data/text2image/ground_truth_10m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename tti-10m.mtx \
@@ -250,9 +250,9 @@ tti-10m-bench-flatnav:
 tti-10m--bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name tti-10m \
-		--dataset /root/data/text2image/train_10m.npy \
-		--queries /root/data/text2image/queries.npy \
-		--gtruth /root/data/text2image/ground_truth_10m.npy \
+		--dataset ../data/text2image/train_10m.npy \
+		--queries ../data/text2image/queries.npy \
+		--gtruth ../data/text2image/ground_truth_10m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 300 \
@@ -273,9 +273,9 @@ tti-10m--bench-hnsw:
 deep-image-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name deep-image-96 \
-		--dataset /root/data/deep-image-96-angular/deep-image-96-angular.train.npy \
-		--queries /root/data/deep-image-96-angular/deep-image-96-angular.test.npy \
-		--gtruth /root/data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
+		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename deep-image.mtx \
@@ -289,9 +289,9 @@ deep-image-bench-flatnav:
 deep-image-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name deep-image-96 \
-		--dataset /root/data/deep-image-96-angular/deep-image-96-angular.train.npy \
-		--queries /root/data/deep-image-96-angular/deep-image-96-angular.test.npy \
-		--gtruth /root/data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
+		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
@@ -303,9 +303,9 @@ deep-image-bench-hnsw:
 mnist-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name mnist-784 \
-		--dataset /root/data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
-		--queries /root/data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
-		--gtruth /root/data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename mnist.mtx \
@@ -316,12 +316,26 @@ mnist-bench-flatnav:
 		--num-build-threads 16 \
 		--num-search-threads 1 
 
+mnist-bench-flatnav-base: 
+	poetry run python run-benchmark.py \
+		--dataset-name mnist-784-base \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 
+
 mnist-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name mnist-784 \
-		--dataset /root/data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
-		--queries /root/data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
-		--gtruth /root/data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
@@ -333,9 +347,9 @@ mnist-bench-hnsw:
 gist-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name gist \
-		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
-		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
-		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename gist.mtx \
@@ -350,9 +364,9 @@ gist-bench-flatnav:
 gist-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name gist \
-		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
-		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
-		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
@@ -365,9 +379,9 @@ gist-bench-hnsw:
 sift-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name sift \
-		--dataset /root/data/sift-128-euclidean/sift-128-euclidean.train.npy \
-		--queries /root/data/sift-128-euclidean/sift-128-euclidean.test.npy \
-		--gtruth /root/data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
+		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
+		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
+		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
@@ -380,9 +394,9 @@ sift-bench-flatnav:
 sift-bench-hnsw: 
 	poetry run python run-benchmark.py \
 		--dataset-name sift \
-		--dataset /root/data/sift-128-euclidean/sift-128-euclidean.train.npy \
-		--queries /root/data/sift-128-euclidean/sift-128-euclidean.test.npy \
-		--gtruth /root/data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
+		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
+		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
+		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
@@ -394,9 +408,9 @@ sift-bench-hnsw:
 
 glove25-bench-flatnav:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-25-angular/glove-25-angular.train.npy \
-		--queries /root/data/glove-25-angular/glove-25-angular.test.npy \
-		--gtruth /root/data/glove-25-angular/glove-25-angular.gtruth.npy \
+		--dataset ../data/glove-25-angular/glove-25-angular.train.npy \
+		--queries ../data/glove-25-angular/glove-25-angular.test.npy \
+		--gtruth ../data/glove-25-angular/glove-25-angular.gtruth.npy \
 		--dataset-name glove-25-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
@@ -410,9 +424,9 @@ glove25-bench-flatnav:
 
 glove25-bench-hnsw:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-25-angular/glove-25-angular.train.npy \
-		--queries /root/data/glove-25-angular/glove-25-angular.test.npy \
-		--gtruth /root/data/glove-25-angular/glove-25-angular.gtruth.npy \
+		--dataset ../data/glove-25-angular/glove-25-angular.train.npy \
+		--queries ../data/glove-25-angular/glove-25-angular.test.npy \
+		--gtruth ../data/glove-25-angular/glove-25-angular.gtruth.npy \
 		--dataset-name glove-25-angular \
 		--index-type hnsw \
 		--num-node-links 32 \
@@ -424,9 +438,9 @@ glove25-bench-hnsw:
 
 glove50-bench-flatnav:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-50-angular/glove-50-angular.train.npy \
-		--queries /root/data/glove-50-angular/glove-50-angular.test.npy \
-		--gtruth /root/data/glove-50-angular/glove-50-angular.gtruth.npy \
+		--dataset ../data/glove-50-angular/glove-50-angular.train.npy \
+		--queries ../data/glove-50-angular/glove-50-angular.test.npy \
+		--gtruth ../data/glove-50-angular/glove-50-angular.gtruth.npy \
 		--dataset-name glove-50-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
@@ -440,9 +454,9 @@ glove50-bench-flatnav:
 
 glove50-bench-hnsw:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-50-angular/glove-50-angular.train.npy \
-		--queries /root/data/glove-50-angular/glove-50-angular.test.npy \
-		--gtruth /root/data/glove-50-angular/glove-50-angular.gtruth.npy \
+		--dataset ../data/glove-50-angular/glove-50-angular.train.npy \
+		--queries ../data/glove-50-angular/glove-50-angular.test.npy \
+		--gtruth ../data/glove-50-angular/glove-50-angular.gtruth.npy \
 		--dataset-name glove-50-angular \
 		--index-type hnsw \
 		--num-node-links 32 \
@@ -454,9 +468,9 @@ glove50-bench-hnsw:
 
 glove100-bench-flatnav:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-100-angular/glove-100-angular.train.npy \
-		--queries /root/data/glove-100-angular/glove-100-angular.test.npy \
-		--gtruth /root/data/glove-100-angular/glove-100-angular.gtruth.npy \
+		--dataset ../data/glove-100-angular/glove-100-angular.train.npy \
+		--queries ../data/glove-100-angular/glove-100-angular.test.npy \
+		--gtruth ../data/glove-100-angular/glove-100-angular.gtruth.npy \
 		--dataset-name glove-100-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
@@ -470,9 +484,9 @@ glove100-bench-flatnav:
 
 glove100-bench-hnsw:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-100-angular/glove-100-angular.train.npy \
-		--queries /root/data/glove-100-angular/glove-100-angular.test.npy \
-		--gtruth /root/data/glove-100-angular/glove-100-angular.gtruth.npy \
+		--dataset ../data/glove-100-angular/glove-100-angular.train.npy \
+		--queries ../data/glove-100-angular/glove-100-angular.test.npy \
+		--gtruth ../data/glove-100-angular/glove-100-angular.gtruth.npy \
 		--dataset-name glove-100-angular \
 		--index-type hnsw \
 		--num-node-links 32 \
@@ -484,9 +498,9 @@ glove100-bench-hnsw:
 
 glove200-bench-flatnav:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-200-angular/glove-200-angular.train.npy \
-		--queries /root/data/glove-200-angular/glove-200-angular.test.npy \
-		--gtruth /root/data/glove-200-angular/glove-200-angular.gtruth.npy \
+		--dataset ../data/glove-200-angular/glove-200-angular.train.npy \
+		--queries ../data/glove-200-angular/glove-200-angular.test.npy \
+		--gtruth ../data/glove-200-angular/glove-200-angular.gtruth.npy \
 		--dataset-name glove-200-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
@@ -500,9 +514,9 @@ glove200-bench-flatnav:
 
 glove200-bench-hnsw:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/glove-200-angular/glove-200-angular.train.npy \
-		--queries /root/data/glove-200-angular/glove-200-angular.test.npy \
-		--gtruth /root/data/glove-200-angular/glove-200-angular.gtruth.npy \
+		--dataset ../data/glove-200-angular/glove-200-angular.train.npy \
+		--queries ../data/glove-200-angular/glove-200-angular.test.npy \
+		--gtruth ../data/glove-200-angular/glove-200-angular.gtruth.npy \
 		--dataset-name glove-200-angular \
 		--index-type hnsw \
 		--num-node-links 32 \
@@ -515,9 +529,9 @@ glove200-bench-hnsw:
 
 nytimes-bench-flatnav:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/nytimes-256-angular/nytimes-256-angular.train.npy \
-		--queries /root/data/nytimes-256-angular/nytimes-256-angular.test.npy \
-		--gtruth /root/data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
+		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
 		--dataset-name nytimes-256-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
@@ -532,9 +546,9 @@ nytimes-bench-flatnav:
 
 nytimes-bench-hnsw:
 	poetry run python run-benchmark.py \
-		--dataset /root/data/nytimes-256-angular/nytimes-256-angular.train.npy \
-		--queries /root/data/nytimes-256-angular/nytimes-256-angular.test.npy \
-		--gtruth /root/data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
+		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
 		--dataset-name nytimes-256-angular \
 		--index-type hnsw \
 		--num-node-links 32 \
