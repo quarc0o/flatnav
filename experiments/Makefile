@@ -559,6 +559,67 @@ nytimes-bench-hnsw:
 		--metric angular
 
 ################################
+# Begin ANN Benchmarks - FlatNav Base (without HNSW base layer)
+# These targets run FlatNav without using HNSW as the base layer
+################################
+
+deep-image-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset-name deep-image-96-base \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
+		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+gist-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset-name gist-base \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+sift-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset-name sift-base \
+		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
+		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
+		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+nytimes-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
+		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
+		--dataset-name nytimes-256-angular-base \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--metric angular
+
+################################
 # End ANN Benchmarks
 ################################
 
