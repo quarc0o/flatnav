@@ -27,7 +27,7 @@ bigann-100m-bench-hnsw:
 		--dataset ../data/bigann/train_100m.npy \
 		--queries ../data/bigann/queries.npy \
 		--gtruth ../data/bigann/ground_truth_100m.npy \
-		--index-type flatnav \
+		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
 		--ef-search 100 200 300 500 1000 3000 \

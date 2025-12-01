@@ -1,8 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=flatnav
-#SBATCH --time=2:00:00
-#SBATCH --mem=64G
-#SBATCH --cpus-per-task=32
+#SBATCH --time=4:00:00
+#SBATCH --mem=1T
+#SBATCH --cpus-per-task=64
+#SBATCH --partition=GPUQ
 #SBATCH --output=logs/flatnav-%j.out
 #SBATCH --error=logs/flatnav-%j.err
 
@@ -33,7 +34,7 @@ echo "=========================================="
 module purge
 module load Python/3.11.3-GCCcore-12.3.0
 
-# Activate virtual environment
+# Activate virtual environmet
 source $HOME/code/flatnav/venv/bin/activate
 
 # Verify flatnav is installed

@@ -50,8 +50,8 @@ function download_dataset() {
     echo "Downloading ${dataset}..."
     
     if [ ${dataset} == "bigann" ]; then
-        axel -a -o bigann_base.1B.u8bin https://dl.fbaipublicfiles.com/billion-scale-ann-benchmarks/bigann/base.1B.u8bin
-        axel -a -o bigann_query.public.10K.u8bin https://dl.fbaipublicfiles.com/billion-scale-ann-benchmarks/bigann/query.public.10K.u8bin
+        wget -O bigann_base.1B.u8bin https://dl.fbaipublicfiles.com/billion-scale-ann-benchmarks/bigann/base.1B.u8bin
+        wget -O bigann_query.public.10K.u8bin https://dl.fbaipublicfiles.com/billion-scale-ann-benchmarks/bigann/query.public.10K.u8bin
    	mv bigann_base.1B.u8bin data/${dataset}/bigann_base.1B.u8bin
         mv bigann_query.public.10K.u8bin data/${dataset}/bigann_query.public.10K.u8bin	
     
@@ -59,8 +59,8 @@ function download_dataset() {
 	$PYTHON convert_bigann_datasets.py data/${dataset}/bigann_base.1B.u8bin train
     
     elif [ ${dataset} == "deep" ]; then
-	axel -a -o deep_base.1B.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/DEEP/base.1B.fbin
-        axel -a -o deep_query.public.10K.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/DEEP/query.public.10K.fbin
+	wget -O deep_base.1B.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/DEEP/base.1B.fbin
+        wget -O deep_query.public.10K.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/DEEP/query.public.10K.fbin
 
         mv deep_base.1B.fbin data/${dataset}/deep_base.1B.fbin
 	mv deep_query.public.10K.fbin data/${dataset}/deep_query.public.10K.fbin
@@ -70,8 +70,8 @@ function download_dataset() {
         
 
     elif [ ${dataset} == "text2image" ]; then
-	axel -a -o tti_base.1B.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/T2I/base.1B.fbin
-	axel -a -o tti_query.learn.50M.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/T2I/query.learn.50M.fbin
+	wget -O tti_base.1B.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/T2I/base.1B.fbin
+	wget -O tti_query.learn.50M.fbin https://storage.yandexcloud.net/yandex-research/ann-datasets/T2I/query.learn.50M.fbin
         
         mv tti_base.1B.fbin data/${dataset}/tti_base.1B.fbin
         mv tti_query.learn.50M.fbin data/${dataset}/tti_query.learn.50M.fbin

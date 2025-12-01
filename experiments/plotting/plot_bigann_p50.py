@@ -35,6 +35,9 @@ def load_dataset(
 ):
     with open(json_filename) as f:
         d = json.load(f)
+        if dataset_name not in d:
+            print(f"Warning: '{dataset_name}' not found in {json_filename}, skipping...")
+            return None, None
         latency = []
         recall = []
         for result in d[dataset_name]:
@@ -51,10 +54,12 @@ plt.subplot(221)
 hnsw_recall, hnsw_latency = load_dataset("bigann-100m_hnsw", "metrics_100m.json", "latency_p50")
 flatnav_recall, flatnav_latency = load_dataset("bigann-100m_flatnav", "metrics_100m.json", "latency_p50")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
+if hnsw_recall is not None:
+    plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
+if flatnav_recall is not None:
+    plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
 
-# We change the fontsize of minor ticks label 
+# We change the fontsize of minor ticks label
 plt.gca().tick_params(axis='both', which='major', labelsize=12)
 plt.gca().tick_params(axis='both', which='minor', labelsize=8)
 # plt.xscale('log')
@@ -63,17 +68,20 @@ plt.yscale('log')
 # plt.ylabel("P50 Latency", fontsize = 22)
 plt.title("BigANN-100M", fontsize=24)
 plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
+if hnsw_recall is not None or flatnav_recall is not None:
+    plt.legend(fontsize=12, ncol=1)
 
 
 plt.subplot(222)
 hnsw_recall, hnsw_latency = load_dataset("yandex-deep-100m_hnsw", "metrics_100m.json", "latency_p50")
 flatnav_recall, flatnav_latency = load_dataset("yandex-deep-100m_flatnav", "metrics_100m.json", "latency_p50")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
+if hnsw_recall is not None:
+    plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
+if flatnav_recall is not None:
+    plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
 
-# We change the fontsize of minor ticks label 
+# We change the fontsize of minor ticks label
 plt.gca().tick_params(axis='both', which='major', labelsize=12)
 plt.gca().tick_params(axis='both', which='minor', labelsize=8)
 # plt.xscale('log')
@@ -82,17 +90,20 @@ plt.yscale('log')
 # plt.ylabel("P50 Latency", fontsize = 22)
 plt.title("Yandex-DEEP-100M", fontsize=24)
 plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
+if hnsw_recall is not None or flatnav_recall is not None:
+    plt.legend(fontsize=12, ncol=1)
 
 
 plt.subplot(223)
 hnsw_recall, hnsw_latency = load_dataset("spacev-100m_hnsw", "metrics_100m.json", "latency_p50")
 flatnav_recall, flatnav_latency = load_dataset("spacev-100m_flatnav", "metrics_100m.json", "latency_p50")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
+if hnsw_recall is not None:
+    plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
+if flatnav_recall is not None:
+    plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
 
-# We change the fontsize of minor ticks label 
+# We change the fontsize of minor ticks label
 plt.gca().tick_params(axis='both', which='major', labelsize=12)
 plt.gca().tick_params(axis='both', which='minor', labelsize=8)
 # plt.xscale('log')
@@ -100,7 +111,8 @@ plt.yscale('log')
 # plt.xlabel("", fontsize = 22)
 # plt.ylabel("P50 Latency", fontsize = 22)
 plt.title("SpaceV-100M", fontsize=24)
-plt.legend(fontsize=12, ncol=1)
+if hnsw_recall is not None or flatnav_recall is not None:
+    plt.legend(fontsize=12, ncol=1)
 plt.grid(which='both')
 
 
@@ -108,10 +120,12 @@ plt.subplot(224)
 hnsw_recall, hnsw_latency = load_dataset("tti-100m_hnsw", "metrics_100m.json", "latency_p50")
 flatnav_recall, flatnav_latency = load_dataset("tti-100m_flatnav", "metrics_100m.json", "latency_p50")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
+if hnsw_recall is not None:
+    plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
+if flatnav_recall is not None:
+    plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
 
-# We change the fontsize of minor ticks label 
+# We change the fontsize of minor ticks label
 plt.gca().tick_params(axis='both', which='major', labelsize=12)
 plt.gca().tick_params(axis='both', which='minor', labelsize=8)
 # plt.xscale('log')
@@ -119,7 +133,8 @@ plt.yscale('log')
 # plt.xlabel("", fontsize = 22)
 # plt.ylabel("P50 Latency", fontsize = 22)
 plt.title("TTI-100M", fontsize=24)
-plt.legend(fontsize=12, ncol=1)
+if hnsw_recall is not None or flatnav_recall is not None:
+    plt.legend(fontsize=12, ncol=1)
 plt.grid(which='both')
 
 fig.supylabel('P50 Latency (ms)', fontsize = 22)
