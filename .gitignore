@@ -33,4 +33,4 @@ wheelhouse
 
 /venv
 
-slurm_scripts/logs
+slurm_scripts/logsADSampling/

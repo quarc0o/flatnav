@@ -154,7 +154,7 @@ if __name__ == "__main__":
     args = parse_arguments()
     dimensions = args.dimensions
 
-    base_path = "/root/data"
+    base_path = "../data"
     DATASET_NAMES = [f"normal-{d}-angular" for d in dimensions]
     DATASET_NAMES += [f"normal-{d}-euclidean" for d in dimensions]
 

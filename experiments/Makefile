@@ -460,7 +460,6 @@ hubness-test:
 
 generate-datasets:
 	poetry run python generate-datasets.py \
-		--base-path /home/ubuntu/flatnav/data \
 		--dataset-size 1010000 \
 		--num-queries 10000 \
 		--dimensions 1 2 4 8 16 32 64 128 1536 \
