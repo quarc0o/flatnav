@@ -15,11 +15,15 @@
 #include <cereal/types/memory.hpp>
 #include <cstring>
 #include <fstream>
+#include <functional>
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <queue>
+#include <random>
 #include <thread>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 #include <optional>
@@ -30,6 +34,7 @@ using flatnav::util::VisitedSetPool;
 using flatnav::util::DataType;
 
 namespace flatnav {
+
 
 // dist_t: A distance function implementing DistanceInterface.
 // label_t: A fixed-width data type for the label (meta-data) of each point.
@@ -83,8 +88,27 @@ class Index {
   mutable std::atomic<uint64_t> _distance_computations = 0;
   mutable std::atomic<uint64_t> _metric_hops = 0;
 
-  Index(const Index&) = delete;
-  Index& operator=(const Index&) = delete;
+  // Keep track of the sequence of nodes visited during search.
+  // Each internal list consists of a sequence of boolean flags indicating
+  // whether a visited node is a hub node or not.
+  std::vector<std::vector<bool>> _visited_nodes_sequence;
+
+  bool* _hub_nodes; // A boolean array to keep track of hub nodes.
+  // If a node is a hub, then _hub_nodes[node] = true, else false.
+
+  // Tracking metrics for node access patterns. This unordered map is used to
+  // record how many times each node is visited during search. The key is the
+  // node id and the value is the number of times the node is visited.
+  std::unordered_map<uint32_t, uint32_t> _node_access_counts;
+
+  // Randomization parameters
+  bool _use_random_initialization = false;
+  std::mt19937 _generator;
+  std::uniform_int_distribution<> _distribution;
+
+
+  Index(const Index &) = delete;
+  Index &operator=(const Index &) = delete;
 
   // A custom move constructor is needed because the class manages dynamic
   // resources (_index_memory, _visited_set_pool),
@@ -156,31 +180,100 @@ class Index {
    * @param collect_stats Flag indicating whether to collect statistics during
    * the search process.
    */
-  Index(std::unique_ptr<DistanceInterface<dist_t>> dist, int dataset_size, int max_edges_per_node,
-        bool collect_stats = false, DataType data_type = DataType::float32)
-      : _M(max_edges_per_node),
-        _max_node_count(dataset_size),
-        _cur_num_nodes(0),
-        _distance(std::move(dist)),
-        _num_threads(1),
+  Index(std::unique_ptr<DistanceInterface<dist_t>> dist, int dataset_size,
+        int max_edges_per_node, bool collect_stats = false,
+        bool use_random_initialization = false,
+        std::optional<size_t> random_seed = std::nullopt, DataType data_type = DataType::float32)
+      : _M(max_edges_per_node), _max_node_count(dataset_size),
+        _cur_num_nodes(0), _distance(std::move(dist)), _num_threads(1),
         _visited_set_pool(new VisitedSetPool(
             /* initial_pool_size = */ 1,
             /* num_elements = */ dataset_size)),
-        _node_links_mutexes(dataset_size),
-        _collect_stats(collect_stats), _data_type(data_type) {
+        _node_links_mutexes(dataset_size), _collect_stats(collect_stats),
+        _use_random_initialization(use_random_initialization),
+        _data_type(data_type) {
 
-    // Get the size in bytes of the _node_links_mutexes vector.
-    size_t mutexes_size_bytes = _node_links_mutexes.size() * sizeof(std::mutex);
+    if (random_seed.has_value()) {
+      _generator = std::mt19937(random_seed.value());
+      _distribution = std::uniform_int_distribution<>(0, _max_node_count - 1);
+    }
+
+    initNodeAccessCounts();
 
     _data_size_bytes = _distance->dataSize();
-    _node_size_bytes = _data_size_bytes + (sizeof(node_id_t) * _M) + sizeof(label_t);
+    _node_size_bytes =
+        _data_size_bytes + (sizeof(node_id_t) * _M) + sizeof(label_t);
     uint64_t index_size = static_cast<uint64_t>(_node_size_bytes) * static_cast<uint64_t>(_max_node_count);
     _index_memory = new char[index_size];
+    _hub_nodes = new bool[_max_node_count];
+    std::fill_n(_hub_nodes, _max_node_count, false);
+  }
+
+  void initNodeAccessCounts() {
+    // Initialize the node access counts to 0 for all nodes.
+    for (uint32_t i = 0; i < _max_node_count; i++) {
+      _node_access_counts[i] = 0;
+    }
   }
 
   ~Index() {
     delete[] _index_memory;
     delete _visited_set_pool;
+    delete _hub_nodes;
+  }
+
+  /**
+   * @brief re-prune the graph by removing edges to hub nodes.
+   * @param hub_nodes The hub nodes to prune edges from.
+   * @param alpha The pruning threshold. \alpha ranges from 0 to 1.
+   * Ex. if alpha = 0.5, then we remove 50% of the edges from the hub nodes.
+   * Edge removal is done by setting the edge to the node itself.
+   * The edge selection process is done using random selection.
+   */
+  void rePruneGraph(const std::vector<uint32_t> &hub_nodes, float alpha) {
+
+    if (alpha < 0 || alpha > 1) {
+      throw std::invalid_argument("Alpha must be in the range [0, 1].");
+    }
+
+    std::vector<std::pair<uint32_t, uint32_t>> edges_between_hub_nodes;
+    for (const auto &hub_node : hub_nodes) {
+      node_id_t *links = getNodeLinks(hub_node);
+      for (size_t i = 0; i < _M; i++) {
+        if (links[i] != hub_node) {
+          edges_between_hub_nodes.emplace_back(hub_node, links[i]);
+        }
+      }
+    }
+
+    // Now randomly pick alpha * |edges_between_hub_nodes| edges to remove.
+    std::shuffle(edges_between_hub_nodes.begin(), edges_between_hub_nodes.end(),
+                 _generator);
+
+    size_t num_edges_to_remove =
+        static_cast<size_t>(alpha * edges_between_hub_nodes.size());
+    for (size_t i = 0; i < num_edges_to_remove; i++) {
+      auto [a, b] = edges_between_hub_nodes[i];
+      node_id_t *links = getNodeLinks(a);
+      for (size_t j = 0; j < _M; j++) {
+        if (links[j] == b) {
+          links[j] = a;
+          break;
+        }
+      }
+    }
+  }
+
+  void resetNodeAccessDistribution() { _node_access_counts.clear(); }
+
+  void setHubNodeFlags(const std::vector<uint32_t>& hub_nodes) {
+      for (const auto& hub_node: hub_nodes) {
+        _hub_nodes[hub_node] = true;  
+      }
+  }
+
+  std::vector<std::vector<bool>> getVisitedNodesSequence() {
+    return _visited_nodes_sequence;
   }
 
 
@@ -240,7 +333,10 @@ class Index {
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() {
     std::vector<std::vector<uint32_t>> outdegree_table(_cur_num_nodes);
     for (node_id_t node = 0; node < _cur_num_nodes; node++) {
-      node_id_t* links = getNodeLinks(node);
+      // allocate a vector of size 0 so that each node has an entry in the
+      // outdegree table.
+      outdegree_table[node] = std::vector<uint32_t>();
+      node_id_t *links = getNodeLinks(node);
       for (int i = 0; i < _M; i++) {
         if (links[i] != node) {
           outdegree_table[node].push_back(links[i]);
@@ -248,6 +344,13 @@ class Index {
       }
     }
     return outdegree_table;
+  }
+
+  size_t cantorPairing(node_id_t a, node_id_t b) {
+    // if (a > b) {
+    //   std::swap(a, b);
+    // }
+    return (a + b) * (a + b + 1) / 2 + b;
   }
 
   /**
@@ -368,7 +471,7 @@ class Index {
       return;
     }
 
-    auto neighbors = beamSearch(
+    auto neighbors = beamSearch<false>(
         /* query = */ data, /* entry_node = */ entry_node,
         /* buffer_size = */ ef_construction);
 
@@ -386,10 +489,16 @@ class Index {
    */
   std::vector<dist_label_t> search(const void* query, const int K, int ef_search,
                                    int num_initializations = 100) {
-    node_id_t entry_node = initializeSearch(query, num_initializations);
-    PriorityQueue neighbors = beamSearch(/* query = */ query,
-                                         /* entry_node = */ entry_node,
-                                         /* buffer_size = */ std::max(ef_search, K));
+    node_id_t entry_node;
+    if (_use_random_initialization) {
+      entry_node = randomlyInitializeSearch(query, num_initializations);
+    } else {
+      entry_node = initializeSearch(query, num_initializations);
+    }
+    PriorityQueue neighbors =
+        beamSearch<true>(/* query = */ query,
+                         /* entry_node = */ entry_node,
+                         /* buffer_size = */ std::max(K, ef_search));
     auto size = neighbors.size();
     std::vector<dist_label_t> results;
     results.reserve(size);
@@ -535,6 +644,12 @@ class Index {
     _metric_hops = 0;
   }
 
+  // Return a reference to the node access counts
+  inline const std::unordered_map<uint32_t, uint32_t> &
+  getNodeAccessCounts() const {
+    return _node_access_counts;
+  }
+
   void getIndexSummary() const {
     std::cout << "\nIndex Parameters\n" << std::flush;
     std::cout << "-----------------------------\n" << std::flush;
@@ -602,13 +717,17 @@ class Index {
    *
    * @return PriorityQueue
    */
-
-  PriorityQueue beamSearch(const void* query, const node_id_t entry_node, 
-          const int buffer_size) {
+  template <bool is_search_stage = false>
+  PriorityQueue beamSearch(const void *query, const node_id_t entry_node,
+                           const int buffer_size) {
     PriorityQueue neighbors;
     PriorityQueue candidates;
 
-    auto* visited_set = _visited_set_pool->pollAvailableSet();
+    // Keep track of the nodes visited during the search.
+    // Add True if the node is a hub node, else False.
+    std::vector<bool> query_visited_nodes_flags;
+
+    auto *visited_set = _visited_set_pool->pollAvailableSet();
     visited_set->clear();
 
     // Prefetch the data for entry node before computing its distance.
@@ -622,7 +741,13 @@ class Index {
     float max_dist = dist;
     candidates.emplace(-dist, entry_node);
     neighbors.emplace(dist, entry_node);
+    query_visited_nodes_flags.push_back(_hub_nodes[entry_node]);  
     visited_set->insert(entry_node);
+
+    // Increment the counter in the visited map for the entry point node
+    if (is_search_stage) {
+      _node_access_counts[entry_node]++;
+    }
 
     while (!candidates.empty()) {
       auto [distance, node] = candidates.top();
@@ -645,12 +770,15 @@ class Index {
       }
 #endif
 
-      processCandidateNode(
+      processCandidateNode<is_search_stage>(
           /* query = */ query, /* node = */ node,
           /* max_dist = */ max_dist, /* buffer_size = */ buffer_size,
           /* visited_set = */ visited_set,
-          /* neighbors = */ neighbors, /* candidates = */ candidates);
+          /* neighbors = */ neighbors, /* candidates = */ candidates,
+          /* query_visited_nodes = */ query_visited_nodes_flags);
+      
     }
+    _visited_nodes_sequence.push_back(std::move(query_visited_nodes_flags));
 
     _visited_set_pool->pushVisitedSet(
         /* visited_set = */ visited_set);
@@ -658,14 +786,25 @@ class Index {
     return neighbors;
   }
 
-  void processCandidateNode(const void* query, node_id_t& node, float& max_dist, const int buffer_size,
-                            VisitedSet* visited_set, PriorityQueue& neighbors, PriorityQueue& candidates) {
+  template <bool is_search_stage>
+  void processCandidateNode(const void *query, node_id_t &node, float &max_dist,
+                            const int buffer_size, VisitedSet *visited_set,
+                            PriorityQueue &neighbors,
+                            PriorityQueue &candidates, std::vector<bool>& query_visited_nodes_flags) {
     // Lock all operations on this specific node
     std::unique_lock<std::mutex> lock(_node_links_mutexes[node]);
 
-    node_id_t* neighbor_node_links = getNodeLinks(node);
+    node_id_t *neighbor_node_links = getNodeLinks(node);
+    query_visited_nodes_flags.push_back(_hub_nodes[node]);  
     for (uint32_t i = 0; i < _M; i++) {
       node_id_t neighbor_node_id = neighbor_node_links[i];
+
+      if (is_search_stage) {
+        // Collect node access counts statistics. We will assume that we are in
+        // a single-threaded environment so we don't need to lock the access
+        // counts.
+        _node_access_counts[neighbor_node_id]++;
+      }
 
       // If using SSE, prefetch the next neighbor node data and the visited
       // marker
@@ -693,6 +832,7 @@ class Index {
       if (neighbors.size() < buffer_size || dist < max_dist) {
         candidates.emplace(-dist, neighbor_node_id);
         neighbors.emplace(dist, neighbor_node_id);
+        // query_visited_nodes_flags.push_back(_hub_nodes[neighbor_node_id]);
 #ifdef USE_SSE
         _mm_prefetch(getNodeData(candidates.top().second), _MM_HINT_T0);
 #endif
@@ -869,7 +1009,36 @@ class Index {
     return entry_node;
   }
 
-  void relabel(const std::vector<node_id_t>& P) {
+  // Use this during search to select a random entry point
+  node_id_t randomlyInitializeSearch(const void *query,
+                                     int num_initializations) {
+    // select entry_node from a set of random entry point options
+    if (num_initializations <= 0) {
+      throw std::invalid_argument(
+          "num_initializations must be greater than 0.");
+    }
+
+    float min_dist = std::numeric_limits<float>::max();
+    node_id_t entry_node = 0;
+
+    if (_collect_stats) {
+      _distance_computations.fetch_add(num_initializations);
+    }
+
+    for (int i = 0; i < num_initializations; i++) {
+      node_id_t node = _distribution(_generator);
+      float dist =
+          _distance->distance(/* x = */ query, /* y = */ getNodeData(node),
+                              /* asymmetric = */ true);
+      if (dist < min_dist) {
+        min_dist = dist;
+        entry_node = node;
+      }
+    }
+    return entry_node;
+  }
+
+  void relabel(const std::vector<node_id_t> &P) {
     // 1. Rewire all of the node connections
     for (node_id_t n = 0; n < _cur_num_nodes; n++) {
       node_id_t* links = getNodeLinks(n);
@@ -924,6 +1093,6 @@ class Index {
     delete[] temp_links;
     delete temp_label;
   }
-};
+}; // namespace flatnav
 
 }  // namespace flatnav

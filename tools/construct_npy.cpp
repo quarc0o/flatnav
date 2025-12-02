@@ -31,6 +31,7 @@ template <typename dist_t>
 void buildIndex(float* data, std::unique_ptr<DistanceInterface<dist_t>> distance, int N, int M, int dim,
                 int ef_construction, int build_num_threads, const std::string& save_file) {
 
+  std::cout << "[info] building index" << std::endl;
   auto index = new Index<dist_t, int>(
       /* dist = */ std::move(distance), /* dataset_size = */ N,
       /* max_edges = */ M);
@@ -44,6 +45,8 @@ void buildIndex(float* data, std::unique_ptr<DistanceInterface<dist_t>> distance
   index->template addBatch<float>(/* data = */ (void*)data,
                                   /* labels = */ labels,
                                   /* ef_construction */ ef_construction);
+
+  exit(0);
 
   auto stop = std::chrono::high_resolution_clock ::now();
   auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);

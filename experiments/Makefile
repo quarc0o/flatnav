@@ -2,6 +2,49 @@
 # The main configurable parameter is the type of index: --index-type (hnsw, flatnav)
 # We use dataset-name for the name of the plots.
 
+
+################################
+# Begin Billion-Scale Benchmarks
+################################
+
+# Billion-scale benchmark for the Microsoft SpaceV1B dataset
+# Reference: https://github.com/microsoft/SPTAG/tree/main/datasets/SPACEV1B
+
+space-v1b-bench-hnsw:
+	poetry run python run-benchmark.py \
+		--dataset-name msft-spacev-1b \
+		--dataset /root/data/SPACEV1B/collection.npy \
+		--queries /root/data/SPACEV1B/queries.npy \
+		--gtruth /root/data/SPACEV1B/ground_truth.npy \
+		--index-type hnsw \
+		--num-node-links 32 \
+		--ef-construction 30 50 100 \
+		--ef-search 100 200 300 500 1000 \
+		--num-build-threads 32 \
+		--num-search-threads 1 \
+		--metric l2
+
+
+space-v1b-bench-flatnav:
+	poetry run python run-benchmark.py \
+		--dataset-name msft-spacev-1b \
+		--dataset /root/data/SPACEV1B/collection.npy \
+		--queries /root/data/SPACEV1B/queries.npy \
+		--gtruth /root/data/SPACEV1B/ground_truth.npy \
+		--index-type flatnav \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename space-v1b.mtx \
+		--num-node-links 32 \
+		--ef-construction 30 50 100 \
+		--ef-search 100 200 300 500 1000 \
+		--num-build-threads 45 \
+		--num-search-threads 1 \
+		--metric l2
+
+################################
+# End Billion-Scale Benchmarks
+################################
+
 ################################
 # Begin 100-Million Scale Benchmarks
 # ################################
@@ -345,7 +388,7 @@ mnist-bench-hnsw:
 		--num-search-threads 1 
 
 gist-bench-flatnav: 
-	poetry run python run-benchmark.py \
+	poetry run python run_benchmark.py \
 		--dataset-name gist \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
@@ -362,7 +405,7 @@ gist-bench-flatnav:
 
 
 gist-bench-hnsw: 
-	poetry run python run-benchmark.py \
+	poetry run python run_benchmark.py \
 		--dataset-name gist \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
@@ -405,36 +448,32 @@ sift-bench-hnsw:
 		--num-build-threads 16 \
 		--num-search-threads 1
 
-
-glove25-bench-flatnav:
-	poetry run python run-benchmark.py \
-		--dataset ../data/glove-25-angular/glove-25-angular.train.npy \
-		--queries ../data/glove-25-angular/glove-25-angular.test.npy \
-		--gtruth ../data/glove-25-angular/glove-25-angular.gtruth.npy \
-		--dataset-name glove-25-angular \
-		--index-type flatnav \
-		--use-hnsw-base-layer \
-        --hnsw-base-layer-filename glove25.mtx \
+hubness-test:
+	poetry run python hubness.py \
+		--datasets normal-1-angular normal-2-angular normal-4-angular normal-8-angular normal-16-angular normal-32-angular normal-64-angular normal-128-angular normal-256-angular normal-1024-angular normal-1536-angular normal-1-euclidean normal-2-euclidean normal-4-euclidean normal-8-euclidean normal-16-euclidean normal-32-euclidean normal-64-euclidean normal-128-euclidean normal-256-euclidean normal-1024-euclidean normal-1536-euclidean \
+		--k 100 \
+		--ef-construction 100 \
+		--ef-search 200 \
 		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
-		--num-build-threads 16 \
-		--num-search-threads 1 \
-		--metric angular
+		--hubness-scores hubness-scores.json
 
-glove25-bench-hnsw:
-	poetry run python run-benchmark.py \
-		--dataset ../data/glove-25-angular/glove-25-angular.train.npy \
-		--queries ../data/glove-25-angular/glove-25-angular.test.npy \
-		--gtruth ../data/glove-25-angular/glove-25-angular.gtruth.npy \
-		--dataset-name glove-25-angular \
-		--index-type hnsw \
-		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
-		--num-build-threads 16 \
-		--num-search-threads 1 \
-		--metric angular
+
+generate-datasets:
+	poetry run python generate-datasets.py \
+		--base-path /home/ubuntu/flatnav/data \
+		--dataset-size 1010000 \
+		--num-queries 10000 \
+		--dimensions 1 2 4 8 16 32 64 128 1536 \
+		--k 100
+
+# Generate hubness scores for each desired dataset
+# generate-hubness-scores:
+# 	poetry run python generate-hubness-scores.py \
+# 		--dataset-names normal-1-angular normal-2-angular normal-4-angular normal-8-angular normal-16-angular normal-32-angular normal-64-angular normal-128-angular normal-256-angular normal-1024-angular normal-1536-angular normal-2048-angular normal-1-euclidean normal-2-euclidean normal-4-euclidean normal-8-euclidean normal-16-euclidean normal-32-euclidean normal-64-euclidean normal-128-euclidean normal-256-euclidean normal-1024-euclidean normal-1536-euclidean normal-2048-euclidean \
+# 		--base-path /media/scratch/ \
+# 		--k 100 \
+# 		--save-file hubness-scores-full.json
+
 
 glove50-bench-flatnav:
 	poetry run python run-benchmark.py \
@@ -471,7 +510,7 @@ glove100-bench-flatnav:
 		--dataset ../data/glove-100-angular/glove-100-angular.train.npy \
 		--queries ../data/glove-100-angular/glove-100-angular.test.npy \
 		--gtruth ../data/glove-100-angular/glove-100-angular.gtruth.npy \
-		--dataset-name glove-100-angular \
+		--dataset-name glove-100-unpruned \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename glove100.mtx \
@@ -504,7 +543,7 @@ glove200-bench-flatnav:
 		--dataset-name glove-200-angular \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
-		--hnsw-base-layer-filename glove200.mtx \
+        --hnsw-base-layer-filename glove25.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
 		--ef-search 100 200 300 500 1000 3000 \
@@ -543,7 +582,6 @@ nytimes-bench-flatnav:
 		--num-search-threads 1 \
 		--metric angular
 
-
 nytimes-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
@@ -558,7 +596,17 @@ nytimes-bench-hnsw:
 		--num-search-threads 1 \
 		--metric angular
 
-################################
+node-access-test:
+	poetry run python node-access-patterns.py \
+		--datasets mnist-784-euclidean sift-128-euclidean glove-25-angular glove-100-angular \
+		--k 100 \
+		--metrics l2 l2 angular angular \
+		--ef-construction 100 \
+		--ef-search 200 \
+		--num-node-links 32
+
+
+################################################################
 # Begin ANN Benchmarks - FlatNav Base (without HNSW base layer)
 # These targets run FlatNav without using HNSW as the base layer
 ################################
@@ -620,8 +668,41 @@ nytimes-bench-flatnav-base:
 		--metric angular
 
 ################################
-# End ANN Benchmarks
-################################
+# Hubness Test targets 
+################################################################
+
+		
+generate-hubness-scores:
+	poetry run python generate-hubness-scores.py \
+		--base-path ../data \
+		--dataset-names normal-256-angular normal-256-euclidean \
+		--k 100 \
+		--save-file hubness-scores.json 
+
+# sift-128-euclidean glove-100-angular normal-10-angular normal-10-euclidean normal-256-angular normal-256-euclidean normal-1024-angular normal-1024-euclidean
+# l2 angular angular l2 angular l2 angular l2
+generate-distributions:
+	poetry run python generate-distributions.py \
+		--k 100 \
+		--ef-construction 100 \
+		--ef-search 200 \
+		--num-node-links 32
+
+kde-plots:
+	poetry run python kde_plots.py
+
+# Run statistical tests for hub nodes connectivity. 
+run-hypothesis-test:
+	poetry run python statistical_test.py
+
+speed-test:
+	poetry run python hubness_speed_test.py --hubness-percentile-threshold 99
+
+plot-speed-test-results:
+	poetry run python plot_speed_test_results.py
+
+plot-results:
+	poetry run python plot_stats_test_results.py
 
 setup: install-flatnav install-hnswlib
 

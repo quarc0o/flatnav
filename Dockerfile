@@ -9,6 +9,7 @@ ARG PYTHON_VERSION=3.11.6
 ARG POETRY_HOME="/opt/poetry"
 ARG ROOT_DIR="/root"
 ARG FLATNAV_PATH="${ROOT_DIR}/flatnavlib"
+ARG INCLUDE_HNSWLIB=false
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -87,10 +88,13 @@ COPY external/ ./external/
 # Install needed dependencies including flatnav. 
 # Install hnwlib (from a forked repo that has extensions we need)
 WORKDIR ${FLATNAV_PATH}
-RUN git clone https://github.com/BlaiseMuhirwa/hnswlib-original.git \
-    && cd hnswlib-original/python_bindings \
-    && poetry install --no-root \
-    && poetry run python setup.py bdist_wheel  
+# Install hnswlib (from a forked repo that has extensions we need)
+RUN if [ "$INCLUDE_HNSWLIB" = true ] ; then \
+        git clone https://github.com/BlaiseMuhirwa/hnswlib-original.git \
+        && cd hnswlib-original/python_bindings \
+        && poetry install --no-root \
+        && poetry run python setup.py bdist_wheel; \
+    fi 
 
 # Get the wheel as an environment variable 
 ENV HNSWLIB_WHEEL=${FLATNAV_PATH}/hnswlib-original/python_bindings/dist/*.whl
