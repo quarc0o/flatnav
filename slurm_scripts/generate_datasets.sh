@@ -7,16 +7,23 @@
 #SBATCH --cpus-per-task=4
 
 
-# Load environment
+# Load environment - IMPORTANT: purge first to avoid conflicts
 module purge
 module load Python/3.11.3-GCCcore-12.3.0
 
-# Run the generate-datasets script
-cd experiments
-python generate-datasets.py \
-    --dataset-size 100000 \
-    --num-queries 1000 \
-    --dimensions 10 50 100 \
-    --k 100
+# Activate virtual environmet
+source $HOME/code/flatnav/venv/bin/activate
+
+# Verify flatnav is installed
+echo "Verifying flatnav installation..."
+python -c "import flatnav; print(f'Flatnav version: {flatnav.__version__}')" || {
+    echo "ERROR: flatnav not installed properly!"
+    exit 1
+}
+
+# Go to experiments directory
+cd $HOME/code/flatnav/experiments
+
+make generate-datasets
 
 echo "Dataset generation complete!"
