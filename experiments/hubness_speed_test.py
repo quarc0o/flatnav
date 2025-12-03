@@ -5,7 +5,7 @@ import os
 from typing import List, Tuple
 import time
 import argparse
-from experiments.run_benchmark import train_index
+from run_benchmark import train_index
 
 logger = logging.getLogger(__name__)
 
@@ -35,10 +35,10 @@ def parse_args() -> argparse.Namespace:
 
 
 # This should be a persistent volume mount.
-DISTRIBUTIONS_SAVE_PATH = "/root/node-access-distributions"
-SPEED_TESTS_SAVE_PATH = "/root/data/speed-tests"
-DATASETS_BASE_PATH = "/root/data/hubness/data"
-METRICS_DIR = "/root/metrics"
+DISTRIBUTIONS_SAVE_PATH = "../node-access-distributions"
+SPEED_TESTS_SAVE_PATH = "../data/speed-tests"
+DATASETS_BASE_PATH = "../data"
+METRICS_DIR = "../metrics"
 
 os.makedirs(SPEED_TESTS_SAVE_PATH, exist_ok=True)
 
@@ -65,6 +65,7 @@ ANN_DATASETS = [
     "gist-960-euclidean",
     "yandex-deep-10m-euclidean",
     "spacev-10m-euclidean",
+    "mnist-784-euclidean",
 ]
 
 
@@ -150,12 +151,9 @@ def main() -> None:
     )
 
     for dataset_name in SYNTHETIC_DATASETS + ANN_DATASETS:
+        print(f"Processing {dataset_name}...")
         node_access_counts_path = os.path.join(
             DISTRIBUTIONS_SAVE_PATH, f"{dataset_name}_node_access_counts.json"
-        )
-
-        hub_nodes: list[int] = select_hub_nodes(
-            args.hubness_percentile_threshold, node_access_counts_path
         )
         train_dataset_path = os.path.join(
             DATASETS_BASE_PATH, dataset_name, f"{dataset_name}.train.npy"
@@ -163,35 +161,55 @@ def main() -> None:
         queries_path = os.path.join(
             DATASETS_BASE_PATH, dataset_name, f"{dataset_name}.test.npy"
         )
-        train_dataset = np.load(train_dataset_path)
-        queries = np.load(queries_path)
-        distance_type = "angular" if "angular" in dataset_name else "l2"
-        dataset_size, dim = train_dataset.shape
 
-        logger.info(f"Running test for {dataset_name}")
-        start = time.time()
-        visited_nodes_flags = run_test(
-            train_dataset=train_dataset,
-            queries=queries,
-            distance_type=distance_type,
-            dim=dim,
-            dataset_size=dataset_size,
-            max_edges_per_node=32,
-            ef_construction=args.ef_construction,
-            ef_search=args.ef_search,
-            hub_nodes=hub_nodes,
-            dataset_name=dataset_name,
-        )
-        end = time.time()
-        logger.info(f"Test for {dataset_name} completed in {end - start} seconds.")
+        # Check if all required files exist
+        if not os.path.exists(node_access_counts_path):
+            print(f"  WARNING: Node access counts not found, skipping: {node_access_counts_path}")
+            continue
+        if not os.path.exists(train_dataset_path):
+            print(f"  WARNING: Train dataset not found, skipping: {train_dataset_path}")
+            continue
+        if not os.path.exists(queries_path):
+            print(f"  WARNING: Queries not found, skipping: {queries_path}")
+            continue
 
-        # Save this result as a numpy file with name SPEED_TESTS_SAVE_PATH/dataset_name.npy
+        try:
+            hub_nodes: list[int] = select_hub_nodes(
+                args.hubness_percentile_threshold, node_access_counts_path
+            )
+            train_dataset = np.load(train_dataset_path)
+            queries = np.load(queries_path)
+            distance_type = "angular" if "angular" in dataset_name else "l2"
+            dataset_size, dim = train_dataset.shape
 
-        save_path = os.path.join(
-            SPEED_TESTS_SAVE_PATH,
-            f"{dataset_name}.{args.hubness_percentile_threshold}.npy",
-        )
-        np.save(save_path, np.array(visited_nodes_flags, dtype=object))
+            logger.info(f"Running test for {dataset_name}")
+            start = time.time()
+            visited_nodes_flags = run_test(
+                train_dataset=train_dataset,
+                queries=queries,
+                distance_type=distance_type,
+                dim=dim,
+                dataset_size=dataset_size,
+                max_edges_per_node=32,
+                ef_construction=args.ef_construction,
+                ef_search=args.ef_search,
+                hub_nodes=hub_nodes,
+                dataset_name=dataset_name,
+            )
+            end = time.time()
+            logger.info(f"Test for {dataset_name} completed in {end - start} seconds.")
+
+            # Save this result as a numpy file with name SPEED_TESTS_SAVE_PATH/dataset_name.npy
+            save_path = os.path.join(
+                SPEED_TESTS_SAVE_PATH,
+                f"{dataset_name}.{args.hubness_percentile_threshold}.npy",
+            )
+            np.save(save_path, np.array(visited_nodes_flags, dtype=object))
+            print(f"  ✓ Completed {dataset_name}")
+        except Exception as e:
+            print(f"  ERROR: Failed to process {dataset_name}: {e}")
+            logger.error(f"Failed to process {dataset_name}: {e}", exc_info=True)
+            continue
 
 
 if __name__ == "__main__":

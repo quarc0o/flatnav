@@ -24,36 +24,37 @@ from run_benchmark import compute_metrics
 logging.basicConfig(level=logging.INFO)
 
 
-ROOT_DATASET_PATH = "/root/data/hubness/data"
+ROOT_DATASET_PATH = "../data"
 # ROOT_DATASET_PATH = os.path.join(os.getcwd(), "..", "data")
 
 # This should be a persistent volume mount.
-DISTRIBUTIONS_SAVE_PATH = "/root/node-access-distributions"
+DISTRIBUTIONS_SAVE_PATH = "../node-access-distributions"
 
 
 SYNTHETIC_DATASETS = [
-    "normal-16-angular",
-    "normal-16-euclidean",
-    "normal-32-angular",
-    "normal-32-euclidean",
-    "normal-64-angular",
-    "normal-64-euclidean",
-    "normal-128-angular",
-    "normal-128-euclidean",
-    "normal-256-angular",
-    "normal-256-euclidean",
-    "normal-1024-angular",
-    "normal-1024-euclidean",
-    "normal-1536-angular",
-    "normal-1536-euclidean",
+    # "normal-16-angular",
+    # "normal-16-euclidean",
+    # "normal-32-angular",
+    # "normal-32-euclidean",
+    # "normal-64-angular",
+    # "normal-64-euclidean",
+    # "normal-128-angular",
+    # "normal-128-euclidean",
+    # "normal-256-angular",
+    # "normal-256-euclidean",
+    # "normal-1024-angular",
+    # "normal-1024-euclidean",
+    # "normal-1536-angular",
+    # "normal-1536-euclidean",
 ]
 
 ANN_DATASETS = [
     "glove-100-angular",
-    "nytimes-256-angular",
+    # "nytimes-256-angular",
     "gist-960-euclidean",
-    "yandex-deep-10m-euclidean",
-    "spacev-10m-euclidean",
+    "mnist-784-euclidean",
+    # "yandex-deep-10m-euclidean",
+    # "spacev-10m-euclidean",
 ]
 
 
@@ -276,6 +277,7 @@ def run_main(args: argparse.Namespace) -> None:
         if not os.path.exists(base_path):
             # Create the directory if it doesn't exist
             logging.error(f"Dataset path not found at {base_path}")
+            continue
 
         train_dataset, queries, ground_truth = load_dataset(
             base_path=base_path, dataset_name=dataset_name

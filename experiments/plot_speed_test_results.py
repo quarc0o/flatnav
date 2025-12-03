@@ -6,8 +6,11 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 logging.getLogger("matplotlib").setLevel(logging.ERROR)
 
-BASE_PATH = "/root/data/speed-tests"
-METRICS_PATH = "/root/metrics"
+BASE_PATH = "../data/speed-tests"
+METRICS_PATH = "../metrics/hubness-plots"
+
+# Ensure the plots directory exists
+os.makedirs(METRICS_PATH, exist_ok=True)
 
 SYNTHETIC_DATASETS = [
     "normal-16-angular",
@@ -32,6 +35,7 @@ ANN_DATASETS = [
     "gist-960-euclidean",
     "yandex-deep-10m-euclidean",
     "spacev-10m-euclidean",
+    "mnist-784-euclidean",
 ]
 
 
@@ -92,37 +96,49 @@ def plot_dataset(
 def main():
     num_bins = 30
     for dataset in SYNTHETIC_DATASETS + ANN_DATASETS:
-        visited_nodes_flags = np.load(
-            os.path.join(BASE_PATH, f"{dataset}.99.0.npy"), allow_pickle=True
-        )
+        print(f"Processing {dataset}...")
+        data_path = os.path.join(BASE_PATH, f"{dataset}.99.0.npy")
 
-        hub_percentages = np.zeros((num_bins,))
-        non_hub_percentages = np.zeros((num_bins,))
-        num_queries = len(visited_nodes_flags)
+        # Check if file exists
+        if not os.path.exists(data_path):
+            print(f"  WARNING: Data file not found, skipping: {data_path}")
+            continue
 
-        # Process each query and aggregate the percentages
-        for query_flags in visited_nodes_flags:
-            print(f"Number of visited nodes: {len(query_flags)}")
-            binned_data = bin_data(query_flags, num_bins)
-            assert len(binned_data) == num_bins
+        try:
+            visited_nodes_flags = np.load(data_path, allow_pickle=True)
 
-            for i, bin_flags in enumerate(binned_data):
-                num_hub_nodes = sum(bin_flags)  # Count of hub nodes in this bin
-                bin_size = len(bin_flags)
+            hub_percentages = np.zeros((num_bins,))
+            non_hub_percentages = np.zeros((num_bins,))
+            num_queries = len(visited_nodes_flags)
 
-                # Calculate percentage of hub and non-hub nodes in this bin
-                hub_percentages[i] += (
-                    (num_hub_nodes / bin_size) * 100 if bin_size > 0 else 0
-                )
-                non_hub_percentages[i] += (
-                    ((bin_size - num_hub_nodes) / bin_size) * 100 if bin_size > 0 else 0
-                )
+            # Process each query and aggregate the percentages
+            for query_flags in visited_nodes_flags:
+                print(f"  Number of visited nodes: {len(query_flags)}")
+                binned_data = bin_data(query_flags, num_bins)
+                assert len(binned_data) == num_bins
 
-        # Average the percentages over all queries
-        hub_percentages /= num_queries
-        non_hub_percentages /= num_queries
+                for i, bin_flags in enumerate(binned_data):
+                    num_hub_nodes = sum(bin_flags)  # Count of hub nodes in this bin
+                    bin_size = len(bin_flags)
 
-        plot_dataset(dataset, hub_percentages, non_hub_percentages, num_bins=num_bins)
+                    # Calculate percentage of hub and non-hub nodes in this bin
+                    hub_percentages[i] += (
+                        (num_hub_nodes / bin_size) * 100 if bin_size > 0 else 0
+                    )
+                    non_hub_percentages[i] += (
+                        ((bin_size - num_hub_nodes) / bin_size) * 100 if bin_size > 0 else 0
+                    )
+
+            # Average the percentages over all queries
+            hub_percentages /= num_queries
+            non_hub_percentages /= num_queries
+
+            plot_dataset(dataset, hub_percentages, non_hub_percentages, num_bins=num_bins)
+            print(f"  ✓ Completed {dataset}")
+        except Exception as e:
+            print(f"  ERROR: Failed to process {dataset}: {e}")
+            logging.error(f"Failed to process {dataset}: {e}", exc_info=True)
+            continue
 
 
 if __name__ == "__main__":

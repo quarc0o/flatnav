@@ -10,8 +10,8 @@ import random
 
 
 # This should be a persistent volume mount.
-DISTRIBUTIONS_SAVE_PATH = "/root/node-access-distributions"
-METRICS_DIR = "/root/metrics"
+DISTRIBUTIONS_SAVE_PATH = "../node-access-distributions"
+METRICS_DIR = "../metrics"
 
 SYNTHETIC_DATASETS = [
     "normal-16-angular",
@@ -295,6 +295,7 @@ def run_hypothesis_tests() -> None:
     csv_filename = os.path.join(METRICS_DIR, csv_filename)
 
     for dataset_name in SYNTHETIC_DATASETS + ANN_DATASETS:
+        print(f"Processing {dataset_name}...")
         outdegree_table_path = os.path.join(
             DISTRIBUTIONS_SAVE_PATH, f"{dataset_name}_outdegree_table.pkl"
         )
@@ -302,19 +303,32 @@ def run_hypothesis_tests() -> None:
             DISTRIBUTIONS_SAVE_PATH, f"{dataset_name}_node_access_counts.json"
         )
 
-        tester = HubNodesConnectivityTester(
-            outdegree_table_path=outdegree_table_path,
-            node_access_counts_path=node_access_counts_path,
-            dataset_name=dataset_name,
-            include_hub_nodes_in_sample=False,
-            sample_size=2000,
-        )
-        test_results = tester.run_hypothesis_tests(percentile=99)
+        # Check if files exist before processing
+        if not os.path.exists(outdegree_table_path):
+            print(f"  WARNING: Outdegree table not found, skipping: {outdegree_table_path}")
+            continue
+        if not os.path.exists(node_access_counts_path):
+            print(f"  WARNING: Node access counts not found, skipping: {node_access_counts_path}")
+            continue
 
-        # Append the test results to a JSON file containing all the results.
-        all_test_results[dataset_name] = test_results
-        with open(save_filename, "w") as f:
-            json.dump(all_test_results, f, indent=4)
+        try:
+            tester = HubNodesConnectivityTester(
+                outdegree_table_path=outdegree_table_path,
+                node_access_counts_path=node_access_counts_path,
+                dataset_name=dataset_name,
+                include_hub_nodes_in_sample=False,
+                sample_size=2000,
+            )
+            test_results = tester.run_hypothesis_tests(percentile=99)
+
+            # Append the test results to a JSON file containing all the results.
+            all_test_results[dataset_name] = test_results
+            with open(save_filename, "w") as f:
+                json.dump(all_test_results, f, indent=4)
+            print(f"  ✓ Completed {dataset_name}")
+        except Exception as e:
+            print(f"  ERROR: Failed to process {dataset_name}: {e}")
+            continue
 
     # Convert JSON to CSV
     with open(save_filename, "r") as f:

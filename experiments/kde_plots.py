@@ -6,8 +6,8 @@ import numpy as np
 from scipy.stats import skew 
 import os
 
-DISTRIBUTIONS_SAVE_PATH = "/root/node-access-distributions"
-PLOTS_SAVE_PATH = "/root/node-access-distributions"
+DISTRIBUTIONS_SAVE_PATH = "../node-access-distributions"
+PLOTS_SAVE_PATH = "../node-access-distributions"
 
 os.makedirs(PLOTS_SAVE_PATH, exist_ok=True)
 
@@ -136,20 +136,26 @@ def main():
     for dataset in ANN_DATASETS:
         print(f"Loading {dataset}...")
         path = os.path.join(DISTRIBUTIONS_SAVE_PATH, f"{dataset}_node_access_counts.json")
+        if not os.path.exists(path):
+            print(f"  WARNING: File not found, skipping: {path}")
+            continue
         with open(path, "r") as f:
             if "angular" in dataset:
                 # angular_datasets[dataset] = json.load(f)
-                pass 
+                pass
             else:
                 euclidean_datasets[dataset] = json.load(f)
 
     for dataset in SYNTHETIC_DATASETS:
         print(f"Loading {dataset}...")
         path = os.path.join(DISTRIBUTIONS_SAVE_PATH, f"{dataset}_node_access_counts.json")
+        if not os.path.exists(path):
+            print(f"  WARNING: File not found, skipping: {path}")
+            continue
         with open(path, "r") as f:
             if "angular" in dataset:
                 # angular_datasets[dataset] = json.load(f)
-                pass 
+                pass
             else:
                 euclidean_datasets[dataset] = json.load(f)
 
