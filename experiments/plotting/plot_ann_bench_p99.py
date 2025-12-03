@@ -35,6 +35,12 @@ def load_dataset(
 ):
     with open(json_filename) as f:
         d = json.load(f)
+
+        # Check if dataset exists in the metrics file
+        if dataset_name not in d:
+            print(f"Warning: Dataset '{dataset_name}' not found in {json_filename}. Skipping.")
+            return None, None
+
         latency = []
         recall = []
         for result in d[dataset_name]:
@@ -44,6 +50,34 @@ def load_dataset(
         return pareto_frontier(recall, latency)
 
 
+def plot_dataset_comparison(ax, dataset, json_filename, latency_field, title):
+    """Plot comparison for a dataset if data is available."""
+    hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", json_filename, latency_field)
+    flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", json_filename, latency_field)
+
+    # Check if at least one dataset has data
+    has_data = False
+    if hnsw_recall is not None and len(hnsw_recall) > 0:
+        ax.plot(hnsw_recall, hnsw_latency, 'x-', color=hnsw_color, label="HNSW")
+        has_data = True
+
+    if flatnav_recall is not None and len(flatnav_recall) > 0:
+        ax.plot(flatnav_recall, flatnav_latency, 'x-', color=flatnav_color, label="FlatNav")
+        has_data = True
+
+    if not has_data:
+        ax.text(0.5, 0.5, 'No data available',
+                horizontalalignment='center', verticalalignment='center',
+                transform=ax.transAxes, fontsize=14, color='gray')
+
+    ax.tick_params(axis='both', which='major', labelsize=12)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
+    ax.set_yscale('log')
+    ax.set_title(title, fontsize=24)
+    ax.grid(which='both')
+    if has_data:
+        ax.legend(fontsize=12, ncol=1)
+
 
 # fig = plt.figure(figsize=(10,8))
 fig = plt.figure(figsize=(10,12))
@@ -52,105 +86,25 @@ gs = gridspec.GridSpec(6, 4)
 
 
 
+# Plot DEEP
 ax = plt.subplot(gs[0:2, 0:2])
-dataset = "deep-image-96"
-hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", "metrics_ann_bench.json", "latency_p99")
-flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", "metrics_ann_bench.json", "latency_p99")
+plot_dataset_comparison(ax, "deep-image-96", "metrics_ann_bench.json", "latency_p99", "DEEP")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
-
-# We change the fontsize of minor ticks label 
-plt.tick_params(axis='both', which='major', labelsize=12)
-plt.tick_params(axis='both', which='minor', labelsize=8)
-# plt.xscale('log')
-plt.yscale('log')
-# plt.xlabel("", fontsize = 22)
-# plt.ylabel("P50 Latency", fontsize = 22)
-plt.title("DEEP", fontsize=24)
-plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
-
-
+# Plot GIST
 ax = plt.subplot(gs[0:2, 2:4])
-dataset = "gist"
-hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", "metrics_ann_bench.json", "latency_p99")
-flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", "metrics_ann_bench.json", "latency_p99")
+plot_dataset_comparison(ax, "gist", "metrics_ann_bench.json", "latency_p99", "GIST")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
-
-# We change the fontsize of minor ticks label 
-plt.gca().tick_params(axis='both', which='major', labelsize=12)
-plt.gca().tick_params(axis='both', which='minor', labelsize=8)
-# plt.xscale('log')
-plt.yscale('log')
-# plt.xlabel("", fontsize = 22)
-# plt.ylabel("P50 Latency", fontsize = 22)
-plt.title("GIST", fontsize=24)
-plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
-
-
+# Plot MNIST
 ax = plt.subplot(gs[2:4, 0:2])
-dataset = "mnist-784"
-hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", "metrics_ann_bench.json", "latency_p99")
-flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", "metrics_ann_bench.json", "latency_p99")
+plot_dataset_comparison(ax, "mnist-784", "metrics_ann_bench.json", "latency_p99", "MNIST")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
-
-# We change the fontsize of minor ticks label 
-plt.gca().tick_params(axis='both', which='major', labelsize=12)
-plt.gca().tick_params(axis='both', which='minor', labelsize=8)
-# plt.xscale('log')
-plt.yscale('log')
-# plt.xlabel("", fontsize = 22)
-# plt.ylabel("P50 Latency", fontsize = 22)
-plt.title("MNIST", fontsize=24)
-plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
-
-
+# Plot NY-Times
 ax = plt.subplot(gs[2:4, 2:4])
-dataset = "nytimes-256-angular"
-hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", "metrics_ann_bench.json", "latency_p99")
-flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", "metrics_ann_bench.json", "latency_p99")
+plot_dataset_comparison(ax, "nytimes-256-angular", "metrics_ann_bench.json", "latency_p99", "NY-Times (Angular)")
 
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
-
-# We change the fontsize of minor ticks label 
-plt.gca().tick_params(axis='both', which='major', labelsize=12)
-plt.gca().tick_params(axis='both', which='minor', labelsize=8)
-# plt.xscale('log')
-plt.yscale('log')
-# plt.xlabel("", fontsize = 22)
-# plt.ylabel("P50 Latency", fontsize = 22)
-plt.title("NY-Times (Angular)", fontsize=24)
-plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
-
-
-
+# Plot SIFT
 ax = plt.subplot(gs[4:6, 1:3])
-dataset = "sift"
-hnsw_recall, hnsw_latency = load_dataset(f"{dataset}_hnsw", "metrics_ann_bench.json", "latency_p99")
-flatnav_recall, flatnav_latency = load_dataset(f"{dataset}_flatnav", "metrics_ann_bench.json", "latency_p99")
-
-plt.plot(hnsw_recall, hnsw_latency, 'x-', color = hnsw_color, label = "HNSW")
-plt.plot(flatnav_recall, flatnav_latency, 'x-', color = flatnav_color, label = "FlatNav")
-
-# We change the fontsize of minor ticks label 
-plt.gca().tick_params(axis='both', which='major', labelsize=12)
-plt.gca().tick_params(axis='both', which='minor', labelsize=8)
-# plt.xscale('log')
-plt.yscale('log')
-# plt.xlabel("", fontsize = 22)
-# plt.ylabel("P50 Latency", fontsize = 22)
-plt.title("SIFT", fontsize=24)
-plt.grid(which='both')
-plt.legend(fontsize=12, ncol=1)
+plot_dataset_comparison(ax, "sift", "metrics_ann_bench.json", "latency_p99", "SIFT")
 
 
 fig.supylabel('P99 Latency (ms)', fontsize = 28)

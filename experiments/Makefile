@@ -344,7 +344,7 @@ deep-image-bench-hnsw:
         --num-search-threads 1
 
 mnist-bench-flatnav: 
-	poetry run python run-benchmark.py \
+	poetry run python run_benchmark.py \
 		--dataset-name mnist-784 \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
@@ -374,7 +374,7 @@ mnist-bench-flatnav-base:
 		--num-search-threads 1 
 
 mnist-bench-hnsw: 
-	poetry run python run-benchmark.py \
+	poetry run python run_benchmark.py \
 		--dataset-name mnist-784 \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \

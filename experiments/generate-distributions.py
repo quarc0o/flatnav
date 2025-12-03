@@ -211,7 +211,7 @@ def main(
         max_edges_per_node=max_edges_per_node,
         verbose=True,
         collect_stats=False,
-        use_random_initialization=True,
+        use_random_initialization=False,
         random_seed=42,
     )
 

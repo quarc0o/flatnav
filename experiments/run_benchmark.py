@@ -199,9 +199,10 @@ def train_index(
             num_threads=num_build_threads,
         )
 
-        # Save index to "/root/data/hnsw_index_100m.bin"
-        hnsw_index.save_index("/root/data/hnsw_index_100m.bin")
-        exit(0)
+        # NOTE: Commented out to allow benchmarks to run
+        # Uncomment below if you need to save the HNSW index for debugging:
+        # hnsw_index.save_index("../data/hnsw_index_100m.bin")
+        # exit(0)
 
         return hnsw_index
 
@@ -232,7 +233,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=False,
             collect_stats=True,
-            # random_seed=42
+            use_random_initialization=True,
+            random_seed=42,
         )
 
         # Here we will first allocate memory for the index and then build edge connectivity
@@ -252,6 +254,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=True,
             collect_stats=False,
+            use_random_initialization=True,
+            random_seed=42,
         )
         index.set_num_threads(num_build_threads)
 
