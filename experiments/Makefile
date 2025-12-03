@@ -314,8 +314,8 @@ tti-10m--bench-hnsw:
 ################################
 
 deep-image-bench-flatnav: 
-	poetry run python run-benchmark.py \
-		--dataset-name deep-image-96-non-random \
+	poetry run python run_benchmark.py \
+		--dataset-name deep-image-96-random \
 		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
 		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
 		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
@@ -388,7 +388,7 @@ mnist-bench-hnsw:
 		--num-search-threads 1 
 
 gist-bench-flatnav: 
-	poetry run python run-benchmark.py \
+	poetry run python run_benchmark.py \
 		--dataset-name gist-non-random \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \

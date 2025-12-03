@@ -49,10 +49,11 @@ SYNTHETIC_DATASETS = [
 ]
 
 ANN_DATASETS = [
-    "glove-100-angular",
+    # "glove-100-angular",
     # "nytimes-256-angular",
-    "gist-960-euclidean",
-    "mnist-784-euclidean",
+    # "gist-960-euclidean",
+    # "mnist-784-euclidean",
+    "deep-image-96-angular",
     # "yandex-deep-10m-euclidean",
     # "spacev-10m-euclidean",
 ]
@@ -211,7 +212,7 @@ def main(
         max_edges_per_node=max_edges_per_node,
         verbose=True,
         collect_stats=False,
-        use_random_initialization=False,
+        use_random_initialization=True,
         random_seed=42,
     )
 

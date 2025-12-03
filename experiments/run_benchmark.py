@@ -233,8 +233,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=False,
             collect_stats=True,
-            use_random_initialization=True,
-            random_seed=42,
+            use_random_initialization=False,
+            # random_seed=42,
         )
 
         # Here we will first allocate memory for the index and then build edge connectivity
@@ -254,8 +254,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=True,
             collect_stats=False,
-            use_random_initialization=True,
-            random_seed=42,
+            use_random_initialization=False,
+            # random_seed=42,
         )
         index.set_num_threads(num_build_threads)
 
