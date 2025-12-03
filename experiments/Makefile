@@ -315,7 +315,7 @@ tti-10m--bench-hnsw:
 
 deep-image-bench-flatnav: 
 	poetry run python run-benchmark.py \
-		--dataset-name deep-image-96 \
+		--dataset-name deep-image-96-non-random \
 		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
 		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
 		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
@@ -345,7 +345,7 @@ deep-image-bench-hnsw:
 
 mnist-bench-flatnav: 
 	poetry run python run_benchmark.py \
-		--dataset-name mnist-784 \
+		--dataset-name mnist-784-random \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
 		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
@@ -375,7 +375,7 @@ mnist-bench-flatnav-base:
 
 mnist-bench-hnsw: 
 	poetry run python run_benchmark.py \
-		--dataset-name mnist-784 \
+		--dataset-name mnist-784-non-random \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
 		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
@@ -388,8 +388,8 @@ mnist-bench-hnsw:
 		--num-search-threads 1 
 
 gist-bench-flatnav: 
-	poetry run python run_benchmark.py \
-		--dataset-name gist \
+	poetry run python run-benchmark.py \
+		--dataset-name gist-non-random \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
 		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
@@ -421,11 +421,13 @@ gist-bench-hnsw:
 
 sift-bench-flatnav: 
 	poetry run python run-benchmark.py \
-		--dataset-name sift \
+		--dataset-name sift-random \
 		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
 		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
 		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
 		--index-type flatnav \
+		--use-hnsw-base-layer \
+		--hnsw-base-layer-filename sift.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
 		--ef-search 100 200 300 500 1000 3000 \
@@ -570,7 +572,7 @@ nytimes-bench-flatnav:
 		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
 		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
 		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
-		--dataset-name nytimes-256-angular \
+		--dataset-name nytimes-256-angular-non-random \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
         --hnsw-base-layer-filename nytimes.mtx \
