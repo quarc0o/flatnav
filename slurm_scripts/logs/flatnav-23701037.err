@@ -1,0 +1,12 @@
+Makefile:752: warning: overriding recipe for target 'gist-bench-flatnav'
+Makefile:391: warning: ignoring old recipe for target 'gist-bench-flatnav'
+INFO:root:Dataset: gist-pruning-test
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 1.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+[2025-12-09T11:40:23.963] error: *** JOB 23701037 ON idun-03-02 CANCELLED AT 2025-12-09T11:40:23 DUE to SIGNAL Terminated ***

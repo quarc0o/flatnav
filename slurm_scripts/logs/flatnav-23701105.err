@@ -1,0 +1,103 @@
+INFO:root:Dataset: gist-pruning-test
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 1.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 128.57476544380188 seconds
+INFO:root:Number of hub nodes: 10328
+INFO:root:Number of random nodes: 10000
+INFO:root:Hub nodes avg in-degree: 90.48
+INFO:root:Random nodes avg in-degree: 12.53
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.3019950389862 seconds
+INFO:root:Baseline - Recall: 0.7050, QPS: 1025.98
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 128.78776955604553 seconds
+INFO:root:Hub-pruned - Recall: 0.6104, QPS: 1277.88
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 129.10380578041077 seconds
+INFO:root:Random-pruned - Recall: 0.7013, QPS: 1034.67
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0946 (13.42%)
+INFO:root:  Random pruning: 0.0037 (0.53%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.3096206188202 seconds
+INFO:root:Baseline - Recall: 0.8247, QPS: 583.40
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 127.92880702018738 seconds
+INFO:root:Hub-pruned - Recall: 0.7270, QPS: 731.73
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 128.6040472984314 seconds
+INFO:root:Random-pruned - Recall: 0.8211, QPS: 583.26
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0977 (11.84%)
+INFO:root:  Random pruning: 0.0035 (0.43%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.4253706932068 seconds
+INFO:root:Baseline - Recall: 0.9078, QPS: 296.32
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 127.95402956008911 seconds
+INFO:root:Hub-pruned - Recall: 0.8161, QPS: 389.44
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 128.69293856620789 seconds
+INFO:root:Random-pruned - Recall: 0.9047, QPS: 327.95
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0917 (10.10%)
+INFO:root:  Random pruning: 0.0030 (0.34%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 127.71572208404541 seconds
+INFO:root:Number of hub nodes: 20278
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 73.59
+INFO:root:Random nodes avg in-degree: 12.57
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 127.97183203697205 seconds
+INFO:root:Baseline - Recall: 0.7049, QPS: 1059.74
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 127.71435356140137 seconds
+INFO:root:Hub-pruned - Recall: 0.5791, QPS: 1474.84
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 128.16437292099 seconds
+INFO:root:Random-pruned - Recall: 0.6785, QPS: 1090.16
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1258 (17.84%)
+INFO:root:  Random pruning: 0.0264 (3.74%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.4849648475647 seconds
+INFO:root:Baseline - Recall: 0.8246, QPS: 596.10
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 128.67415475845337 seconds
+INFO:root:Hub-pruned - Recall: 0.7018, QPS: 774.17
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 128.24442434310913 seconds
+INFO:root:Random-pruned - Recall: 0.7954, QPS: 631.21
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1227 (14.88%)
+INFO:root:  Random pruning: 0.0291 (3.53%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+[2025-12-09T12:32:01.741] error: *** JOB 23701105 ON idun-03-02 CANCELLED AT 2025-12-09T12:32:01 DUE to SIGNAL Terminated ***

@@ -389,7 +389,7 @@ mnist-bench-hnsw:
 
 gist-bench-flatnav: 
 	poetry run python run_benchmark.py \
-		--dataset-name gist-non-random \
+		--dataset-name gist-pruning \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
 		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
@@ -401,7 +401,10 @@ gist-bench-flatnav:
 		--ef-search 100 200 300 500 1000 3000 \
 		--metric l2 \
 		--num-build-threads 16 \
-		--num-search-threads 1 
+		--num-search-threads 1 \
+		--pruning-percentages 1 2 5 \
+		--alpha 1.0 \
+		--hub-identification indegree
 
 
 gist-bench-hnsw: 
@@ -704,6 +707,109 @@ plot-speed-test-results:
 
 plot-results:
 	poetry run python plot_stats_test_results.py
+
+################################
+# Hub Pruning Experiments
+################################
+
+# Run hub pruning experiment on glove-100-angular
+hub-pruning-glove100:
+	poetry run python hub_pruning_experiment.py \
+		--dataset ../data/glove-100-angular/glove-100-angular.train.npy \
+		--queries ../data/glove-100-angular/glove-100-angular.test.npy \
+		--gtruth ../data/glove-100-angular/glove-100-angular.gtruth.npy \
+		--dataset-name glove-100-angular \
+		--metric angular \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 200 400 \
+		--pruning-percentages 1 2 5 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+# Run hub pruning experiment on sift-128-euclidean
+hub-pruning-sift:
+	poetry run python hub_pruning_experiment.py \
+		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
+		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
+		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
+		--dataset-name sift-128-euclidean \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 200 400 \
+		--pruning-percentages 1 2 5 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+gist-bench-flatnav-pruning-new: 
+	poetry run python hub_pruning_experiment.py \
+		--dataset-name gist-pruning-test \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 \
+		--pruning-percentages 2 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+# Run hub pruning experiment on deep-image-96-angular
+hub-pruning-deep-image:
+	poetry run python hub_pruning_experiment.py \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
+		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
+		--dataset-name deep-image-96-angular \
+		--metric angular \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 200 400 \
+		--pruning-percentages 1 2 5 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+# Run hub pruning experiment with access-count based hub identification
+hub-pruning-access-count:
+	poetry run python hub_pruning_experiment.py \
+		--dataset ../data/glove-100-angular/glove-100-angular.train.npy \
+		--queries ../data/glove-100-angular/glove-100-angular.test.npy \
+		--gtruth ../data/glove-100-angular/glove-100-angular.gtruth.npy \
+		--dataset-name glove-100-angular-access \
+		--metric angular \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 200 400 \
+		--pruning-percentages 1 2 5 \
+		--alpha 1.0 \
+		--hub-identification access_count \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+# Plot hub pruning results
+plot-hub-pruning:
+	poetry run python plot_hub_pruning_results.py \
+		--results-file ../metrics/glove-100-angular_hub_pruning_experiment.json \
+		--output-dir ../plots
+
+################################
+# End Hub Pruning Experiments
+################################
 
 setup: install-flatnav install-hnswlib
 

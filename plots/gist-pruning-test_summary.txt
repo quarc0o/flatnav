@@ -1,0 +1,18 @@
+================================================================================
+Hub Pruning Experiment Summary: gist-pruning-test
+================================================================================
+Distance Type: l2
+Max Edges Per Node: 32
+Hub Identification: indegree
+Alpha (edge removal fraction): 1.0
+
+
+------------------------------------------------------------
+Pruning 2.0% of nodes
+------------------------------------------------------------
+
+ef_search=100:
+  Baseline:      Recall=0.7053
+  Hub Pruned:    Recall=0.5792 (drop: 17.88%)
+  Random Pruned: Recall=0.6788 (drop: 3.77%)
+  -> Hub pruning causes MORE degradation (SUPPORTS hypothesis)

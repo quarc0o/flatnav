@@ -1,0 +1,38 @@
+INFO:root:Dataset: gist-pruning-test
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 1.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 128.51242661476135 seconds
+INFO:root:Number of hub nodes: 10315
+INFO:root:Number of random nodes: 10000
+INFO:root:Hub nodes avg in-degree: 90.50
+INFO:root:Random nodes avg in-degree: 12.52
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.45629739761353 seconds
+INFO:root:Baseline - Recall: 0.7045, QPS: 1040.60
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 128.83325934410095 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 564, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 280, in run_pruning_experiment
+    hub_metrics = run_search_benchmark(
+                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 126, in run_search_benchmark
+    metrics = compute_metrics(
+              ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 69, in compute_metrics
+    _, indices = index.search_single(
+                 ^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Search did not return the expected number of results. Expected 100 but got 1.
+make: *** [Makefile:752: gist-bench-flatnav-pruning-new] Error 1

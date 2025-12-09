@@ -130,17 +130,22 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
         /* ef_search = */ ef_search,
         /* num_initializations = */ num_initializations);
 
-    if (top_k.size() != K) {
-      throw std::runtime_error("Search did not return the expected number of results. Expected " +
-                               std::to_string(K) + " but got " + std::to_string(top_k.size()) + ".");
-    }
-
+    // Handle case where search returns fewer results than requested
+    // This can happen when the graph is heavily pruned/disconnected
+    size_t actual_results = top_k.size();
     label_t* labels = new label_t[K];
     float* distances = new float[K];
 
-    for (size_t i = 0; i < K; i++) {
+    // Fill with actual results
+    for (size_t i = 0; i < actual_results; i++) {
       distances[i] = top_k[i].first;
       labels[i] = top_k[i].second;
+    }
+
+    // Pad remaining slots with sentinel values (-1 for labels, infinity for distances)
+    for (size_t i = actual_results; i < static_cast<size_t>(K); i++) {
+      distances[i] = std::numeric_limits<float>::infinity();
+      labels[i] = -1;
     }
 
     // Allows to transfer ownership to Python
@@ -172,6 +177,10 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
     label_t* results = new label_t[num_queries * K];
     float* distances = new float[num_queries * K];
 
+    // Initialize with sentinel values in case search returns fewer results
+    std::fill_n(results, num_queries * K, static_cast<label_t>(-1));
+    std::fill_n(distances, num_queries * K, std::numeric_limits<float>::infinity());
+
     // No need to spawn any threads if we are in a single-threaded environment
     if (num_threads == 1) {
       for (size_t query_index = 0; query_index < num_queries; query_index++) {
@@ -180,14 +189,9 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
             /* ef_search = */ ef_search,
             /* num_initializations = */ num_initializations);
 
-        if (top_k.size() != K) {
-          throw std::runtime_error(
-              "Search did not return the expected number "
-              "of results. Expected " +
-              std::to_string(K) + " but got " + std::to_string(top_k.size()) + ".");
-        }
-
-        for (size_t i = 0; i < top_k.size(); i++) {
+        // Handle case where search returns fewer results than requested
+        size_t actual_results = std::min(top_k.size(), static_cast<size_t>(K));
+        for (size_t i = 0; i < actual_results; i++) {
           distances[query_index * K + i] = top_k[i].first;
           results[query_index * K + i] = top_k[i].second;
         }
@@ -203,7 +207,9 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
                 /* query = */ query, /* K = */ K, /* ef_search = */ ef_search,
                 /* num_initializations = */ num_initializations);
 
-            for (uint32_t result_id = 0; result_id < K; result_id++) {
+            // Handle case where search returns fewer results than requested
+            size_t actual_results = std::min(top_k.size(), static_cast<size_t>(K));
+            for (size_t result_id = 0; result_id < actual_results; result_id++) {
               distances[(row_index * K) + result_id] = top_k[result_id].first;
               results[(row_index * K) + result_id] = top_k[result_id].second;
             }
@@ -283,6 +289,12 @@ class PyIndex : public std::enable_shared_from_this<PyIndex<dist_t, label_t>> {
   void setHubNodes(const std::vector<uint32_t>& hub_nodes) { _index->setHubNodeFlags(hub_nodes); }
 
   std::vector<std::vector<bool>> getVisitedNodesSequence() { return _index->getVisitedNodesSequence(); }
+
+  void rePruneGraph(const std::vector<uint32_t>& hub_nodes, float alpha) {
+    _index->rePruneGraph(hub_nodes, alpha);
+  }
+
+  void resetNodeAccessDistribution() { _index->resetNodeAccessDistribution(); }
 
   std::vector<std::vector<uint32_t>> getGraphOutdegreeTable() { return _index->getGraphOutdegreeTable(); }
 
@@ -477,6 +489,12 @@ void bindSpecialization(py::module_& index_submodule) {
       .def("set_num_threads", &IndexType::setNumThreads, py::arg("num_threads"), SET_NUM_THREADS_DOCSTRING)
       .def("set_hub_nodes", &IndexType::setHubNodes, py::arg("hub_nodes"))
       .def("get_visited_nodes_sequence", &IndexType::getVisitedNodesSequence)
+      .def("reprune_graph", &IndexType::rePruneGraph, py::arg("hub_nodes"), py::arg("alpha"),
+           "Re-prune the graph by removing a fraction of edges from hub nodes.\n\n"
+           ":param hub_nodes: List of node IDs considered as hub nodes.\n"
+           ":param alpha: Fraction of edges to remove (0.0 to 1.0).")
+      .def("reset_node_access_distribution", &IndexType::resetNodeAccessDistribution,
+           "Reset the node access counts to zero for all nodes.")
       .def_static("load_index", &IndexType::loadIndex, py::arg("filename"), LOAD_INDEX_DOCSTRING)
       .def_property_readonly("max_edges_per_node", &IndexType::getMaxEdgesPerNode)
       .def_property_readonly("num_threads", &IndexType::getNumThreads, NUM_THREADS_DOCSTRING);

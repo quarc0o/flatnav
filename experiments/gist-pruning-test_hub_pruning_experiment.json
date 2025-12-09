@@ -1,0 +1,61 @@
+{
+  "metadata": {
+    "dataset_name": "gist-pruning-test",
+    "distance_type": "l2",
+    "max_edges_per_node": 32,
+    "ef_construction": 200,
+    "pruning_percentages": [
+      2.0
+    ],
+    "alpha": 1.0,
+    "hub_identification_method": "indegree",
+    "num_train_vectors": 1000000,
+    "num_queries": 1000,
+    "dimension": 960
+  },
+  "results": {
+    "baseline": [
+      {
+        "recall": 0.7053200000000005,
+        "qps": 1047.7061419756246,
+        "latency_p50": 0.9918212890625,
+        "latency_p95": 1.1658787727355957,
+        "latency_p99": 1.235058307647705,
+        "distance_computations": 2125.999,
+        "pruning_percentage": 2.0,
+        "ef_search": 100,
+        "experiment_type": "baseline"
+      }
+    ],
+    "hub_pruned": [
+      {
+        "recall": 0.5792200000000007,
+        "qps": 1408.6734274060154,
+        "latency_p50": 0.7734298706054688,
+        "latency_p95": 0.9105443954467773,
+        "latency_p99": 0.9958863258361816,
+        "distance_computations": 1553.845,
+        "pruning_percentage": 2.0,
+        "ef_search": 100,
+        "experiment_type": "hub_pruned",
+        "num_pruned_nodes": 20326,
+        "avg_indegree_pruned": 73.52607497786087
+      }
+    ],
+    "random_pruned": [
+      {
+        "recall": 0.6787600000000017,
+        "qps": 1078.634302096524,
+        "latency_p50": 0.9833574295043945,
+        "latency_p95": 1.1651873588562012,
+        "latency_p99": 1.2229967117309568,
+        "distance_computations": 2041.719,
+        "pruning_percentage": 2.0,
+        "ef_search": 100,
+        "experiment_type": "random_pruned",
+        "num_pruned_nodes": 20000,
+        "avg_indegree_pruned": 12.5703
+      }
+    ]
+  }
+}
