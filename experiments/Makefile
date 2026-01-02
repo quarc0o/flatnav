@@ -757,7 +757,7 @@ gist-bench-flatnav-pruning-new:
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 \
+		--ef-search 100 200 300 \
 		--pruning-percentages 2 \
 		--alpha 1.0 \
 		--hub-identification indegree \
