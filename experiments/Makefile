@@ -740,8 +740,25 @@ hub-pruning-sift:
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 200 400 \
-		--pruning-percentages 1 2 5 \
+		--ef-search 100 \
+		--pruning-percentages 2 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+hub-pruning-nytimes:
+	poetry run python hub_pruning_experiment.py \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
+		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
+		--dataset-name nytimes-256-angular \
+		--metric angular \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 \
+		--pruning-percentages 2 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -765,6 +782,23 @@ gist-bench-flatnav-pruning-new:
 		--num-build-threads 16 \
 		--num-search-threads 1
 
+hub-pruning-mnist: 
+	poetry run python hub_pruning_experiment.py \
+		--dataset-name mnist-784-random \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
+		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 200 \
+		--ef-search 100 \
+		--pruning-percentages 2 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--use-hnsw-base-layer \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
 # Run hub pruning experiment on deep-image-96-angular
 hub-pruning-deep-image:
 	poetry run python hub_pruning_experiment.py \
@@ -775,8 +809,8 @@ hub-pruning-deep-image:
 		--metric angular \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 200 400 \
-		--pruning-percentages 1 2 5 \
+		--ef-search 100  \
+		--pruning-percentages 2 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
