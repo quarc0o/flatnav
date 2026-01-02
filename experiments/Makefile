@@ -750,7 +750,7 @@ hub-pruning-sift:
 
 gist-bench-flatnav-pruning-new: 
 	poetry run python hub_pruning_experiment.py \
-		--dataset-name gist-pruning-test \
+		--dataset-name gist-pruning-test-random \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
 		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \

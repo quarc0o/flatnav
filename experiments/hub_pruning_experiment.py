@@ -437,10 +437,10 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--output-dir",
+        "--metrics-file",
         type=str,
-        default="../metrics",
-        help="Directory to save results.",
+        default="../metrics/metrics.json",
+        help="Path to the main metrics file to append results to.",
     )
 
     parser.add_argument(
@@ -498,34 +498,55 @@ def main():
         seed=args.seed,
     )
 
-    # Save results
-    os.makedirs(args.output_dir, exist_ok=True)
-    output_file = os.path.join(
-        args.output_dir,
-        f"{args.dataset_name}_hub_pruning_experiment.json"
-    )
+    # Save results to the main metrics file in the same format as run_benchmark.py
+    metrics_file = args.metrics_file
+    os.makedirs(os.path.dirname(metrics_file), exist_ok=True)
 
-    # Add metadata
-    output_data = {
-        "metadata": {
-            "dataset_name": args.dataset_name,
-            "distance_type": args.metric,
-            "max_edges_per_node": args.num_node_links,
-            "ef_construction": args.ef_construction,
-            "pruning_percentages": args.pruning_percentages,
-            "alpha": args.alpha,
-            "hub_identification_method": args.hub_identification,
-            "num_train_vectors": train_data.shape[0],
-            "num_queries": queries.shape[0],
-            "dimension": train_data.shape[1],
-        },
-        "results": results,
-    }
+    # Load existing metrics if file exists
+    all_metrics = {}
+    if os.path.exists(metrics_file) and os.path.getsize(metrics_file) > 0:
+        with open(metrics_file, "r") as f:
+            try:
+                all_metrics = json.load(f)
+            except json.JSONDecodeError:
+                logging.error(f"Error reading {metrics_file}")
 
-    with open(output_file, "w") as f:
-        json.dump(output_data, f, indent=2)
+    # Format results in the same structure as run_benchmark.py
+    # Keys are: {dataset_name}_{experiment_type}
+    for experiment_type, experiment_results in results.items():
+        experiment_key = f"{args.dataset_name}_{experiment_type}"
 
-    logging.info(f"\nResults saved to: {output_file}")
+        if experiment_key not in all_metrics:
+            all_metrics[experiment_key] = []
+
+        for result in experiment_results:
+            # Format each result to match run_benchmark.py format
+            formatted_result = {
+                "node_links": args.num_node_links,
+                "ef_construction": args.ef_construction,
+                "recall": result["recall"],
+                "qps": result["qps"],
+                "latency_p50": result["latency_p50"],
+                "latency_p95": result["latency_p95"],
+                "latency_p99": result["latency_p99"],
+                "distance_computations": result["distance_computations"],
+                "distance_type": args.metric.lower(),
+                "ef_search": result["ef_search"],
+                "pruning_percentage": result["pruning_percentage"],
+            }
+
+            # Add pruning-specific fields if present
+            if "num_pruned_nodes" in result:
+                formatted_result["num_pruned_nodes"] = result["num_pruned_nodes"]
+            if "avg_indegree_pruned" in result:
+                formatted_result["avg_indegree_pruned"] = result["avg_indegree_pruned"]
+
+            all_metrics[experiment_key].append(formatted_result)
+
+    with open(metrics_file, "w") as f:
+        json.dump(all_metrics, f, indent=4)
+
+    logging.info(f"\nResults saved to: {metrics_file}")
 
     # Print summary
     print("\n" + "="*70)

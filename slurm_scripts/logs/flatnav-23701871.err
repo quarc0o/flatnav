@@ -1,0 +1,31 @@
+INFO:root:Dataset: gist-pruning-test-random
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 130.42671632766724 seconds
+INFO:root:Number of hub nodes: 20291
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 73.57
+INFO:root:Random nodes avg in-degree: 12.57
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 128.87689971923828 seconds
+INFO:root:Baseline - Recall: 0.7047, QPS: 1032.64
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 129.5529203414917 seconds
+INFO:root:Hub-pruned - Recall: 0.5703, QPS: 1355.78
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 129.08070492744446 seconds
+INFO:root:Random-pruned - Recall: 0.6832, QPS: 983.00
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1344 (19.07%)
+INFO:root:  Random pruning: 0.0215 (3.05%)
+INFO:root:
+Results saved to: ../metrics/gist-pruning-test-random_hub_pruning_experiment.json
