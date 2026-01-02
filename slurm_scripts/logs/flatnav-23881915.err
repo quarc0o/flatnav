@@ -1,0 +1,31 @@
+INFO:root:Dataset: sift-128-euclidean
+INFO:root:Train data shape: (1000000, 128)
+INFO:root:Queries shape: (10000, 128)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 28.461281299591064 seconds
+INFO:root:Number of hub nodes: 20717
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 53.13
+INFO:root:Random nodes avg in-degree: 21.23
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 26.83222007751465 seconds
+INFO:root:Baseline - Recall: 0.9222, QPS: 3127.91
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 27.522175550460815 seconds
+INFO:root:Hub-pruned - Recall: 0.8764, QPS: 3361.90
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 26.80181908607483 seconds
+INFO:root:Random-pruned - Recall: 0.8991, QPS: 3224.59
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0459 (4.98%)
+INFO:root:  Random pruning: 0.0232 (2.51%)
+INFO:root:
+Results saved to: ../metrics/metrics.json

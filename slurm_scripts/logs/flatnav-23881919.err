@@ -1,0 +1,31 @@
+INFO:root:Dataset: nytimes-256-angular
+INFO:root:Train data shape: (290000, 256)
+INFO:root:Queries shape: (10000, 256)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 19.418595552444458 seconds
+INFO:root:Number of hub nodes: 5810
+INFO:root:Number of random nodes: 5800
+INFO:root:Hub nodes avg in-degree: 107.51
+INFO:root:Random nodes avg in-degree: 22.52
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 19.55772066116333 seconds
+INFO:root:Baseline - Recall: 0.6779, QPS: 1647.19
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 19.53109884262085 seconds
+INFO:root:Hub-pruned - Recall: 0.6373, QPS: 1761.19
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 19.43821930885315 seconds
+INFO:root:Random-pruned - Recall: 0.6602, QPS: 1685.87
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0406 (5.99%)
+INFO:root:  Random pruning: 0.0177 (2.61%)
+INFO:root:
+Results saved to: ../metrics/metrics.json

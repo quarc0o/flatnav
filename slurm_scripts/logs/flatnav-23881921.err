@@ -1,0 +1,31 @@
+INFO:root:Dataset: mnist-784-random
+INFO:root:Train data shape: (60000, 784)
+INFO:root:Queries shape: (10000, 784)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 3.138505458831787 seconds
+INFO:root:Number of hub nodes: 1336
+INFO:root:Number of random nodes: 1200
+INFO:root:Hub nodes avg in-degree: 38.65
+INFO:root:Random nodes avg in-degree: 17.64
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 3.139202117919922 seconds
+INFO:root:Baseline - Recall: 0.9912, QPS: 2099.66
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 3.1651456356048584 seconds
+INFO:root:Hub-pruned - Recall: 0.9604, QPS: 2186.10
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 3.161126136779785 seconds
+INFO:root:Random-pruned - Recall: 0.9746, QPS: 2122.57
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0309 (3.11%)
+INFO:root:  Random pruning: 0.0167 (1.68%)
+INFO:root:
+Results saved to: ../metrics/metrics.json
