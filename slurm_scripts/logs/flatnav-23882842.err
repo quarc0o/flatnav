@@ -1,0 +1,12 @@
+2026-01-04 18:35:35,961 - INFO - Loading dataset from ../data/deep/train_100m.npy
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 565, in <module>
+    exit(main())
+         ^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 523, in main
+    train_data = load_dataset(args.dataset, args.train_dataset_range)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 502, in load_dataset
+    raise FileNotFoundError(f"Dataset file not found: {path}")
+FileNotFoundError: Dataset file not found: ../data/deep/train_100m.npy
+make: *** [Makefile:684: yandex-deep-100m-indegree-flatnav] Error 1

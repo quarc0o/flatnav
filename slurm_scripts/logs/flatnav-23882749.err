@@ -1,0 +1,53 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.2145328521728516 seconds
+INFO:root:
+Computing hub statistics...
+ERROR:root:Error computing hub statistics: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_hub_statistics'
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 88, in compute_and_log_hub_stats
+    stats = index.get_hub_statistics(hub_percentile)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_hub_statistics'
+INFO:root:
+Computing in-degree distribution...
+ERROR:root:Error computing in-degree distribution: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_indegree_distribution'
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 48, in compute_and_log_indegree_distribution
+    distribution = index.get_indegree_distribution()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_indegree_distribution'
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9873999999999314, 'qps': 3774.538005825902, 'latency_p50': 0.26535987854003906, 'latency_p95': 0.35500526428222656, 'latency_p99': 0.39387464523315446, 'latency_p999': 0.4370224475860598, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9958619999999563, 'qps': 2275.508149135782, 'latency_p50': 0.44035911560058594, 'latency_p95': 0.6022572517395017, 'latency_p99': 0.661613941192627, 'latency_p999': 0.7328996658325198, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9972089999999636, 'qps': 1674.9355791550568, 'latency_p50': 0.5972385406494141, 'latency_p95': 0.8251786231994627, 'latency_p99': 0.9117174148559571, 'latency_p999': 1.0128023624420166, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.070080518722534 seconds
+INFO:root:
+Computing hub statistics...
+ERROR:root:Error computing hub statistics: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_hub_statistics'
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 88, in compute_and_log_hub_stats
+    stats = index.get_hub_statistics(hub_percentile)
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_hub_statistics'
+INFO:root:
+Computing in-degree distribution...
+ERROR:root:Error computing in-degree distribution: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_indegree_distribution'
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 48, in compute_and_log_indegree_distribution
+    distribution = index.get_indegree_distribution()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'flatnav._core.index.IndexL2Float' object has no attribute 'get_indegree_distribution'
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9893319999999317, 'qps': 3492.619897930294, 'latency_p50': 0.28777122497558594, 'latency_p95': 0.38195848464965804, 'latency_p99': 0.41866302490234375, 'latency_p999': 0.4589564800262453, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9962019999999522, 'qps': 2091.4990962426755, 'latency_p50': 0.4801750183105469, 'latency_p95': 0.6542205810546875, 'latency_p99': 0.7212233543395997, 'latency_p999': 0.7901196479797364, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9971179999999574, 'qps': 1539.7433506557202, 'latency_p50': 0.6527900695800781, 'latency_p95': 0.8969306945800781, 'latency_p99': 0.9951758384704593, 'latency_p999': 1.0824217796325686, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
+[2026-01-04T15:28:48.230] error: *** JOB 23882749 ON idun-03-32 CANCELLED AT 2026-01-04T15:28:48 DUE to SIGNAL Terminated ***

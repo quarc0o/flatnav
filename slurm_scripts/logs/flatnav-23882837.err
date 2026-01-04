@@ -1,0 +1,12 @@
+2026-01-04 18:26:05,551 - INFO - Loading dataset from /root/data/nytimes-256-angular/nytimes-256-angular.train.npy
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 565, in <module>
+    exit(main())
+         ^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 523, in main
+    train_data = load_dataset(args.dataset, args.train_dataset_range)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 502, in load_dataset
+    raise FileNotFoundError(f"Dataset file not found: {path}")
+FileNotFoundError: Dataset file not found: /root/data/nytimes-256-angular/nytimes-256-angular.train.npy
+make: *** [Makefile:674: nytimes-indegree-flatnav] Error 1

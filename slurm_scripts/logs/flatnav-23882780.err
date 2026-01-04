@@ -1,0 +1,19 @@
+2026-01-04 16:40:08,754 - INFO - Loading dataset from ../data/gist-960-euclidean/gist-960-euclidean.train.npy
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 561, in <module>
+    exit(main())
+         ^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 513, in main
+    data_loader = get_data_loader(
+                  ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 241, in get_data_loader
+    return loader(**kwargs)
+           ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 69, in __init__
+    self.verify_paths([train_dataset_path, queries_path, ground_truth_path])
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 84, in verify_paths
+    if not os.path.exists(path):
+           ^^^^^^^^^^^^^^^^^^^^
+  File "<frozen genericpath>", line 19, in exists
+TypeError: stat: path should be string, bytes, os.PathLike or integer, not NoneType
+make: *** [Makefile:641: gist-indegree-flatnav] Error 1

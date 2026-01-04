@@ -1,0 +1,17 @@
+2026-01-04 16:40:31,120 - INFO - Loading dataset from /root/data/sift-128-euclidean/sift-128-euclidean.train.npy
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 561, in <module>
+    exit(main())
+         ^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/compute_indegree_stats.py", line 513, in main
+    data_loader = get_data_loader(
+                  ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 241, in get_data_loader
+    return loader(**kwargs)
+           ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 69, in __init__
+    self.verify_paths([train_dataset_path, queries_path, ground_truth_path])
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 85, in verify_paths
+    raise FileNotFoundError(f"File {path} not found")
+FileNotFoundError: File /root/data/sift-128-euclidean/sift-128-euclidean.train.npy not found
+make: *** [Makefile:664: sift-indegree-flatnav] Error 1

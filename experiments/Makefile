@@ -374,7 +374,7 @@ mnist-bench-flatnav-2:
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--ef-search 100 200 300 \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -393,18 +393,16 @@ mnist-bench-hnsw-2:
 		--num-build-threads 16 \
 		--num-search-threads 1 
 
-gist-bench-flatnav: 
+gist-bench-flatnav-3: 
 	poetry run python run-benchmark.py \
 		--dataset-name gist \
-		--dataset /root/data/gist-960-euclidean/gist-960-euclidean.train.npy \
-		--queries /root/data/gist-960-euclidean/gist-960-euclidean.test.npy \
-		--gtruth /root/data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
 		--index-type flatnav \
-		--use-hnsw-base-layer \
-		--hnsw-base-layer-filename gist.mtx \
 		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--ef-construction 100 200 \
+		--ef-search 100 200 300 \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -609,6 +607,96 @@ nytimes-bench-hnsw:
 
 ################################
 # End ANN Benchmarks
+################################
+
+################################
+# In-Degree Analysis Targets
+################################
+
+# MNIST in-degree stats (FlatNav native)
+mnist-indegree-flatnav:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--dataset-name mnist \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_mnist.json
+
+# MNIST in-degree stats (HNSW base layer)
+mnist-indegree-hnsw-base:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--dataset-name mnist \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--num-node-links 32 \
+		--ef-construction 100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_mnist.json
+
+# GIST in-degree stats (FlatNav native)
+gist-indegree-flatnav:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--dataset-name gist \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_gist.json
+
+# GIST in-degree stats (HNSW base layer)
+gist-indegree-hnsw-base:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--dataset-name gist \
+		--metric l2 \
+		--use-hnsw-base-layer \
+		--num-node-links 32 \
+		--ef-construction 100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_gist.json
+
+# SIFT in-degree stats
+sift-indegree-flatnav:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
+		--dataset-name sift \
+		--metric l2 \
+		--num-node-links 32 \
+		--ef-construction 100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_sift.json
+
+nytimes-indegree-flatnav:
+	poetry run python compute_indegree_stats.py \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--dataset-name nytimes \
+		--metric angular \
+		--num-node-links 32 \
+		--ef-construction  100 200 400 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_nytimes.json
+
+deep-image-indegree-flatnav: 
+	poetry run python compute_indegree_stats.py \
+		--dataset-name deep-image-96 \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--num-node-links 32 \
+		--ef-construction 100 200 300 \
+		--metric l2 \
+		--num-build-threads 16 \
+		--output ../metrics/indegree_stats_deep.json
+
+# Plot in-degree analysis
+plot-indegree:
+	poetry run python plot_indegree_analysis.py \
+		--input ../metrics/indegree_stats_mnist.json
+
+################################
+# End In-Degree Analysis Targets
 ################################
 
 setup: install-flatnav install-hnswlib

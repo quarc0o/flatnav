@@ -1,0 +1,238 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.2556583881378174 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6440 (10.0%)
+INFO:root:  Number of Regular Nodes: 53560 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 26
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 30.43
+INFO:root:  Average Regular In-Degree: 14.45
+INFO:root:  Overall Average In-Degree: 16.17
+INFO:root:  Median In-Degree: 15.00
+INFO:root:  Max In-Degree: 65
+INFO:root:  Min In-Degree: 0
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 970063
+INFO:root:  Hub → Hub: 29274
+INFO:root:  Hub → Regular: 112850
+INFO:root:  Regular → Hub: 166719
+INFO:root:  Regular → Regular: 661220
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 3.02%
+INFO:root:  Hub → Regular: 11.63%
+INFO:root:  Regular → Hub: 17.19%
+INFO:root:  Regular → Regular: 68.16%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.55
+INFO:root:  Avg Hub → Regular: 17.52
+INFO:root:  Avg Regular → Hub: 3.11
+INFO:root:  Avg Regular → Regular: 12.35
+INFO:root:================================================================================
+INFO:root:
+Computing in-degree distribution...
+INFO:root:================================================================================
+INFO:root:In-Degree Distribution
+INFO:root:================================================================================
+INFO:root:In-Degree       Percentage      Bar
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:0                   0.1833%    
+INFO:root:1                   0.1183%    
+INFO:root:2                   0.1433%    
+INFO:root:3                   0.3267%    
+INFO:root:4                   0.6783%    
+INFO:root:5                   1.1867%    
+INFO:root:6                   2.0483%    █
+INFO:root:7                   2.7633%    █
+INFO:root:8                   4.0083%    ██
+INFO:root:9                   4.8133%    ██
+INFO:root:10                  5.5467%    ██
+INFO:root:11                  5.9467%    ██
+INFO:root:12                  6.2683%    ███
+INFO:root:13                  6.4400%    ███
+INFO:root:14                  6.2850%    ███
+INFO:root:15                  6.0083%    ███
+INFO:root:16                  5.5533%    ██
+INFO:root:17                  5.1950%    ██
+INFO:root:18                  4.6167%    ██
+INFO:root:19                  4.1983%    ██
+INFO:root:20                  3.7417%    █
+INFO:root:21                  3.3633%    █
+INFO:root:22                  2.8967%    █
+INFO:root:23                  2.6333%    █
+INFO:root:24                  2.2467%    █
+INFO:root:25                  2.0567%    █
+INFO:root:26                  1.7900%    
+INFO:root:27                  1.5067%    
+INFO:root:28                  1.2183%    
+INFO:root:29                  1.1350%    
+INFO:root:30                  0.9517%    
+INFO:root:31                  0.7583%    
+INFO:root:32                  0.6783%    
+INFO:root:33                  0.5167%    
+INFO:root:34                  0.4633%    
+INFO:root:35                  0.3533%    
+INFO:root:36                  0.3050%    
+INFO:root:37                  0.2150%    
+INFO:root:38                  0.2200%    
+INFO:root:39                  0.1367%    
+INFO:root:40                  0.1150%    
+INFO:root:41                  0.0983%    
+INFO:root:42                  0.0767%    
+INFO:root:43                  0.0600%    
+INFO:root:44                  0.0250%    
+INFO:root:45                  0.0200%    
+INFO:root:46                  0.0317%    
+INFO:root:47                  0.0083%    
+INFO:root:48                  0.0067%    
+INFO:root:49                  0.0150%    
+INFO:root:50                  0.0067%    
+INFO:root:51                  0.0050%    
+INFO:root:52                  0.0050%    
+INFO:root:53                  0.0050%    
+INFO:root:55                  0.0017%    
+INFO:root:58                  0.0017%    
+INFO:root:61                  0.0017%    
+INFO:root:65                  0.0017%    
+INFO:root:================================================================================
+INFO:root:Total unique in-degree values: 58
+INFO:root:================================================================================
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'hub_avg_hub_indegree': 30.433695652173913, 'hub_avg_hub_to_hub': 4.5456521739130435, 'hub_avg_hub_to_regular': 17.523291925465838, 'hub_avg_indegree': 16.167716666666667, 'hub_avg_regular_indegree': 14.452389843166543, 'hub_avg_regular_to_hub': 3.1127520537714712, 'hub_avg_regular_to_regular': 12.345407020164302, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 26.0, 'hub_hub_to_hub_edges': 29274.0, 'hub_hub_to_hub_pct': 3.017742146644084, 'hub_hub_to_regular_edges': 112850.0, 'hub_hub_to_regular_pct': 11.6332650559809, 'hub_max_indegree': 65.0, 'hub_median_indegree': 15.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6440.0, 'hub_num_regular': 53560.0, 'hub_regular_to_hub_edges': 166719.0, 'hub_regular_to_hub_pct': 17.186409542473015, 'hub_regular_to_regular_edges': 661220.0, 'hub_regular_to_regular_pct': 68.162583254902, 'hub_total_edges': 970063.0, 'recall': 0.9867959999999315, 'qps': 3627.288446427518, 'latency_p50': 0.2765655517578125, 'latency_p95': 0.3676414489746094, 'latency_p99': 0.40841102600097656, 'latency_p999': 0.4527573585510255, 'distance_computations': 0.0}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'hub_avg_hub_indegree': 30.433695652173913, 'hub_avg_hub_to_hub': 4.5456521739130435, 'hub_avg_hub_to_regular': 17.523291925465838, 'hub_avg_indegree': 16.167716666666667, 'hub_avg_regular_indegree': 14.452389843166543, 'hub_avg_regular_to_hub': 3.1127520537714712, 'hub_avg_regular_to_regular': 12.345407020164302, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 26.0, 'hub_hub_to_hub_edges': 29274.0, 'hub_hub_to_hub_pct': 3.017742146644084, 'hub_hub_to_regular_edges': 112850.0, 'hub_hub_to_regular_pct': 11.6332650559809, 'hub_max_indegree': 65.0, 'hub_median_indegree': 15.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6440.0, 'hub_num_regular': 53560.0, 'hub_regular_to_hub_edges': 166719.0, 'hub_regular_to_hub_pct': 17.186409542473015, 'hub_regular_to_regular_edges': 661220.0, 'hub_regular_to_regular_pct': 68.162583254902, 'hub_total_edges': 970063.0, 'recall': 0.9952829999999511, 'qps': 2193.3464736326987, 'latency_p50': 0.4563331604003906, 'latency_p95': 0.6222724914550781, 'latency_p99': 0.6861710548400879, 'latency_p999': 0.7660391330718994, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'hub_avg_hub_indegree': 30.433695652173913, 'hub_avg_hub_to_hub': 4.5456521739130435, 'hub_avg_hub_to_regular': 17.523291925465838, 'hub_avg_indegree': 16.167716666666667, 'hub_avg_regular_indegree': 14.452389843166543, 'hub_avg_regular_to_hub': 3.1127520537714712, 'hub_avg_regular_to_regular': 12.345407020164302, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 26.0, 'hub_hub_to_hub_edges': 29274.0, 'hub_hub_to_hub_pct': 3.017742146644084, 'hub_hub_to_regular_edges': 112850.0, 'hub_hub_to_regular_pct': 11.6332650559809, 'hub_max_indegree': 65.0, 'hub_median_indegree': 15.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6440.0, 'hub_num_regular': 53560.0, 'hub_regular_to_hub_edges': 166719.0, 'hub_regular_to_hub_pct': 17.186409542473015, 'hub_regular_to_regular_edges': 661220.0, 'hub_regular_to_regular_pct': 68.162583254902, 'hub_total_edges': 970063.0, 'recall': 0.9966369999999566, 'qps': 1616.693801692919, 'latency_p50': 0.6184577941894531, 'latency_p95': 0.8533000946044922, 'latency_p99': 0.9450984001159669, 'latency_p999': 1.0578689575195324, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.0664215087890625 seconds
+INFO:root:
+Computing hub statistics...
+INFO:root:================================================================================
+INFO:root:Hub Node Statistics
+INFO:root:================================================================================
+INFO:root:Hub Percentile: 10.0%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:NODE CLASSIFICATION:
+INFO:root:  Number of Hubs: 6755 (10.0%)
+INFO:root:  Number of Regular Nodes: 53245 (90.0%)
+INFO:root:  Hub Threshold (min in-degree): 27
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:IN-DEGREE STATISTICS:
+INFO:root:  Average Hub In-Degree: 31.41
+INFO:root:  Average Regular In-Degree: 15.86
+INFO:root:  Overall Average In-Degree: 17.61
+INFO:root:  Median In-Degree: 17.00
+INFO:root:  Max In-Degree: 65
+INFO:root:  Min In-Degree: 0
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Absolute Counts):
+INFO:root:  Total Edges: 1056857
+INFO:root:  Hub → Hub: 28946
+INFO:root:  Hub → Regular: 116344
+INFO:root:  Regular → Hub: 183207
+INFO:root:  Regular → Regular: 728360
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:CONNECTIVITY PATTERNS (Percentages):
+INFO:root:  Hub → Hub: 2.74%
+INFO:root:  Hub → Regular: 11.01%
+INFO:root:  Regular → Hub: 17.34%
+INFO:root:  Regular → Regular: 68.92%
+INFO:root:  TOTAL: 100.00%
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:AVERAGE OUTGOING CONNECTIONS PER NODE:
+INFO:root:  Avg Hub → Hub: 4.29
+INFO:root:  Avg Hub → Regular: 17.22
+INFO:root:  Avg Regular → Hub: 3.44
+INFO:root:  Avg Regular → Regular: 13.68
+INFO:root:================================================================================
+INFO:root:
+Computing in-degree distribution...
+INFO:root:================================================================================
+INFO:root:In-Degree Distribution
+INFO:root:================================================================================
+INFO:root:In-Degree       Percentage      Bar
+INFO:root:--------------------------------------------------------------------------------
+INFO:root:0                   0.1683%    
+INFO:root:1                   0.0683%    
+INFO:root:2                   0.0667%    
+INFO:root:3                   0.1200%    
+INFO:root:4                   0.3183%    
+INFO:root:5                   0.6367%    
+INFO:root:6                   1.1167%    
+INFO:root:7                   1.7283%    
+INFO:root:8                   2.5033%    █
+INFO:root:9                   3.2767%    █
+INFO:root:10                  4.1117%    ██
+INFO:root:11                  4.8750%    ██
+INFO:root:12                  5.3117%    ██
+INFO:root:13                  6.0317%    ███
+INFO:root:14                  6.2300%    ███
+INFO:root:15                  6.1817%    ███
+INFO:root:16                  6.4833%    ███
+INFO:root:17                  6.0800%    ███
+INFO:root:18                  5.5450%    ██
+INFO:root:19                  4.9983%    ██
+INFO:root:20                  4.4367%    ██
+INFO:root:21                  4.1217%    ██
+INFO:root:22                  3.5767%    █
+INFO:root:23                  3.2767%    █
+INFO:root:24                  2.7617%    █
+INFO:root:25                  2.4550%    █
+INFO:root:26                  2.2617%    █
+INFO:root:27                  1.8117%    
+INFO:root:28                  1.6200%    
+INFO:root:29                  1.4433%    
+INFO:root:30                  1.1417%    
+INFO:root:31                  1.0333%    
+INFO:root:32                  0.7400%    
+INFO:root:33                  0.6883%    
+INFO:root:34                  0.5467%    
+INFO:root:35                  0.5167%    
+INFO:root:36                  0.3567%    
+INFO:root:37                  0.2617%    
+INFO:root:38                  0.2450%    
+INFO:root:39                  0.1833%    
+INFO:root:40                  0.1450%    
+INFO:root:41                  0.1067%    
+INFO:root:42                  0.1067%    
+INFO:root:43                  0.0483%    
+INFO:root:44                  0.0617%    
+INFO:root:45                  0.0467%    
+INFO:root:46                  0.0450%    
+INFO:root:47                  0.0167%    
+INFO:root:48                  0.0283%    
+INFO:root:49                  0.0200%    
+INFO:root:50                  0.0117%    
+INFO:root:51                  0.0067%    
+INFO:root:52                  0.0083%    
+INFO:root:53                  0.0050%    
+INFO:root:54                  0.0033%    
+INFO:root:56                  0.0033%    
+INFO:root:57                  0.0017%    
+INFO:root:58                  0.0017%    
+INFO:root:60                  0.0017%    
+INFO:root:65                  0.0017%    
+INFO:root:================================================================================
+INFO:root:Total unique in-degree values: 60
+INFO:root:================================================================================
+INFO:root:In-degree distribution saved to ../metrics/metrics_indegree_distribution.json
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.40680977054034, 'hub_avg_hub_to_hub': 4.285122131754256, 'hub_avg_hub_to_regular': 17.22339008142117, 'hub_avg_indegree': 17.614283333333333, 'hub_avg_regular_indegree': 15.864475537609165, 'hub_avg_regular_to_hub': 3.4408301248943562, 'hub_avg_regular_to_regular': 13.679406517043853, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 28946.0, 'hub_hub_to_hub_pct': 2.7388757419404897, 'hub_hub_to_regular_edges': 116344.0, 'hub_hub_to_regular_pct': 11.008490268787547, 'hub_max_indegree': 65.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6755.0, 'hub_num_regular': 53245.0, 'hub_regular_to_hub_edges': 183207.0, 'hub_regular_to_hub_pct': 17.33507939106237, 'hub_regular_to_regular_edges': 728360.0, 'hub_regular_to_regular_pct': 68.91755459820959, 'hub_total_edges': 1056857.0, 'recall': 0.9894529999999327, 'qps': 3356.3341053249173, 'latency_p50': 0.30040740966796875, 'latency_p95': 0.39696693420410156, 'latency_p99': 0.43463706970214844, 'latency_p999': 0.47493076324462913, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.40680977054034, 'hub_avg_hub_to_hub': 4.285122131754256, 'hub_avg_hub_to_regular': 17.22339008142117, 'hub_avg_indegree': 17.614283333333333, 'hub_avg_regular_indegree': 15.864475537609165, 'hub_avg_regular_to_hub': 3.4408301248943562, 'hub_avg_regular_to_regular': 13.679406517043853, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 28946.0, 'hub_hub_to_hub_pct': 2.7388757419404897, 'hub_hub_to_regular_edges': 116344.0, 'hub_hub_to_regular_pct': 11.008490268787547, 'hub_max_indegree': 65.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6755.0, 'hub_num_regular': 53245.0, 'hub_regular_to_hub_edges': 183207.0, 'hub_regular_to_hub_pct': 17.33507939106237, 'hub_regular_to_regular_edges': 728360.0, 'hub_regular_to_regular_pct': 68.91755459820959, 'hub_total_edges': 1056857.0, 'recall': 0.9963829999999554, 'qps': 2018.0580490767309, 'latency_p50': 0.49877166748046875, 'latency_p95': 0.6759166717529297, 'latency_p99': 0.7448244094848634, 'latency_p999': 0.8168284893035902, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'hub_avg_hub_indegree': 31.40680977054034, 'hub_avg_hub_to_hub': 4.285122131754256, 'hub_avg_hub_to_regular': 17.22339008142117, 'hub_avg_indegree': 17.614283333333333, 'hub_avg_regular_indegree': 15.864475537609165, 'hub_avg_regular_to_hub': 3.4408301248943562, 'hub_avg_regular_to_regular': 13.679406517043853, 'hub_hub_percentile': 10.0, 'hub_hub_threshold': 27.0, 'hub_hub_to_hub_edges': 28946.0, 'hub_hub_to_hub_pct': 2.7388757419404897, 'hub_hub_to_regular_edges': 116344.0, 'hub_hub_to_regular_pct': 11.008490268787547, 'hub_max_indegree': 65.0, 'hub_median_indegree': 17.0, 'hub_min_indegree': 0.0, 'hub_num_hubs': 6755.0, 'hub_num_regular': 53245.0, 'hub_regular_to_hub_edges': 183207.0, 'hub_regular_to_hub_pct': 17.33507939106237, 'hub_regular_to_regular_edges': 728360.0, 'hub_regular_to_regular_pct': 68.91755459820959, 'hub_total_edges': 1056857.0, 'recall': 0.9972969999999605, 'qps': 1487.8966922558782, 'latency_p50': 0.6754398345947266, 'latency_p95': 0.9281754493713377, 'latency_p99': 1.0254383087158203, 'latency_p999': 1.118898630142212, 'distance_computations': 0.0, 'distance_type': 'l2', 'ef_search': 200}
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+/cluster/home/emmanueq/code/flatnav/experiments/plotting/plot.py:189: RuntimeWarning: Mean of empty slice.
+  return -np.log(np.array(y_values)).mean()
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/_methods.py:129: RuntimeWarning: invalid value encountered in scalar divide
+  ret = ret.dtype.type(ret / rcount)
