@@ -7,3 +7,32 @@ INFO:root:
 INFO:root:Running experiment with 2.0% pruning
 INFO:root:============================================================
 INFO:root:Building index...
+INFO:root:Indexing time = 332.14588713645935 seconds
+INFO:root:Number of hub nodes: 217508
+INFO:root:Number of random nodes: 199800
+INFO:root:Hub nodes avg in-degree: 57.12
+INFO:root:Random nodes avg in-degree: 21.92
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 343.7690341472626 seconds
+INFO:root:Baseline - Recall: 0.8532, QPS: 1575.52
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 342.27037811279297 seconds
+INFO:root:Hub-pruned - Recall: 0.8029, QPS: 2517.91
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 339.12655806541443 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 589, in <module>
+    # Format each result to match run_benchmark.py format
+^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 485, in main
+    )
+     
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 293, in run_pruning_experiment
+    logging.info(f"Baseline - Recall: {baseline_metrics['recall']:.4f}, QPS: {baseline_metrics['qps']:.2f}")
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 226, in train_index
+    raise ValueError(f"Failed to create {hnsw_base_layer_filename=}")
+ValueError: Failed to create hnsw_base_layer_filename='hnsw_base_layer_deep-image-96.mtx'
+make: *** [Makefile:804: hub-pruning-deep-image] Error 1

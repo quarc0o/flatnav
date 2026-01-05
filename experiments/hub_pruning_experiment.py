@@ -5,9 +5,11 @@ This experiment tests the hub-highway hypothesis by comparing search performance
 when pruning edges from:
 1. Hub nodes (top X% most connected nodes by in-degree)
 2. Random nodes (X% randomly selected nodes)
+3. Anti-hub nodes (bottom X% least connected nodes by in-degree)
 
 The hypothesis is that hub nodes are critical for graph traversal performance,
-so pruning their edges should degrade performance more than pruning random nodes.
+so pruning their edges should degrade performance more than pruning random nodes
+or anti-hub nodes.
 """
 
 import json
@@ -63,6 +65,27 @@ def find_hub_nodes_by_indegree(
         if indegree >= threshold
     ]
     return hub_nodes
+
+
+def find_anti_hub_nodes_by_indegree(
+    indegree_counts: Dict[int, int],
+    percentile: float
+) -> List[int]:
+    """
+    Find anti-hub nodes based on in-degree (nodes that are pointed to least frequently).
+
+    :param indegree_counts: Dictionary mapping node_id -> in-degree count.
+    :param percentile: Percentile threshold (e.g., 5 means bottom 5% least connected).
+    :return: List of node IDs that are anti-hub nodes.
+    """
+    indegree_values = np.array(list(indegree_counts.values()))
+    threshold = np.percentile(indegree_values, percentile)
+
+    anti_hub_nodes = [
+        node_id for node_id, indegree in indegree_counts.items()
+        if indegree <= threshold
+    ]
+    return anti_hub_nodes
 
 
 def find_hub_nodes_by_access_count(
@@ -179,6 +202,7 @@ def run_pruning_experiment(
         "baseline": [],
         "hub_pruned": [],
         "random_pruned": [],
+        "anti_hub_pruned": [],
     }
 
     for prune_pct in pruning_percentages:
@@ -207,29 +231,37 @@ def run_pruning_experiment(
         outdegree_table = index.get_graph_outdegree_table()
         indegree_counts = compute_indegree_distribution(outdegree_table)
 
-        # Identify hub nodes
-        percentile = 100 - prune_pct  # e.g., 5% pruning means 95th percentile
+        # Identify hub nodes (top X% by in-degree)
+        hub_percentile = 100 - prune_pct  # e.g., 5% pruning means 95th percentile
+        # Identify anti-hub nodes (bottom X% by in-degree)
+        anti_hub_percentile = prune_pct  # e.g., 5% pruning means 5th percentile
 
         if hub_identification_method == "indegree":
-            hub_nodes = find_hub_nodes_by_indegree(indegree_counts, percentile)
+            hub_nodes = find_hub_nodes_by_indegree(indegree_counts, hub_percentile)
+            anti_hub_nodes = find_anti_hub_nodes_by_indegree(indegree_counts, anti_hub_percentile)
         else:
             # Run a warmup search to collect access counts
             logging.info("Running warmup search to collect node access counts...")
             _ = run_search_benchmark(index, queries[:100], ground_truth[:100], ef_search_params[0])
             node_access_counts = index.get_node_access_counts()
-            hub_nodes = find_hub_nodes_by_access_count(node_access_counts, percentile)
+            hub_nodes = find_hub_nodes_by_access_count(node_access_counts, hub_percentile)
+            # For anti-hubs with access count, find least accessed nodes
+            anti_hub_nodes = find_anti_hub_nodes_by_indegree(indegree_counts, anti_hub_percentile)
             index.reset_node_access_distribution()
 
         # Select random nodes (same count as hub nodes for fair comparison)
         random_nodes = select_random_nodes(dataset_size, prune_pct, seed=seed)
 
         logging.info(f"Number of hub nodes: {len(hub_nodes)}")
+        logging.info(f"Number of anti-hub nodes: {len(anti_hub_nodes)}")
         logging.info(f"Number of random nodes: {len(random_nodes)}")
 
         # Log statistics about selected nodes
         hub_indegrees = [indegree_counts[n] for n in hub_nodes]
+        anti_hub_indegrees = [indegree_counts[n] for n in anti_hub_nodes]
         random_indegrees = [indegree_counts[n] for n in random_nodes]
         logging.info(f"Hub nodes avg in-degree: {np.mean(hub_indegrees):.2f}")
+        logging.info(f"Anti-hub nodes avg in-degree: {np.mean(anti_hub_indegrees):.2f}")
         logging.info(f"Random nodes avg in-degree: {np.mean(random_indegrees):.2f}")
 
         for ef_search in ef_search_params:
@@ -316,12 +348,42 @@ def run_pruning_experiment(
             results["random_pruned"].append(random_metrics)
             logging.info(f"Random-pruned - Recall: {random_metrics['recall']:.4f}, QPS: {random_metrics['qps']:.2f}")
 
+            # 4. Anti-hub node pruning
+            logging.info("Running anti-hub-pruned search...")
+            anti_hub_pruned_index = train_index(
+                index_type="flatnav",
+                data_type=data_type,
+                train_dataset=train_dataset,
+                max_edges_per_node=max_edges_per_node,
+                ef_construction=ef_construction,
+                dataset_size=dataset_size,
+                dim=dim,
+                distance_type=distance_type,
+                use_hnsw_base_layer=use_hnsw_base_layer,
+                hnsw_base_layer_filename=hnsw_base_layer_filename,
+                num_build_threads=num_build_threads,
+            )
+            anti_hub_pruned_index.set_num_threads(num_search_threads)
+            anti_hub_pruned_index.reprune_graph(hub_nodes=anti_hub_nodes, alpha=alpha)
+            anti_hub_metrics = run_search_benchmark(
+                anti_hub_pruned_index, queries, ground_truth, ef_search
+            )
+            anti_hub_metrics["pruning_percentage"] = prune_pct
+            anti_hub_metrics["ef_search"] = ef_search
+            anti_hub_metrics["experiment_type"] = "anti_hub_pruned"
+            anti_hub_metrics["num_pruned_nodes"] = len(anti_hub_nodes)
+            anti_hub_metrics["avg_indegree_pruned"] = np.mean(anti_hub_indegrees)
+            results["anti_hub_pruned"].append(anti_hub_metrics)
+            logging.info(f"Anti-hub-pruned - Recall: {anti_hub_metrics['recall']:.4f}, QPS: {anti_hub_metrics['qps']:.2f}")
+
             # Calculate recall degradation
             hub_recall_drop = baseline_metrics['recall'] - hub_metrics['recall']
             random_recall_drop = baseline_metrics['recall'] - random_metrics['recall']
+            anti_hub_recall_drop = baseline_metrics['recall'] - anti_hub_metrics['recall']
             logging.info(f"\nRecall degradation:")
             logging.info(f"  Hub pruning: {hub_recall_drop:.4f} ({hub_recall_drop/baseline_metrics['recall']*100:.2f}%)")
             logging.info(f"  Random pruning: {random_recall_drop:.4f} ({random_recall_drop/baseline_metrics['recall']*100:.2f}%)")
+            logging.info(f"  Anti-hub pruning: {anti_hub_recall_drop:.4f} ({anti_hub_recall_drop/baseline_metrics['recall']*100:.2f}%)")
 
     return results
 
@@ -439,7 +501,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--metrics-file",
         type=str,
-        default="../metrics/pruning_metrics.json",
+        default="../metrics/new_pruning_metrics.json",
         help="Path to the pruning metrics file to append results to.",
     )
 
@@ -564,25 +626,33 @@ def main():
         baseline_results = [r for r in results["baseline"] if r["pruning_percentage"] == prune_pct]
         hub_results = [r for r in results["hub_pruned"] if r["pruning_percentage"] == prune_pct]
         random_results = [r for r in results["random_pruned"] if r["pruning_percentage"] == prune_pct]
+        anti_hub_results = [r for r in results["anti_hub_pruned"] if r["pruning_percentage"] == prune_pct]
 
         for i, ef in enumerate(args.ef_search):
             if i < len(baseline_results):
                 base_recall = baseline_results[i]["recall"]
                 hub_recall = hub_results[i]["recall"]
                 random_recall = random_results[i]["recall"]
+                anti_hub_recall = anti_hub_results[i]["recall"]
 
                 hub_drop = (base_recall - hub_recall) / base_recall * 100
                 random_drop = (base_recall - random_recall) / base_recall * 100
+                anti_hub_drop = (base_recall - anti_hub_recall) / base_recall * 100
 
                 print(f"  ef_search={ef}:")
                 print(f"    Baseline recall: {base_recall:.4f}")
                 print(f"    Hub-pruned recall: {hub_recall:.4f} (drop: {hub_drop:.2f}%)")
                 print(f"    Random-pruned recall: {random_recall:.4f} (drop: {random_drop:.2f}%)")
+                print(f"    Anti-hub-pruned recall: {anti_hub_recall:.4f} (drop: {anti_hub_drop:.2f}%)")
 
-                if hub_drop > random_drop:
-                    print(f"    -> Hub pruning causes MORE degradation (supports hypothesis)")
-                else:
-                    print(f"    -> Random pruning causes MORE degradation (against hypothesis)")
+                # Analyze results
+                drops = {"Hub": hub_drop, "Random": random_drop, "Anti-hub": anti_hub_drop}
+                max_drop = max(drops, key=drops.get)
+                min_drop = min(drops, key=drops.get)
+                print(f"    -> {max_drop} pruning causes MOST degradation ({drops[max_drop]:.2f}%)")
+                print(f"    -> {min_drop} pruning causes LEAST degradation ({drops[min_drop]:.2f}%)")
+                if hub_drop > random_drop and hub_drop > anti_hub_drop:
+                    print(f"    => SUPPORTS hub-highway hypothesis")
 
 
 if __name__ == "__main__":

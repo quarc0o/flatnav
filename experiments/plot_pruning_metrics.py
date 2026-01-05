@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Default paths
-DEFAULT_METRICS_FILE = os.path.join(os.path.dirname(__file__), "..", "metrics", "pruning_metrics.json")
+DEFAULT_METRICS_FILE = os.path.join(os.path.dirname(__file__), "..", "metrics", "new_pruning_metrics.json")
 DEFAULT_OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "..", "plots")
 
 
@@ -56,10 +56,14 @@ def extract_datasets_by_percentage(metrics: dict) -> dict:
             continue
 
         # Extract dataset name and method
+        # Note: Check _anti_hub_pruned BEFORE _hub_pruned since the latter is a substring
         prefix = parts[0]  # e.g., mnist-784_baseline
         if "_baseline" in prefix:
             dataset_name = prefix.rsplit("_baseline", 1)[0]
             method = "baseline"
+        elif "_anti_hub_pruned" in prefix:
+            dataset_name = prefix.rsplit("_anti_hub_pruned", 1)[0]
+            method = "anti_hub_pruned"
         elif "_hub_pruned" in prefix:
             dataset_name = prefix.rsplit("_hub_pruned", 1)[0]
             method = "hub_pruned"
@@ -90,7 +94,7 @@ def plot_recall_drop_by_percentage(metrics: dict, output_dir: str):
         return
 
     for pct, datasets in sorted(data_by_pct.items()):
-        # Filter to datasets that have all 3 methods
+        # Filter to datasets that have all 4 methods (or at least baseline + one pruning method)
         complete_datasets = {
             name: data for name, data in datasets.items()
             if all(m in data for m in ["baseline", "hub_pruned", "random_pruned"])
@@ -103,25 +107,39 @@ def plot_recall_drop_by_percentage(metrics: dict, output_dir: str):
         dataset_names = list(complete_datasets.keys())
         display_names = [name.upper() for name in dataset_names]
 
+        # Check if anti_hub_pruned is available
+        has_anti_hub = all("anti_hub_pruned" in complete_datasets[d] for d in dataset_names)
+
         # Extract recall values
         baseline_recalls = [complete_datasets[d]["baseline"]["recall"] for d in dataset_names]
         hub_recalls = [complete_datasets[d]["hub_pruned"]["recall"] for d in dataset_names]
         random_recalls = [complete_datasets[d]["random_pruned"]["recall"] for d in dataset_names]
+        if has_anti_hub:
+            anti_hub_recalls = [complete_datasets[d]["anti_hub_pruned"]["recall"] for d in dataset_names]
 
         # Calculate percentage recall drop from baseline
         hub_drops = [(baseline_recalls[i] - hub_recalls[i]) / baseline_recalls[i] * 100
                      for i in range(len(dataset_names))]
         random_drops = [(baseline_recalls[i] - random_recalls[i]) / baseline_recalls[i] * 100
                         for i in range(len(dataset_names))]
+        if has_anti_hub:
+            anti_hub_drops = [(baseline_recalls[i] - anti_hub_recalls[i]) / baseline_recalls[i] * 100
+                              for i in range(len(dataset_names))]
 
         # Create grouped bar chart
         x = np.arange(len(dataset_names))
-        width = 0.35
+        num_bars = 4 if has_anti_hub else 3
+        width = 0.8 / num_bars
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
 
-        bars1 = ax.bar(x - width/2, hub_drops, width, label="Hub Pruned", color="#e74c3c")
-        bars2 = ax.bar(x + width/2, random_drops, width, label="Random Pruned", color="#3498db")
+        if has_anti_hub:
+            bars1 = ax.bar(x - 1.5*width, hub_drops, width, label="Hub Pruned", color="#e74c3c")
+            bars2 = ax.bar(x - 0.5*width, random_drops, width, label="Random Pruned", color="#3498db")
+            bars3 = ax.bar(x + 0.5*width, anti_hub_drops, width, label="Anti-Hub Pruned", color="#2ecc71")
+        else:
+            bars1 = ax.bar(x - width/2, hub_drops, width, label="Hub Pruned", color="#e74c3c")
+            bars2 = ax.bar(x + width/2, random_drops, width, label="Random Pruned", color="#3498db")
 
         # Add value labels on bars
         def add_labels(bars):
@@ -133,14 +151,17 @@ def plot_recall_drop_by_percentage(metrics: dict, output_dir: str):
                             xy=(bar.get_x() + bar.get_width() / 2, height),
                             xytext=(0, offset),
                             textcoords="offset points",
-                            ha='center', va=va, fontsize=9)
+                            ha='center', va=va, fontsize=8)
 
         add_labels(bars1)
         add_labels(bars2)
+        if has_anti_hub:
+            add_labels(bars3)
 
         ax.set_xlabel("Dataset", fontsize=12)
         ax.set_ylabel("Recall Drop from Baseline (%)", fontsize=12)
-        ax.set_title(f"Recall Degradation: Hub Pruned vs Random Pruned ({pct}% nodes pruned)", fontsize=14)
+        title = f"Recall Degradation: Hub vs Random vs Anti-Hub ({pct}% nodes pruned)" if has_anti_hub else f"Recall Degradation: Hub Pruned vs Random Pruned ({pct}% nodes pruned)"
+        ax.set_title(title, fontsize=14)
         ax.set_xticks(x)
         ax.set_xticklabels(display_names)
         ax.legend(fontsize=10)
@@ -160,6 +181,8 @@ def plot_recall_drop_by_percentage(metrics: dict, output_dir: str):
             print(f"    Baseline:      {baseline_recalls[i]:.4f}")
             print(f"    Hub Pruned:    {hub_recalls[i]:.4f} (drop: {hub_drops[i]:.2f}%)")
             print(f"    Random Pruned: {random_recalls[i]:.4f} (drop: {random_drops[i]:.2f}%)")
+            if has_anti_hub:
+                print(f"    Anti-Hub Pruned: {anti_hub_recalls[i]:.4f} (drop: {anti_hub_drops[i]:.2f}%)")
 
 
 def plot_qps_change_by_percentage(metrics: dict, output_dir: str):
@@ -182,25 +205,39 @@ def plot_qps_change_by_percentage(metrics: dict, output_dir: str):
         dataset_names = list(complete_datasets.keys())
         display_names = [name.upper() for name in dataset_names]
 
+        # Check if anti_hub_pruned is available
+        has_anti_hub = all("anti_hub_pruned" in complete_datasets[d] for d in dataset_names)
+
         # Extract QPS values
         baseline_qps = [complete_datasets[d]["baseline"]["qps"] for d in dataset_names]
         hub_qps = [complete_datasets[d]["hub_pruned"]["qps"] for d in dataset_names]
         random_qps = [complete_datasets[d]["random_pruned"]["qps"] for d in dataset_names]
+        if has_anti_hub:
+            anti_hub_qps = [complete_datasets[d]["anti_hub_pruned"]["qps"] for d in dataset_names]
 
         # Calculate percentage QPS change from baseline (positive = faster)
         hub_change = [(hub_qps[i] - baseline_qps[i]) / baseline_qps[i] * 100
                       for i in range(len(dataset_names))]
         random_change = [(random_qps[i] - baseline_qps[i]) / baseline_qps[i] * 100
                          for i in range(len(dataset_names))]
+        if has_anti_hub:
+            anti_hub_change = [(anti_hub_qps[i] - baseline_qps[i]) / baseline_qps[i] * 100
+                               for i in range(len(dataset_names))]
 
         # Create grouped bar chart
         x = np.arange(len(dataset_names))
-        width = 0.35
+        num_bars = 3 if has_anti_hub else 2
+        width = 0.8 / num_bars
 
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
 
-        bars1 = ax.bar(x - width/2, hub_change, width, label="Hub Pruned", color="#e74c3c")
-        bars2 = ax.bar(x + width/2, random_change, width, label="Random Pruned", color="#3498db")
+        if has_anti_hub:
+            bars1 = ax.bar(x - width, hub_change, width, label="Hub Pruned", color="#e74c3c")
+            bars2 = ax.bar(x, random_change, width, label="Random Pruned", color="#3498db")
+            bars3 = ax.bar(x + width, anti_hub_change, width, label="Anti-Hub Pruned", color="#2ecc71")
+        else:
+            bars1 = ax.bar(x - width/2, hub_change, width, label="Hub Pruned", color="#e74c3c")
+            bars2 = ax.bar(x + width/2, random_change, width, label="Random Pruned", color="#3498db")
 
         # Add value labels on bars
         def add_labels(bars):
@@ -212,14 +249,17 @@ def plot_qps_change_by_percentage(metrics: dict, output_dir: str):
                             xy=(bar.get_x() + bar.get_width() / 2, height),
                             xytext=(0, offset),
                             textcoords="offset points",
-                            ha='center', va=va, fontsize=9)
+                            ha='center', va=va, fontsize=8)
 
         add_labels(bars1)
         add_labels(bars2)
+        if has_anti_hub:
+            add_labels(bars3)
 
         ax.set_xlabel("Dataset", fontsize=12)
         ax.set_ylabel("QPS Change from Baseline (%)", fontsize=12)
-        ax.set_title(f"QPS Change: Hub Pruned vs Random Pruned ({pct}% nodes pruned)", fontsize=14)
+        title = f"QPS Change: Hub vs Random vs Anti-Hub ({pct}% nodes pruned)" if has_anti_hub else f"QPS Change: Hub Pruned vs Random Pruned ({pct}% nodes pruned)"
+        ax.set_title(title, fontsize=14)
         ax.set_xticks(x)
         ax.set_xticklabels(display_names)
         ax.legend(fontsize=10)
@@ -239,6 +279,8 @@ def plot_qps_change_by_percentage(metrics: dict, output_dir: str):
             print(f"    Baseline:      {baseline_qps[i]:.1f} QPS")
             print(f"    Hub Pruned:    {hub_qps[i]:.1f} QPS ({hub_change[i]:+.1f}%)")
             print(f"    Random Pruned: {random_qps[i]:.1f} QPS ({random_change[i]:+.1f}%)")
+            if has_anti_hub:
+                print(f"    Anti-Hub Pruned: {anti_hub_qps[i]:.1f} QPS ({anti_hub_change[i]:+.1f}%)")
 
 
 def plot_recall_vs_pruning_percentage(metrics: dict, output_dir: str):
@@ -261,13 +303,21 @@ def plot_recall_vs_pruning_percentage(metrics: dict, output_dir: str):
 
     percentages = sorted(data_by_pct.keys())
 
-    fig, ax = plt.subplots(figsize=(10, 6))
+    # Check if any dataset has anti_hub_pruned
+    has_anti_hub = any(
+        "anti_hub_pruned" in data_by_pct[pct].get(name, {})
+        for pct in percentages
+        for name in all_datasets
+    )
+
+    fig, ax = plt.subplots(figsize=(12, 7))
 
     colors = plt.cm.tab10(np.linspace(0, 1, len(all_datasets)))
 
     for idx, dataset_name in enumerate(sorted(all_datasets)):
         hub_drops = []
         random_drops = []
+        anti_hub_drops = []
         valid_pcts = []
 
         for pct in percentages:
@@ -282,18 +332,25 @@ def plot_recall_vs_pruning_percentage(metrics: dict, output_dir: str):
                     random_drops.append((baseline - random) / baseline * 100)
                     valid_pcts.append(pct)
 
+                    if "anti_hub_pruned" in data:
+                        anti_hub = data["anti_hub_pruned"]["recall"]
+                        anti_hub_drops.append((baseline - anti_hub) / baseline * 100)
+
         if valid_pcts:
             color = colors[idx]
             ax.plot(valid_pcts, hub_drops, 'o-', color=color,
                     label=f"{dataset_name.upper()} (Hub)", linewidth=2)
             ax.plot(valid_pcts, random_drops, 's--', color=color,
                     label=f"{dataset_name.upper()} (Random)", linewidth=2, alpha=0.7)
+            if anti_hub_drops and len(anti_hub_drops) == len(valid_pcts):
+                ax.plot(valid_pcts, anti_hub_drops, '^:', color=color,
+                        label=f"{dataset_name.upper()} (Anti-Hub)", linewidth=2, alpha=0.5)
 
     ax.set_xlabel("Pruning Percentage (%)", fontsize=12)
     ax.set_ylabel("Recall Drop from Baseline (%)", fontsize=12)
     ax.set_title("Recall Degradation vs Pruning Percentage", fontsize=14)
     ax.set_xticks(percentages)
-    ax.legend(fontsize=9, loc='upper left', bbox_to_anchor=(1.02, 1))
+    ax.legend(fontsize=8, loc='upper left', bbox_to_anchor=(1.02, 1))
     ax.grid(alpha=0.3)
 
     plt.tight_layout()

@@ -46,3 +46,36 @@ INFO:root:Running hub-pruned search...
 INFO:root:Indexing time = 128.60596680641174 seconds
 INFO:root:Hub-pruned - Recall: 0.4578, QPS: 1653.91
 INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 130.65978288650513 seconds
+INFO:root:Random-pruned - Recall: 0.6546, QPS: 1102.72
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.2472 (35.06%)
+INFO:root:  Random pruning: 0.0504 (7.16%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 10.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 131.22244787216187 seconds
+INFO:root:Number of hub nodes: 101102
+INFO:root:Number of random nodes: 100000
+INFO:root:Hub nodes avg in-degree: 42.56
+INFO:root:Random nodes avg in-degree: 12.58
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 131.07301378250122 seconds
+INFO:root:Baseline - Recall: 0.7047, QPS: 1001.77
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 128.6733911037445 seconds
+INFO:root:Hub-pruned - Recall: 0.3219, QPS: 2616.00
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 128.46558547019958 seconds
+INFO:root:Random-pruned - Recall: 0.6161, QPS: 1226.77
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.3827 (54.31%)
+INFO:root:  Random pruning: 0.0885 (12.57%)
+INFO:root:
+Results saved to: ../metrics/pruning_metrics.json

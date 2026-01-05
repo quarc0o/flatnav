@@ -791,7 +791,7 @@ hub-pruning-mnist:
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 200 400 \
+		--ef-search 100 \
 		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
@@ -844,7 +844,7 @@ plot-hub-pruning:
 # Plot pruning metrics (new format with pruning percentages)
 plot-pruning-metrics:
 	poetry run python plot_pruning_metrics.py \
-		--metrics-file ../metrics/pruning_metrics.json \
+		--metrics-file ../metrics/new_pruning_metrics.json \
 		--output-dir ../plots
 
 ################################
