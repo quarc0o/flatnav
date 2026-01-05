@@ -1,0 +1,40 @@
+INFO:root:Dataset: gist-960
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 167.069509267807 seconds
+INFO:root:Number of hub nodes: 20220
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 73.62
+INFO:root:Random nodes avg in-degree: 12.57
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 169.40546441078186 seconds
+INFO:root:Baseline - Recall: 0.7054, QPS: 747.23
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 170.32948088645935 seconds
+INFO:root:Hub-pruned - Recall: 0.5671, QPS: 1014.96
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 169.9038803577423 seconds
+INFO:root:Random-pruned - Recall: 0.6827, QPS: 782.12
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1383 (19.61%)
+INFO:root:  Random pruning: 0.0227 (3.22%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 169.14904522895813 seconds
+INFO:root:Baseline - Recall: 0.4206, QPS: 555.74
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 168.94293117523193 seconds
+INFO:root:Hub-pruned - Recall: 0.6898, QPS: 562.07
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 170.46728253364563 seconds
+make: *** [Makefile:769: hub-pruning-gist] Segmentation fault (core dumped)

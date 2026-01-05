@@ -1,0 +1,23 @@
+INFO:root:Dataset: sift-128
+INFO:root:Train data shape: (1000000, 128)
+INFO:root:Queries shape: (10000, 128)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 28.700202226638794 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 586, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 191, in run_pruning_experiment
+    index = train_index(
+            ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 226, in train_index
+    raise ValueError(f"Failed to create {hnsw_base_layer_filename=}")
+ValueError: Failed to create hnsw_base_layer_filename='hnsw_base_layer_temp.mtx'
+make: *** [Makefile:735: hub-pruning-sift] Error 1

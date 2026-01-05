@@ -1,0 +1,48 @@
+INFO:root:Dataset: gist-960
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 128.444082736969 seconds
+INFO:root:Number of hub nodes: 20282
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 73.58
+INFO:root:Random nodes avg in-degree: 12.56
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 129.66654801368713 seconds
+INFO:root:Baseline - Recall: 0.7045, QPS: 865.48
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 129.43281149864197 seconds
+INFO:root:Hub-pruned - Recall: 0.5681, QPS: 1262.20
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 129.87379908561707 seconds
+INFO:root:Random-pruned - Recall: 0.6791, QPS: 1053.61
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1364 (19.36%)
+INFO:root:  Random pruning: 0.0255 (3.61%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 129.3725917339325 seconds
+INFO:root:Number of hub nodes: 51795
+INFO:root:Number of random nodes: 50000
+INFO:root:Hub nodes avg in-degree: 54.12
+INFO:root:Random nodes avg in-degree: 12.58
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 129.5753836631775 seconds
+INFO:root:Baseline - Recall: 0.7050, QPS: 1013.34
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 128.60596680641174 seconds
+INFO:root:Hub-pruned - Recall: 0.4578, QPS: 1653.91
+INFO:root:Running random-pruned search...

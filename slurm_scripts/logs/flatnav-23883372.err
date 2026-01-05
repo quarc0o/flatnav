@@ -1,0 +1,23 @@
+INFO:root:Dataset: deep-image-96
+INFO:root:Train data shape: (9990000, 96)
+INFO:root:Queries shape: (10000, 96)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 339.5230748653412 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 586, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 191, in run_pruning_experiment
+    index = train_index(
+            ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 243, in train_index
+    index.allocate_nodes(data=train_dataset).build_graph_links(
+RuntimeError: Number of vertices in the mtx file does not match the size allocated for the index.
+make: *** [Makefile:804: hub-pruning-deep-image] Error 1

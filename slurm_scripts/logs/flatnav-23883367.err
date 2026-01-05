@@ -1,0 +1,67 @@
+INFO:root:Dataset: nytimes-256
+INFO:root:Train data shape: (290000, 256)
+INFO:root:Queries shape: (10000, 256)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 18.920326232910156 seconds
+INFO:root:Number of hub nodes: 5825
+INFO:root:Number of random nodes: 5800
+INFO:root:Hub nodes avg in-degree: 107.40
+INFO:root:Random nodes avg in-degree: 22.51
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 18.801941633224487 seconds
+INFO:root:Baseline - Recall: 0.6779, QPS: 1596.63
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 18.85040593147278 seconds
+INFO:root:Hub-pruned - Recall: 0.6356, QPS: 1712.68
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 18.864587545394897 seconds
+INFO:root:Random-pruned - Recall: 0.6611, QPS: 1646.98
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0423 (6.24%)
+INFO:root:  Random pruning: 0.0168 (2.47%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 18.96383786201477 seconds
+INFO:root:Baseline - Recall: 0.7193, QPS: 891.70
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 18.861345529556274 seconds
+INFO:root:Hub-pruned - Recall: 0.6811, QPS: 957.90
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 18.8381986618042 seconds
+INFO:root:Random-pruned - Recall: 0.7031, QPS: 916.15
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0382 (5.31%)
+INFO:root:  Random pruning: 0.0161 (2.24%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 19.02171015739441 seconds
+INFO:root:Baseline - Recall: 0.7583, QPS: 468.44
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 18.94776225090027 seconds
+INFO:root:Hub-pruned - Recall: 0.7195, QPS: 538.67
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 18.801116466522217 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 586, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 293, in run_pruning_experiment
+    random_pruned_index = train_index(
+                          ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 243, in train_index
+    index.allocate_nodes(data=train_dataset).build_graph_links(
+RuntimeError: Number of vertices in the mtx file does not match the size allocated for the index.
+make: *** [Makefile:752: hub-pruning-nytimes] Error 1

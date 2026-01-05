@@ -1,0 +1,61 @@
+INFO:root:Dataset: sift-128
+INFO:root:Train data shape: (1000000, 128)
+INFO:root:Queries shape: (10000, 128)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 36.94393038749695 seconds
+INFO:root:Number of hub nodes: 20697
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 53.13
+INFO:root:Random nodes avg in-degree: 21.23
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 37.08855128288269 seconds
+INFO:root:Baseline - Recall: 0.9218, QPS: 1975.68
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 37.12163162231445 seconds
+INFO:root:Hub-pruned - Recall: 0.8716, QPS: 2098.54
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 37.060460805892944 seconds
+INFO:root:Random-pruned - Recall: 0.9001, QPS: 1976.09
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0502 (5.45%)
+INFO:root:  Random pruning: 0.0217 (2.36%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 37.0479838848114 seconds
+INFO:root:Baseline - Recall: 0.9764, QPS: 1075.30
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 37.084394216537476 seconds
+INFO:root:Hub-pruned - Recall: 0.9369, QPS: 1156.40
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 37.205103397369385 seconds
+INFO:root:Random-pruned - Recall: 0.9557, QPS: 1074.30
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0395 (4.05%)
+INFO:root:  Random pruning: 0.0207 (2.12%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 37.20758390426636 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 586, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 240, in run_pruning_experiment
+    baseline_index = train_index(
+                     ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 226, in train_index
+    raise ValueError(f"Failed to create {hnsw_base_layer_filename=}")
+ValueError: Failed to create hnsw_base_layer_filename='hnsw_base_layer_temp.mtx'
+make: *** [Makefile:735: hub-pruning-sift] Error 1

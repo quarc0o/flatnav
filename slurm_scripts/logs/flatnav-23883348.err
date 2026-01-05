@@ -1,0 +1,171 @@
+INFO:root:Dataset: mnist-784
+INFO:root:Train data shape: (60000, 784)
+INFO:root:Queries shape: (10000, 784)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 2.231426954269409 seconds
+INFO:root:Number of hub nodes: 1340
+INFO:root:Number of random nodes: 1200
+INFO:root:Hub nodes avg in-degree: 38.66
+INFO:root:Random nodes avg in-degree: 17.63
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.2411184310913086 seconds
+INFO:root:Baseline - Recall: 0.9914, QPS: 2913.41
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.222874164581299 seconds
+INFO:root:Hub-pruned - Recall: 0.9642, QPS: 3074.15
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2424793243408203 seconds
+INFO:root:Random-pruned - Recall: 0.9737, QPS: 2954.36
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0272 (2.74%)
+INFO:root:  Random pruning: 0.0176 (1.78%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.2273318767547607 seconds
+INFO:root:Baseline - Recall: 0.9985, QPS: 1765.93
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.2297616004943848 seconds
+INFO:root:Hub-pruned - Recall: 0.9718, QPS: 1734.56
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.239349126815796 seconds
+INFO:root:Random-pruned - Recall: 0.9821, QPS: 1696.63
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0268 (2.68%)
+INFO:root:  Random pruning: 0.0165 (1.65%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.256181001663208 seconds
+INFO:root:Baseline - Recall: 0.9997, QPS: 975.94
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.2270212173461914 seconds
+INFO:root:Hub-pruned - Recall: 0.9743, QPS: 1013.98
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2533886432647705 seconds
+INFO:root:Random-pruned - Recall: 0.9826, QPS: 1024.43
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0254 (2.54%)
+INFO:root:  Random pruning: 0.0172 (1.72%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 2.2329893112182617 seconds
+INFO:root:Number of hub nodes: 3149
+INFO:root:Number of random nodes: 3000
+INFO:root:Hub nodes avg in-degree: 34.99
+INFO:root:Random nodes avg in-degree: 17.67
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.219001293182373 seconds
+INFO:root:Baseline - Recall: 0.9914, QPS: 2874.43
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.245246410369873 seconds
+INFO:root:Hub-pruned - Recall: 0.9290, QPS: 3152.42
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.206038236618042 seconds
+INFO:root:Random-pruned - Recall: 0.9400, QPS: 2901.13
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0624 (6.29%)
+INFO:root:  Random pruning: 0.0514 (5.18%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.213738203048706 seconds
+INFO:root:Baseline - Recall: 0.9985, QPS: 1635.59
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.2187771797180176 seconds
+INFO:root:Hub-pruned - Recall: 0.9387, QPS: 1831.00
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2582952976226807 seconds
+INFO:root:Random-pruned - Recall: 0.9488, QPS: 1762.02
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0598 (5.99%)
+INFO:root:  Random pruning: 0.0497 (4.97%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.219820737838745 seconds
+INFO:root:Baseline - Recall: 0.9997, QPS: 968.40
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.208336114883423 seconds
+INFO:root:Hub-pruned - Recall: 0.9377, QPS: 1078.79
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2102887630462646 seconds
+INFO:root:Random-pruned - Recall: 0.9495, QPS: 1053.78
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0621 (6.21%)
+INFO:root:  Random pruning: 0.0502 (5.02%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 10.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 2.2311384677886963 seconds
+INFO:root:Number of hub nodes: 6802
+INFO:root:Number of random nodes: 6000
+INFO:root:Hub nodes avg in-degree: 31.40
+INFO:root:Random nodes avg in-degree: 17.74
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.1993978023529053 seconds
+INFO:root:Baseline - Recall: 0.9914, QPS: 2784.39
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.192244052886963 seconds
+INFO:root:Hub-pruned - Recall: 0.8547, QPS: 3434.66
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2189316749572754 seconds
+INFO:root:Random-pruned - Recall: 0.8862, QPS: 3283.74
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1367 (13.79%)
+INFO:root:  Random pruning: 0.1051 (10.60%)
+INFO:root:
+Testing with ef_search=200
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.2211384773254395 seconds
+INFO:root:Baseline - Recall: 0.9985, QPS: 1726.58
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.2021076679229736 seconds
+INFO:root:Hub-pruned - Recall: 0.8722, QPS: 2091.31
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.1964609622955322 seconds
+INFO:root:Random-pruned - Recall: 0.9006, QPS: 1980.36
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1263 (12.65%)
+INFO:root:  Random pruning: 0.0979 (9.81%)
+INFO:root:
+Testing with ef_search=400
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 2.2042272090911865 seconds
+INFO:root:Baseline - Recall: 0.9997, QPS: 970.68
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 2.2000505924224854 seconds
+INFO:root:Hub-pruned - Recall: 0.8734, QPS: 1215.94
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 2.2010796070098877 seconds
+INFO:root:Random-pruned - Recall: 0.9036, QPS: 1159.56
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.1263 (12.63%)
+INFO:root:  Random pruning: 0.0961 (9.62%)
+INFO:root:
+Results saved to: ../metrics/pruning_metrics.json

@@ -1,0 +1,21 @@
+INFO:root:Dataset: gist-960
+INFO:root:Train data shape: (1000000, 960)
+INFO:root:Queries shape: (1000, 960)
+INFO:root:Ground truth shape: (1000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 129.2973849773407 seconds
+INFO:root:Number of hub nodes: 20281
+INFO:root:Number of random nodes: 20000
+INFO:root:Hub nodes avg in-degree: 73.58
+INFO:root:Random nodes avg in-degree: 12.57
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 127.75842595100403 seconds
+INFO:root:Baseline - Recall: 0.7049, QPS: 1036.65
+INFO:root:Running hub-pruned search...
+[2026-01-05T19:15:22.050] error: *** JOB 23883434 ON idun-03-30 CANCELLED AT 2026-01-05T19:15:22 DUE to SIGNAL Terminated ***

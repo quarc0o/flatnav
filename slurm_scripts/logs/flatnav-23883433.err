@@ -1,0 +1,56 @@
+INFO:root:Dataset: nytimes-256
+INFO:root:Train data shape: (290000, 256)
+INFO:root:Queries shape: (10000, 256)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 14.041707277297974 seconds
+INFO:root:Number of hub nodes: 5822
+INFO:root:Number of random nodes: 5800
+INFO:root:Hub nodes avg in-degree: 107.40
+INFO:root:Random nodes avg in-degree: 22.53
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 14.497145414352417 seconds
+INFO:root:Baseline - Recall: 0.6775, QPS: 2254.23
+INFO:root:Running hub-pruned search...
+INFO:root:Indexing time = 14.331090211868286 seconds
+INFO:root:Hub-pruned - Recall: 0.6367, QPS: 2422.70
+INFO:root:Running random-pruned search...
+INFO:root:Indexing time = 14.40792179107666 seconds
+INFO:root:Random-pruned - Recall: 0.6599, QPS: 2298.85
+INFO:root:
+Recall degradation:
+INFO:root:  Hub pruning: 0.0408 (6.02%)
+INFO:root:  Random pruning: 0.0176 (2.59%)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 14.19793176651001 seconds
+INFO:root:Number of hub nodes: 14519
+INFO:root:Number of random nodes: 14500
+INFO:root:Hub nodes avg in-degree: 80.51
+INFO:root:Random nodes avg in-degree: 22.37
+INFO:root:
+Testing with ef_search=100
+INFO:root:Running baseline search (no pruning)...
+INFO:root:Indexing time = 14.32473087310791 seconds
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 586, in <module>
+    main()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 482, in main
+    results = run_pruning_experiment(
+              ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/hub_pruning_experiment.py", line 240, in run_pruning_experiment
+    baseline_index = train_index(
+                     ^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run_benchmark.py", line 243, in train_index
+    index.allocate_nodes(data=train_dataset).build_graph_links(
+RuntimeError: Number of vertices in the mtx file does not match the size allocated for the index.
+make: *** [Makefile:752: hub-pruning-nytimes] Error 1

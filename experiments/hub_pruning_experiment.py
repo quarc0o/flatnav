@@ -439,8 +439,8 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--metrics-file",
         type=str,
-        default="../metrics/metrics.json",
-        help="Path to the main metrics file to append results to.",
+        default="../metrics/pruning_metrics.json",
+        help="Path to the pruning metrics file to append results to.",
     )
 
     parser.add_argument(
@@ -478,6 +478,9 @@ def main():
     logging.info(f"Queries shape: {queries.shape}")
     logging.info(f"Ground truth shape: {ground_truth.shape}")
 
+    # Use a unique mtx filename per dataset to avoid conflicts when running in parallel
+    hnsw_base_layer_filename = f"hnsw_base_layer_{args.dataset_name}.mtx"
+
     # Run experiment
     results = run_pruning_experiment(
         train_dataset=train_data,
@@ -492,7 +495,7 @@ def main():
         hub_identification_method=args.hub_identification,
         data_type=args.data_type,
         use_hnsw_base_layer=args.use_hnsw_base_layer,
-        hnsw_base_layer_filename="hnsw_base_layer_temp.mtx",
+        hnsw_base_layer_filename=hnsw_base_layer_filename,
         num_build_threads=args.num_build_threads,
         num_search_threads=args.num_search_threads,
         seed=args.seed,
@@ -512,14 +515,15 @@ def main():
                 logging.error(f"Error reading {metrics_file}")
 
     # Format results in the same structure as run_benchmark.py
-    # Keys are: {dataset_name}_{experiment_type}
+    # Keys are: {dataset_name}_{experiment_type}_{pruning_pct}pct
     for experiment_type, experiment_results in results.items():
-        experiment_key = f"{args.dataset_name}_{experiment_type}"
-
-        if experiment_key not in all_metrics:
-            all_metrics[experiment_key] = []
-
         for result in experiment_results:
+            prune_pct = int(result["pruning_percentage"])
+            experiment_key = f"{args.dataset_name}_{experiment_type}_{prune_pct}pct"
+
+            if experiment_key not in all_metrics:
+                all_metrics[experiment_key] = []
+
             # Format each result to match run_benchmark.py format
             formatted_result = {
                 "node_links": args.num_node_links,

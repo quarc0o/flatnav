@@ -723,7 +723,7 @@ hub-pruning-glove100:
 		--num-node-links 32 \
 		--ef-construction 200 \
 		--ef-search 100 200 400 \
-		--pruning-percentages 1 2 5 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -736,12 +736,12 @@ hub-pruning-sift:
 		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
 		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
 		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
-		--dataset-name sift-128-euclidean \
+		--dataset-name sift-128 \
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
 		--ef-search 100 \
-		--pruning-percentages 2 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -753,46 +753,46 @@ hub-pruning-nytimes:
 		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
 		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
 		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
-		--dataset-name nytimes-256-angular \
+		--dataset-name nytimes-256 \
 		--metric angular \
 		--num-node-links 32 \
 		--ef-construction 200 \
 		--ef-search 100 \
-		--pruning-percentages 2 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
 		--num-build-threads 16 \
 		--num-search-threads 1
 
-gist-bench-flatnav-pruning-new: 
+hub-pruning-gist:
 	poetry run python hub_pruning_experiment.py \
-		--dataset-name gist-pruning-test-random \
+		--dataset-name gist-960 \
 		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
 		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
 		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 200 300 \
-		--pruning-percentages 2 \
+		--ef-search 100 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
 		--num-build-threads 16 \
 		--num-search-threads 1
 
-hub-pruning-mnist: 
+hub-pruning-mnist:
 	poetry run python hub_pruning_experiment.py \
-		--dataset-name mnist-784-random \
+		--dataset-name mnist-784 \
 		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
 		--queries ../data/mnist-784-euclidean/mnist-784-euclidean.test.npy \
 		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
 		--metric l2 \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 \
+		--ef-search 100 200 400 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -805,12 +805,12 @@ hub-pruning-deep-image:
 		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
 		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
 		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
-		--dataset-name deep-image-96-angular \
+		--dataset-name deep-image-96 \
 		--metric angular \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100  \
-		--pruning-percentages 2 \
+		--ef-search 100 \
+		--pruning-percentages 2 5 10 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -827,7 +827,7 @@ hub-pruning-access-count:
 		--metric angular \
 		--num-node-links 32 \
 		--ef-construction 200 \
-		--ef-search 100 200 400 \
+		--ef-search 100 \
 		--pruning-percentages 1 2 5 \
 		--alpha 1.0 \
 		--hub-identification access_count \
@@ -835,10 +835,16 @@ hub-pruning-access-count:
 		--num-build-threads 16 \
 		--num-search-threads 1
 
-# Plot hub pruning results
+# Plot hub pruning results (old format)
 plot-hub-pruning:
 	poetry run python plot_hub_pruning_results.py \
 		--results-file ../metrics/glove-100-angular_hub_pruning_experiment.json \
+		--output-dir ../plots
+
+# Plot pruning metrics (new format with pruning percentages)
+plot-pruning-metrics:
+	poetry run python plot_pruning_metrics.py \
+		--metrics-file ../metrics/pruning_metrics.json \
 		--output-dir ../plots
 
 ################################
