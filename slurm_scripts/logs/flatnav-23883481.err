@@ -1,0 +1,9 @@
+INFO:root:Dataset: deep-image-96
+INFO:root:Train data shape: (9990000, 96)
+INFO:root:Queries shape: (10000, 96)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 2.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...

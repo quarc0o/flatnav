@@ -78,13 +78,13 @@ def find_anti_hub_nodes_by_indegree(
     :param percentile: Percentile threshold (e.g., 5 means bottom 5% least connected).
     :return: List of node IDs that are anti-hub nodes.
     """
-    indegree_values = np.array(list(indegree_counts.values()))
-    threshold = np.percentile(indegree_values, percentile)
+    num_nodes = len(indegree_counts)
+    num_to_select = int(num_nodes * percentile / 100.0)
 
-    anti_hub_nodes = [
-        node_id for node_id, indegree in indegree_counts.items()
-        if indegree <= threshold
-    ]
+    # Sort nodes by in-degree (ascending) and take the bottom X%
+    sorted_nodes = sorted(indegree_counts.items(), key=lambda x: x[1])
+    anti_hub_nodes = [node_id for node_id, _ in sorted_nodes[:num_to_select]]
+
     return anti_hub_nodes
 
 
