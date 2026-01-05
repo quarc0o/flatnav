@@ -690,6 +690,12 @@ deep-image-indegree-flatnav:
 		--num-build-threads 16 \
 		--output ../metrics/indegree_stats_deep.json
 
+mnist-skewness:
+	poetry run python compute_dataset_hubness.py \
+		--dataset ../data/mnist-784-euclidean/mnist-784-euclidean.train.npy \
+		--k 10 \
+		--output ../metrics/hubness_mnist.json
+
 # Plot in-degree analysis
 plot-indegree:
 	poetry run python plot_indegree_analysis.py \

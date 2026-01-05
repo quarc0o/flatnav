@@ -1,0 +1,16 @@
+2026-01-04 22:01:27,843 - INFO - Dataset: mnist-784
+2026-01-04 22:01:28,090 - INFO - Loaded dataset: (60000, 784)
+2026-01-04 22:01:28,090 - INFO - 
+==================================================
+2026-01-04 22:01:28,090 - INFO - Computing hubness for k=10
+2026-01-04 22:01:28,090 - INFO - ==================================================
+2026-01-04 22:01:28,091 - INFO - Computing 10-NN for 60000 points using brute force...
+2026-01-04 22:05:20,845 - INFO -   Progress: 16.7% (10000/60000), elapsed: 232.8s
+2026-01-04 22:09:13,582 - INFO -   Progress: 33.3% (20000/60000), elapsed: 465.5s
+2026-01-04 22:13:06,444 - INFO -   Progress: 50.0% (30000/60000), elapsed: 698.4s
+2026-01-04 22:16:59,199 - INFO -   Progress: 66.7% (40000/60000), elapsed: 931.1s
+2026-01-04 22:20:51,918 - INFO -   Progress: 83.3% (50000/60000), elapsed: 1163.8s
+2026-01-04 22:24:44,655 - INFO -   Progress: 100.0% (60000/60000), elapsed: 1396.6s
+2026-01-04 22:24:44,655 - INFO - k-NN computation completed in 1396.6s
+2026-01-04 22:24:44,656 - INFO - Computing N_k scores...
+2026-01-04 22:24:45,712 - INFO - Results saved to ../metrics/hubness_mnist.json
