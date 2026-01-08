@@ -9,14 +9,12 @@ bigann-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-100m \
 		--dataset ../data/bigann/train_100m.npy \
-		--queries ../data/bigann/queries.npy \
-		--gtruth ../data/bigann/ground_truth_100m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename bigann-100m.mtx \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -25,12 +23,10 @@ bigann-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-100m \
 		--dataset ../data/bigann/train_100m.npy \
-		--queries ../data/bigann/queries.npy \
-		--gtruth ../data/bigann/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -39,14 +35,12 @@ yandex-deep-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-100m \
 		--dataset ../data/deep/train_100m.npy \
-		--queries ../data/deep/queries.npy \
-		--gtruth ../data/deep/ground_truth_100m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename yandex-deep-100m.mtx \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -56,12 +50,10 @@ yandex-deep-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-100m \
 		--dataset ../data/deep/train_100m.npy \
-		--queries ../data/deep/queries.npy \
-		--gtruth ../data/deep/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -71,14 +63,12 @@ spacev-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-100m \
 		--dataset ../data/msspacev/train_100m.npy \
-		--queries ../data/msspacev/queries.npy \
-		--gtruth ../data/msspacev/ground_truth_100m.npy \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename spacev-100m.mtx \
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -87,12 +77,10 @@ spacev-100m-bench-hnsw:
 	poetry run python run-benchmark.py \
 		--dataset-name spacev-100m \
 		--dataset ../data/msspacev/train_100m.npy \
-		--queries ../data/msspacev/queries.npy \
-		--gtruth ../data/msspacev/ground_truth_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -139,14 +127,12 @@ bigann-10m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name bigann-10m \
 		--dataset ../data/bigann/train_10m.npy \
-		--queries ../data/bigann/queries.npy \
-		--gtruth ../data/bigann/ground_truth_10m.npy \
 		--index-type flatnav \
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename bigann-10m.mtx \
 		--num-node-links 32 \
 		--ef-construction 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
@@ -281,7 +267,7 @@ deep-image-bench-flatnav:
 		--hnsw-base-layer-filename deep-image.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
         --num-search-threads 1
@@ -295,7 +281,7 @@ deep-image-bench-hnsw:
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
         --num-search-threads 1
@@ -311,7 +297,7 @@ mnist-bench-flatnav:
 		--hnsw-base-layer-filename mnist.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -325,7 +311,7 @@ mnist-bench-flatnav-base:
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -339,7 +325,7 @@ mnist-bench-hnsw:
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -355,7 +341,7 @@ gist-bench-flatnav:
 		--hnsw-base-layer-filename gist.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -370,7 +356,7 @@ gist-bench-hnsw:
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -385,7 +371,7 @@ sift-bench-flatnav:
 		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1 
@@ -400,7 +386,7 @@ sift-bench-hnsw:
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1
@@ -538,7 +524,7 @@ nytimes-bench-flatnav:
         --hnsw-base-layer-filename nytimes.mtx \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--num-build-threads 16 \
 		--num-search-threads 1 \
 		--metric angular
@@ -553,7 +539,7 @@ nytimes-bench-hnsw:
 		--index-type hnsw \
 		--num-node-links 32 \
 		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
+		--build-only \
 		--num-build-threads 16 \
 		--num-search-threads 1 \
 		--metric angular
@@ -635,7 +621,12 @@ install-hnswlib:
 	poetry add hnswlib-original/python_bindings/dist/*.whl
 
 cleanup:
-	rm -rf hnswlib-original 
+	rm -rf hnswlib-original
+
+plot-memory-metrics:
+	poetry run python plot_memory_metrics.py \
+		--input ../metrics/memory_metrics.json \
+		--output-dir ../metrics/plots
 
 # If passed an invalid argument, print help message
 %:

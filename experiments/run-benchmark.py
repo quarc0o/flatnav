@@ -35,6 +35,11 @@ ENVIRONMENT_INFO = {
 }
 
 
+def get_memory_mb() -> float:
+    """Get current process memory (RSS) in MB."""
+    return psutil.Process(os.getpid()).memory_info().rss / (1024 * 1024)
+
+
 def compute_metrics(
     requested_metrics: List[str],
     index: Union[hnswlib.Index, flatnav.index.IndexL2Float, flatnav.index.IndexIPFloat],
@@ -271,6 +276,7 @@ def main(
     num_node_links: List[int],
     distance_type: str,
     metrics_file: str,
+    memory_metrics_file: str,
     dataset_name: str,
     requested_metrics: List[str],
     index_type: str = "flatnav",
@@ -281,15 +287,19 @@ def main(
     num_initializations: Optional[List[int]] = None,
     num_build_threads: int = 1,
     num_search_threads: int = 1,
+    build_only: bool = False,
 ):
     
     def build_and_run_knn_search(ef_cons: int, node_links: int):
         """
         Build the index and run the KNN search.
         This part is here to ensure that two indices are not in memory at the same time.
-        With large datasets, we might get an OOM error. 
+        With large datasets, we might get an OOM error.
         """
-        
+        # Memory before index construction
+        mem_before_build = get_memory_mb()
+
+        build_start = time.time()
         index = train_index(
             index_type=index_type,
             data_type=data_type,
@@ -303,14 +313,27 @@ def main(
             hnsw_base_layer_filename=hnsw_base_layer_filename,
             num_build_threads=num_build_threads,
         )
-        
+        build_end = time.time()
+        construction_time_sec = build_end - build_start
+
+        # Memory after index construction
+        mem_after_build = get_memory_mb()
+        index_memory_mb = mem_after_build - mem_before_build
+
         if reordering_strategies is not None:
             if index_type != "flatnav":
                 raise ValueError("Reordering only applies to the FlatNav index.")
             index.reorder(strategies=reordering_strategies)
-        
+
         index.set_num_threads(num_search_threads)
-        for ef_search in ef_search_params:
+
+        # Memory before search
+        mem_before_search = get_memory_mb()
+
+        if build_only:
+            logging.info("Build-only mode: skipping search")
+
+        for ef_search in ([] if build_only else ef_search_params):
             # Extend metrics with computed metrics
             metrics.update(
                 compute_metrics(
@@ -341,8 +364,39 @@ def main(
             all_metrics[experiment_key].append(metrics)
             with open(metrics_file, "w") as file:
                 json.dump(all_metrics, file, indent=4)
-    
-    
+
+        # Memory after search
+        mem_after_search = get_memory_mb()
+        search_memory_mb = mem_after_search - mem_before_search
+
+        # Save memory metrics
+        memory_entry = {
+            "index_type": index_type,
+            "dataset_name": dataset_name,
+            "node_links": node_links,
+            "ef_construction": ef_cons,
+            "index_memory_mb": round(index_memory_mb, 2),
+            "search_memory_mb": round(search_memory_mb, 2),
+            "construction_time_sec": round(construction_time_sec, 2),
+        }
+
+        all_memory_metrics = {experiment_key: []}
+        if os.path.exists(memory_metrics_file) and os.path.getsize(memory_metrics_file) > 0:
+            with open(memory_metrics_file, "r") as f:
+                try:
+                    all_memory_metrics = json.load(f)
+                except json.JSONDecodeError:
+                    pass
+
+        if experiment_key not in all_memory_metrics:
+            all_memory_metrics[experiment_key] = []
+
+        all_memory_metrics[experiment_key].append(memory_entry)
+        with open(memory_metrics_file, "w") as f:
+            json.dump(all_memory_metrics, f, indent=4)
+
+        logging.info(f"Memory: index={index_memory_mb:.1f}MB, search={search_memory_mb:.1f}MB, construction_time={construction_time_sec:.2f}s")
+
     dataset_size = train_dataset.shape[0]
     dim = train_dataset.shape[1]
 
@@ -412,6 +466,12 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
+        "--build-only",
+        action="store_true",
+        help="Only build the index and save memory/construction metrics. Skip search.",
+    )
+
+    parser.add_argument(
         "--num-initializations",
         required=False,
         nargs="+",
@@ -424,12 +484,16 @@ def parse_arguments() -> argparse.Namespace:
         help="Path to a single ANNS benchmark dataset to run on.",
     )
     parser.add_argument(
-        "--queries", required=True, help="Path to a singe queries file."
+        "--queries",
+        required=False,
+        default=None,
+        help="Path to a single queries file. Not required with --build-only.",
     )
     parser.add_argument(
         "--gtruth",
-        required=True,
-        help="Path to a single ground truth file to evaluate on.",
+        required=False,
+        default=None,
+        help="Path to a single ground truth file to evaluate on. Not required with --build-only.",
     )
     parser.add_argument(
         "--metric",
@@ -557,6 +621,13 @@ def run_experiment():
     ROOT_DIR = "../"
     args = parse_arguments()
 
+    # Validate that queries and ground truth are provided when not in build-only mode
+    if not args.build_only:
+        if args.queries is None:
+            raise ValueError("--queries is required when not using --build-only")
+        if args.gtruth is None:
+            raise ValueError("--gtruth is required when not using --build-only")
+
     data_loader = get_data_loader(
         train_dataset_path=args.dataset,
         queries_path=args.queries,
@@ -571,7 +642,8 @@ def run_experiment():
             raise ValueError("HNSW does not support num_initializations.")
 
     metrics_file_path = os.path.join(ROOT_DIR, "metrics", args.metrics_file)
-    
+    memory_metrics_file_path = os.path.join(ROOT_DIR, "metrics", "memory_metrics.json")
+
     main(
         train_dataset=train_data,
         queries=queries,
@@ -589,15 +661,18 @@ def run_experiment():
         num_build_threads=args.num_build_threads,
         num_search_threads=args.num_search_threads,
         metrics_file=metrics_file_path,
+        memory_metrics_file=memory_metrics_file_path,
         num_initializations=num_initializations,
         requested_metrics=args.requested_metrics,
+        build_only=args.build_only,
     )
 
-    plot_all_metrics(
-        metrics_file_path=metrics_file_path,
-        dataset_name=args.dataset_name,
-        requested_metrics=args.requested_metrics,
-    )
+    if not args.build_only:
+        plot_all_metrics(
+            metrics_file_path=metrics_file_path,
+            dataset_name=args.dataset_name,
+            requested_metrics=args.requested_metrics,
+        )
 
 
 if __name__ == "__main__":

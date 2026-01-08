@@ -51,22 +51,27 @@ class DatasetLoader(ABC):
     def __init__(
         self,
         train_dataset_path: str,
-        queries_path: str,
-        ground_truth_path: str,
+        queries_path: Optional[str] = None,
+        ground_truth_path: Optional[str] = None,
         range: Optional[Tuple[int, int]] = None,
     ) -> None:
         """
         Load benchmark dataset, queries and ground truth.
         :param train_dataset_path: Path to the train dataset
-        :param queries_path: Path to the queries
-        :param ground_truth_path: Path to the ground truth
+        :param queries_path: Path to the queries (optional for build-only mode)
+        :param ground_truth_path: Path to the ground truth (optional for build-only mode)
         :param range: Number of elements to load from the dataset.
                 If a tuple is provided, the first element is the start index and
                 the second element is the end index
         NOTE: The range parameter will only chunk the training dataset.
 
         """
-        self.verify_paths([train_dataset_path, queries_path, ground_truth_path])
+        paths_to_verify = [train_dataset_path]
+        if queries_path:
+            paths_to_verify.append(queries_path)
+        if ground_truth_path:
+            paths_to_verify.append(ground_truth_path)
+        self.verify_paths(paths_to_verify)
         self.train_dataset_path = train_dataset_path
         self.queries_path = queries_path
         self.ground_truth_path = ground_truth_path
@@ -90,7 +95,7 @@ class DatasetLoader(ABC):
 
 
 class NpyDatasetLoader(DatasetLoader):
-    def load_data(self) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    def load_data(self) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray]]:
         if self.range:
             start_index, end_index = self.range
             train_dataset = np.load(self.train_dataset_path)[
@@ -100,8 +105,12 @@ class NpyDatasetLoader(DatasetLoader):
             train_dataset = np.load(self.train_dataset_path).astype(
                 np.float32, copy=False
             )
-        queries = np.load(self.queries_path).astype(np.float32, copy=False)
-        ground_truth = np.load(self.ground_truth_path).astype(np.int32, copy=False)
+        queries = None
+        if self.queries_path:
+            queries = np.load(self.queries_path).astype(np.float32, copy=False)
+        ground_truth = None
+        if self.ground_truth_path:
+            ground_truth = np.load(self.ground_truth_path).astype(np.int32, copy=False)
         return train_dataset, queries, ground_truth
 
 
@@ -114,13 +123,17 @@ class BvecsDatasetLoader(DatasetLoader):
     NOTE: This is mostly for loading the SIFT1B dataset.
     """
 
-    def load_data(self) -> Tuple[np.ndarray]:
-        ground_truth = read_ivecs_file(self.ground_truth_path, self.range)
-        # Ground truth has shape (10000, 1000) but we only need the first 100 queries
-        ground_truth = ground_truth[:, 0:100]
+    def load_data(self) -> Tuple[np.ndarray, Optional[np.ndarray], Optional[np.ndarray]]:
+        ground_truth = None
+        if self.ground_truth_path:
+            ground_truth = read_ivecs_file(self.ground_truth_path, self.range)
+            # Ground truth has shape (10000, 1000) but we only need the first 100 queries
+            ground_truth = ground_truth[:, 0:100]
 
         train_data = read_bvecs_file(self.train_dataset_path, self.range)
-        queries_data = read_bvecs_file(self.queries_path, self.range)
+        queries_data = None
+        if self.queries_path:
+            queries_data = read_bvecs_file(self.queries_path, self.range)
 
         return train_data, queries_data, ground_truth
 
