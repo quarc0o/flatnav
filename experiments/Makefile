@@ -13,7 +13,7 @@ bigann-100m-bench-flatnav:
 		--use-hnsw-base-layer \
 		--hnsw-base-layer-filename bigann-100m.mtx \
 		--num-node-links 32 \
-		--ef-construction 50 100 200 \
+		--ef-construction 100 \
 		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
@@ -25,7 +25,7 @@ bigann-100m-bench-hnsw:
 		--dataset ../data/bigann/train_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
-		--ef-construction 50 100 200 \
+		--ef-construction 100 \
 		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \

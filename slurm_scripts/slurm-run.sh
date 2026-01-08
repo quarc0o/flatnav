@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=flatnav
 #SBATCH --time=4:00:00
-#SBATCH --mem=64G
+#SBATCH --mem=200G
 #SBATCH --cpus-per-task=32
 #SBATCH --partition=CPUQ
 #SBATCH --output=logs/flatnav-%j.out
@@ -26,7 +26,7 @@ echo "Make target: $MAKE_TARGET"
 echo "Job ID: $SLURM_JOB_ID"
 echo "Node: $SLURM_NODELIST"
 echo "CPUs: $SLURM_CPUS_PER_TASK"
-echo "Memory: 64G"
+echo "Memory: $SLURM_MEM_PER_NODE"
 echo "Start time: $(date)"
 echo "=========================================="
 
