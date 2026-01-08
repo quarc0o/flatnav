@@ -11,9 +11,11 @@ import numpy as np
 # Colors for different index variants
 COLORS = {
     "hnsw": "orange",
-    "flatnav": "blue",
     "flatnav-base": "green",  # FlatNav without HNSW base layer
 }
+
+# Only plot these variants
+VARIANTS_TO_PLOT = {"hnsw", "flatnav-base"}
 
 
 def parse_key(key: str) -> tuple[str, str, str]:
@@ -57,14 +59,19 @@ def plot_memory(grouped: dict, output_dir: str):
     # Nice labels for legend
     LABELS = {
         "hnsw": "HNSW",
-        "flatnav": "FlatNav (HNSW graph)",
-        "flatnav-base": "FlatNav (native)",
+        "flatnav-base": "FlatNav (From scratch)",
     }
 
     for dataset, variants in grouped.items():
+        # Filter to only plot desired variants
+        variants_filtered = {k: v for k, v in variants.items() if k in VARIANTS_TO_PLOT}
+        if not variants_filtered:
+            print(f"Skipping {dataset}: no matching variants")
+            continue
+
         # Index memory plot
         fig, ax = plt.subplots(figsize=(8, 5))
-        for variant, runs in sorted(variants.items()):
+        for variant, runs in sorted(variants_filtered.items()):
             ef_vals = sorted(set(r["ef_construction"] for r in runs))
             mem_vals = [np.mean([r["index_memory_mb"] for r in runs if r["ef_construction"] == ef]) for ef in ef_vals]
             label = LABELS.get(variant, variant.upper())
@@ -81,7 +88,7 @@ def plot_memory(grouped: dict, output_dir: str):
 
         # Search memory plot
         fig, ax = plt.subplots(figsize=(8, 5))
-        for variant, runs in sorted(variants.items()):
+        for variant, runs in sorted(variants_filtered.items()):
             ef_vals = sorted(set(r["ef_construction"] for r in runs))
             mem_vals = [np.mean([r["search_memory_mb"] for r in runs if r["ef_construction"] == ef]) for ef in ef_vals]
             label = LABELS.get(variant, variant.upper())
@@ -98,7 +105,7 @@ def plot_memory(grouped: dict, output_dir: str):
 
         # Construction time plot
         fig, ax = plt.subplots(figsize=(8, 5))
-        for variant, runs in sorted(variants.items()):
+        for variant, runs in sorted(variants_filtered.items()):
             ef_vals = sorted(set(r["ef_construction"] for r in runs))
             time_vals = [np.mean([r["construction_time_sec"] for r in runs if r["ef_construction"] == ef]) for ef in ef_vals]
             label = LABELS.get(variant, variant.upper())
@@ -113,7 +120,7 @@ def plot_memory(grouped: dict, output_dir: str):
         plt.savefig(os.path.join(output_dir, f"{dataset}_construction_time.png"), dpi=150)
         plt.close()
 
-        print(f"Saved plots for {dataset}: {list(variants.keys())}")
+        print(f"Saved plots for {dataset}: {list(variants_filtered.keys())}")
 
 
 def main():

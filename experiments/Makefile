@@ -31,6 +31,19 @@ bigann-100m-bench-hnsw:
 		--num-build-threads 32 \
 		--num-search-threads 1
 
+bigann-100m-bench-base-flatnav: 
+	poetry run python run-benchmark.py \
+		--dataset-name bigann-100m-base \
+		--dataset ../data/bigann/train_100m.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--build-only \
+		--metric l2 \
+		--num-build-threads 32 \
+		--num-search-threads 1
+
+
 yandex-deep-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
 		--dataset-name yandex-deep-100m \
@@ -286,6 +299,20 @@ deep-image-bench-hnsw:
 		--num-build-threads 16 \
         --num-search-threads 1
 
+deep-image-bench-flatnav-base: 
+	poetry run python run-benchmark.py \
+		--dataset-name deep-image-96-base \
+		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
+		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
+		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--build-only \
+		--metric l2 \
+		--num-build-threads 16 \
+        --num-search-threads 1
+
 mnist-bench-flatnav: 
 	poetry run python run-benchmark.py \
 		--dataset-name mnist-784 \
@@ -361,10 +388,23 @@ gist-bench-hnsw:
 		--num-build-threads 16 \
 		--num-search-threads 1 
 
-
-sift-bench-flatnav: 
+gist-bench-flatnav-base: 
 	poetry run python run-benchmark.py \
-		--dataset-name sift \
+		--dataset-name gist-base \
+		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
+		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
+		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--build-only \
+		--metric l2 \
+		--num-build-threads 16 \
+		--num-search-threads 1 
+
+sift-bench-flatnav-base: 
+	poetry run python run-benchmark.py \
+		--dataset-name sift-base \
 		--dataset ../data/sift-128-euclidean/sift-128-euclidean.train.npy \
 		--queries ../data/sift-128-euclidean/sift-128-euclidean.test.npy \
 		--gtruth ../data/sift-128-euclidean/sift-128-euclidean.gtruth.npy \
@@ -390,7 +430,6 @@ sift-bench-hnsw:
 		--metric l2 \
 		--num-build-threads 16 \
 		--num-search-threads 1
-
 
 glove25-bench-flatnav:
 	poetry run python run-benchmark.py \
@@ -544,38 +583,28 @@ nytimes-bench-hnsw:
 		--num-search-threads 1 \
 		--metric angular
 
+nytimes-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
+		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
+		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
+		--dataset-name nytimes-256-angular-base \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 30 40 50 100 200 300 \
+		--build-only \
+		--num-build-threads 16 \
+		--num-search-threads 1 \
+		--metric angular
+
 ################################
 # Begin ANN Benchmarks - FlatNav Base (without HNSW base layer)
 # These targets run FlatNav without using HNSW as the base layer
 ################################
 
-deep-image-bench-flatnav-base:
-	poetry run python run-benchmark.py \
-		--dataset-name deep-image-96-base \
-		--dataset ../data/deep-image-96-angular/deep-image-96-angular.train.npy \
-		--queries ../data/deep-image-96-angular/deep-image-96-angular.test.npy \
-		--gtruth ../data/deep-image-96-angular/deep-image-96-angular.gtruth.npy \
-		--index-type flatnav \
-		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
-		--metric l2 \
-		--num-build-threads 16 \
-		--num-search-threads 1
 
-gist-bench-flatnav-base:
-	poetry run python run-benchmark.py \
-		--dataset-name gist-base \
-		--dataset ../data/gist-960-euclidean/gist-960-euclidean.train.npy \
-		--queries ../data/gist-960-euclidean/gist-960-euclidean.test.npy \
-		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
-		--index-type flatnav \
-		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
-		--metric l2 \
-		--num-build-threads 16 \
-		--num-search-threads 1
+
+
 
 sift-bench-flatnav-base:
 	poetry run python run-benchmark.py \
@@ -591,19 +620,6 @@ sift-bench-flatnav-base:
 		--num-build-threads 16 \
 		--num-search-threads 1
 
-nytimes-bench-flatnav-base:
-	poetry run python run-benchmark.py \
-		--dataset ../data/nytimes-256-angular/nytimes-256-angular.train.npy \
-		--queries ../data/nytimes-256-angular/nytimes-256-angular.test.npy \
-		--gtruth ../data/nytimes-256-angular/nytimes-256-angular.gtruth.npy \
-		--dataset-name nytimes-256-angular-base \
-		--index-type flatnav \
-		--num-node-links 32 \
-		--ef-construction 30 40 50 100 200 300 \
-		--ef-search 100 200 300 500 1000 3000 \
-		--num-build-threads 16 \
-		--num-search-threads 1 \
-		--metric angular
 
 ################################
 # End ANN Benchmarks
