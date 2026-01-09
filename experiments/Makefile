@@ -65,12 +65,23 @@ yandex-deep-100m-bench-hnsw:
 		--dataset ../data/deep/train_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
-		--ef-construction 50 100 200 \
+		--ef-construction 100 \
 		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
 
+yandex-deep-100m-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset-name yandex-deep-100m-base \
+		--dataset ../data/deep/train_100m.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--build-only \
+		--metric l2 \
+		--num-build-threads 32 \
+		--num-search-threads 1
 
 spacev-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
@@ -92,12 +103,23 @@ spacev-100m-bench-hnsw:
 		--dataset ../data/msspacev/train_100m.npy \
 		--index-type hnsw \
 		--num-node-links 32 \
-		--ef-construction 50 100 200 \
+		--ef-construction 100 \
 		--build-only \
 		--metric l2 \
 		--num-build-threads 32 \
 		--num-search-threads 1
 
+spacev-100m-bench-flatnav-base:
+	poetry run python run-benchmark.py \
+		--dataset-name spacev-100m-base \
+		--dataset ../data/msspacev/train_100m.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--build-only \
+		--metric l2 \
+		--num-build-threads 32 \
+		--num-search-threads 1
 
 tti-100m-bench-flatnav:
 	poetry run python run-benchmark.py \
