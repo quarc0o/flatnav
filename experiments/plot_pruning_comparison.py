@@ -39,6 +39,33 @@ LABELS = {
     "anti_hub_pruned": "Anti-hub pruned"
 }
 
+# Dataset display names
+DATASET_NAMES = {
+    "deep-image-96": "DEEP",
+    "deep-image": "DEEP",
+    "gist-960": "GIST",
+    "gist": "GIST",
+    "mnist-784": "MNIST",
+    "mnist": "MNIST",
+    "nytimes-256": "NY-Times (Angular)",
+    "nytimes": "NY-Times (Angular)",
+    "sift-128": "SIFT",
+    "sift": "SIFT",
+}
+
+
+def get_display_name(dataset_name: str) -> str:
+    """Get the display name for a dataset."""
+    # Check exact match first
+    if dataset_name in DATASET_NAMES:
+        return DATASET_NAMES[dataset_name]
+    # Check if any key is contained in the dataset name
+    for key, display in DATASET_NAMES.items():
+        if key in dataset_name.lower():
+            return display
+    # Return original if no match
+    return dataset_name
+
 MARKERS = {
     "baseline": "o",
     "hub_pruned": "s",
@@ -140,7 +167,7 @@ def plot_recall_vs_qps(data: Dict[str, List[Dict]], dataset_name: str,
 
     ax.set_xlabel("Recall@100", fontsize=AXIS_LABEL_FONTSIZE)
     ax.set_ylabel("Queries per Second (QPS)", fontsize=AXIS_LABEL_FONTSIZE)
-    ax.set_title(f"{dataset_name} ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
+    ax.set_title(f"{get_display_name(dataset_name)} ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
     ax.tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     ax.legend(loc="best", fontsize=LEGEND_FONTSIZE)
     ax.grid(True, which='both', alpha=0.3)
@@ -179,7 +206,7 @@ def plot_recall_vs_ef_search(data: Dict[str, List[Dict]], dataset_name: str,
 
     ax.set_xlabel("ef_search", fontsize=AXIS_LABEL_FONTSIZE)
     ax.set_ylabel("Recall@100", fontsize=AXIS_LABEL_FONTSIZE)
-    ax.set_title(f"{dataset_name} ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
+    ax.set_title(f"{get_display_name(dataset_name)} ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
     ax.tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
     ax.legend(loc="lower right", fontsize=LEGEND_FONTSIZE)
     ax.grid(True, which='both', alpha=0.3)
@@ -253,7 +280,7 @@ def plot_recall_degradation(data: Dict[str, List[Dict]], dataset_name: str,
 
     ax.set_xlabel("ef_search", fontsize=AXIS_LABEL_FONTSIZE)
     ax.set_ylabel("Recall Degradation (%)", fontsize=AXIS_LABEL_FONTSIZE)
-    ax.set_title(f"{dataset_name} - Recall Degradation ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
+    ax.set_title(f"{get_display_name(dataset_name)} - Recall Degradation ({pruning_pct}% pruning)", fontsize=TITLE_FONTSIZE)
     ax.set_xticks(x)
     ax.set_xticklabels(ef_values, fontsize=TICK_FONTSIZE)
     ax.tick_params(axis='y', labelsize=TICK_FONTSIZE)
@@ -295,7 +322,7 @@ def plot_single_dataset_on_ax(ax, data: Dict[str, List[Dict]], dataset_name: str
                 label=LABELS[exp_type])
 
     ax.tick_params(axis='both', which='major', labelsize=TICK_FONTSIZE)
-    ax.set_title(dataset_name, fontsize=TITLE_FONTSIZE)
+    ax.set_title(get_display_name(dataset_name), fontsize=TITLE_FONTSIZE)
     ax.grid(True, which='both', alpha=0.3)
     ax.legend(fontsize=LEGEND_FONTSIZE - 2, loc='best')
 
@@ -458,7 +485,7 @@ def plot_tradeoff_summary(data: Dict[str, List[Dict]], dataset_name: str,
 
     ax.set_xlabel('Pruning Strategy', fontsize=AXIS_LABEL_FONTSIZE)
     ax.set_ylabel('Average Change (%)', fontsize=AXIS_LABEL_FONTSIZE)
-    ax.set_title(f'{dataset_name}\nRecall Loss vs QPS Change ({pruning_pct}% pruning)',
+    ax.set_title(f'{get_display_name(dataset_name)}\nRecall Loss vs QPS Change ({pruning_pct}% pruning)',
                  fontsize=TITLE_FONTSIZE)
     ax.set_xticks(x)
     ax.set_xticklabels([LABELS[m] for m in methods], fontsize=TICK_FONTSIZE)
@@ -546,10 +573,12 @@ def plot_combined_tradeoff(all_data: Dict[str, Tuple[Dict, float]], output_dir: 
     ax1.set_ylabel('Recall Loss (%)', fontsize=AXIS_LABEL_FONTSIZE)
     ax1.set_title('Recall Loss by Pruning Strategy', fontsize=TITLE_FONTSIZE)
     ax1.set_xticks(x)
-    ax1.set_xticklabels(datasets_with_data, fontsize=TICK_FONTSIZE, rotation=15, ha='right')
+    ax1.set_xticklabels([get_display_name(d) for d in datasets_with_data], fontsize=TICK_FONTSIZE, rotation=15, ha='right')
     ax1.tick_params(axis='y', labelsize=TICK_FONTSIZE)
     ax1.legend(fontsize=LEGEND_FONTSIZE)
     ax1.grid(True, alpha=0.3, axis='y')
+    ax1.set_ylim(0, 100)
+    ax1.set_yticks([0, 20, 40, 60, 80, 100])
 
     # Plot 2: QPS Change by pruning strategy
     ax2 = axes[1]
@@ -565,10 +594,12 @@ def plot_combined_tradeoff(all_data: Dict[str, Tuple[Dict, float]], output_dir: 
     ax2.set_ylabel('QPS Change (%)', fontsize=AXIS_LABEL_FONTSIZE)
     ax2.set_title('QPS Change by Pruning Strategy', fontsize=TITLE_FONTSIZE)
     ax2.set_xticks(x)
-    ax2.set_xticklabels(datasets_with_data, fontsize=TICK_FONTSIZE, rotation=15, ha='right')
+    ax2.set_xticklabels([get_display_name(d) for d in datasets_with_data], fontsize=TICK_FONTSIZE, rotation=15, ha='right')
     ax2.tick_params(axis='y', labelsize=TICK_FONTSIZE)
     ax2.legend(fontsize=LEGEND_FONTSIZE)
     ax2.grid(True, alpha=0.3, axis='y')
+    ax2.set_ylim(0, 100)
+    ax2.set_yticks([0, 20, 40, 60, 80, 100])
 
     plt.tight_layout()
 
@@ -591,7 +622,7 @@ def plot_summary_table(data: Dict[str, List[Dict]], dataset_name: str,
     ef_search = data["baseline"][0]["ef_search"]
 
     print(f"\n{'='*60}")
-    print(f"Summary for {dataset_name} at ef_search={ef_search} ({pruning_pct}% pruning)")
+    print(f"Summary for {get_display_name(dataset_name)} at ef_search={ef_search} ({pruning_pct}% pruning)")
     print(f"{'='*60}")
     print(f"{'Method':<25} {'Recall':>10} {'QPS':>10} {'Drop %':>10}")
     print(f"{'-'*60}")
