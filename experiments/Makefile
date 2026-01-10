@@ -712,6 +712,24 @@ plot-results:
 # Hub Pruning Experiments
 ################################
 
+
+hub-pruning-bigann-100m: 
+	poetry run python hub_pruning_experiment.py \
+		--dataset-name bigann-100m \
+		--dataset ../data/bigann/train_100m.npy \
+		--queries ../data/bigann/queries.npy \
+		--gtruth ../data/bigann/ground_truth_100m.npy \
+		--index-type flatnav \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
+		--metric l2 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
 # Run hub pruning experiment on glove-100-angular
 hub-pruning-glove100:
 	poetry run python hub_pruning_experiment.py \
@@ -721,9 +739,9 @@ hub-pruning-glove100:
 		--dataset-name glove-100-angular \
 		--metric angular \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 200 400 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -739,9 +757,9 @@ hub-pruning-sift:
 		--dataset-name sift-128 \
 		--metric l2 \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -756,9 +774,9 @@ hub-pruning-nytimes:
 		--dataset-name nytimes-256 \
 		--metric angular \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \
@@ -773,12 +791,11 @@ hub-pruning-gist:
 		--gtruth ../data/gist-960-euclidean/gist-960-euclidean.gtruth.npy \
 		--metric l2 \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
-		--use-hnsw-base-layer \
 		--num-build-threads 16 \
 		--num-search-threads 1
 
@@ -790,12 +807,11 @@ hub-pruning-mnist:
 		--gtruth ../data/mnist-784-euclidean/mnist-784-euclidean.gtruth.npy \
 		--metric l2 \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
-		--use-hnsw-base-layer \
 		--num-build-threads 16 \
 		--num-search-threads 1
 
@@ -808,9 +824,9 @@ hub-pruning-deep-image:
 		--dataset-name deep-image-96 \
 		--metric angular \
 		--num-node-links 32 \
-		--ef-construction 200 \
-		--ef-search 100 \
-		--pruning-percentages 2 5 10 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
 		--alpha 1.0 \
 		--hub-identification indegree \
 		--use-hnsw-base-layer \

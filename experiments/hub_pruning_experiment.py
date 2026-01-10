@@ -501,7 +501,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--metrics-file",
         type=str,
-        default="../metrics/new_pruning_metrics.json",
+        default="../metrics/final_pruning_metrics.json",
         help="Path to the pruning metrics file to append results to.",
     )
 
