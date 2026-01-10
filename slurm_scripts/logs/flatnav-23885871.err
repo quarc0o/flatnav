@@ -1,0 +1,3 @@
+INFO:root:Building index_type='flatnav'
+make: *** [Makefile:9: bigann-100m-bench-flatnav] Killed
+[2026-01-07T20:10:34.923] error: Detected 1 oom_kill event in StepId=23885871.batch. Some of the step tasks have been OOM Killed.

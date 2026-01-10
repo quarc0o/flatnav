@@ -1,0 +1,41 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.4407680034637451 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9620139999999161, 'qps': 4720.340650193864, 'latency_p50': 0.20956993103027344, 'latency_p95': 0.27680397033691406, 'latency_p99': 0.3201985359191895, 'latency_p999': 0.4143779277801527, 'distance_computations': 865.1569}
+INFO:root:Memory: index=201.2MB, search=13.6MB, construction_time=1.08s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.44622206687927246 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9772269999999303, 'qps': 4873.765945349684, 'latency_p50': 0.20384788513183594, 'latency_p95': 0.270843505859375, 'latency_p99': 0.31090259552001964, 'latency_p999': 0.3790867328643801, 'distance_computations': 832.748, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=189.4MB, search=1.5MB, construction_time=1.13s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.5185139179229736 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9814909999999365, 'qps': 4770.283266504166, 'latency_p50': 0.2086162567138672, 'latency_p95': 0.27561187744140625, 'latency_p99': 0.31113862991333013, 'latency_p999': 0.38123321533203164, 'distance_computations': 854.0242, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=188.2MB, search=1.5MB, construction_time=1.24s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.8974363803863525 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9884539999999472, 'qps': 4431.684990683464, 'latency_p50': 0.225067138671875, 'latency_p95': 0.2987384796142578, 'latency_p99': 0.3337860107421875, 'latency_p999': 0.3836176395416264, 'distance_computations': 934.3865, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.0MB, search=0.5MB, construction_time=1.72s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.6125426292419434 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9912669999999539, 'qps': 4066.483051537628, 'latency_p50': 0.24652481079101562, 'latency_p95': 0.3261685371398924, 'latency_p99': 0.36144256591796875, 'latency_p999': 0.3979210853576661, 'distance_computations': 1009.1086, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.4MB, search=0.5MB, construction_time=2.49s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.2715017795562744 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9921149999999559, 'qps': 3997.1234994957736, 'latency_p50': 0.25081634521484375, 'latency_p95': 0.33211708068847656, 'latency_p99': 0.36621332168579107, 'latency_p999': 0.40841388702392634, 'distance_computations': 1045.2277, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.0MB, search=0.5MB, construction_time=3.19s
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 657, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 648, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 589, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 590, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:304: mnist-bench-flatnav] Error 1

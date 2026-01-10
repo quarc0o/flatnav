@@ -1,0 +1,71 @@
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2.3852462768554688 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.522539000000005, 'qps': 4093.5390794362297, 'latency_p50': 0.240325927734375, 'latency_p95': 0.3578782081604002, 'latency_p99': 0.4193806648254395, 'latency_p999': 0.5762729644775422, 'distance_computations': 2027.566}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5844510000000006, 'qps': 2432.2199745824178, 'latency_p50': 0.4115104675292969, 'latency_p95': 0.5705356597900391, 'latency_p99': 0.6475496292114259, 'latency_p999': 0.7984662055969243, 'distance_computations': 5640.2518, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6168940000000012, 'qps': 1811.8198203646486, 'latency_p50': 0.5613565444946289, 'latency_p95': 0.7350444793701172, 'latency_p99': 0.8268523216247562, 'latency_p999': 1.0969789028167756, 'distance_computations': 10773.3979, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6554430000000039, 'qps': 1136.9844424417186, 'latency_p50': 0.9055137634277344, 'latency_p95': 1.135110855102539, 'latency_p99': 1.2631487846374514, 'latency_p999': 2.021572828292851, 'distance_computations': 18917.8474, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.707416000000005, 'qps': 585.081630896856, 'latency_p50': 1.7811059951782227, 'latency_p95': 2.1097779273986816, 'latency_p99': 2.278397083282472, 'latency_p999': 3.6853089332580713, 'distance_computations': 34624.9496, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.7797499999999983, 'qps': 196.80138349696952, 'latency_p50': 5.284905433654785, 'latency_p95': 5.81812858581543, 'latency_p99': 6.02628231048584, 'latency_p999': 8.568785667419439, 'distance_computations': 80835.9796, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=362.8MB, search=25.1MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2.8533201217651367 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.5757380000000004, 'qps': 3873.311805412418, 'latency_p50': 0.25534629821777344, 'latency_p95': 0.37741661071777344, 'latency_p99': 0.44012308120727545, 'latency_p999': 0.586769819259648, 'distance_computations': 2169.4392, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.6320070000000003, 'qps': 2187.8828452266976, 'latency_p50': 0.46133995056152344, 'latency_p95': 0.6291866302490234, 'latency_p99': 0.7281398773193362, 'latency_p999': 1.0573990345001247, 'distance_computations': 6050.4945, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.6619759999999998, 'qps': 1536.1973878626054, 'latency_p50': 0.6666183471679688, 'latency_p95': 0.8661746978759766, 'latency_p99': 0.9577727317810069, 'latency_p999': 1.5058612823486348, 'distance_computations': 11607.4074, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.697706000000002, 'qps': 961.4039643096969, 'latency_p50': 1.0802745819091797, 'latency_p95': 1.3380169868469236, 'latency_p99': 1.4283728599548342, 'latency_p999': 1.919521093368533, 'distance_computations': 20500.0304, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.7448390000000003, 'qps': 487.369623114547, 'latency_p50': 2.1560192108154297, 'latency_p95': 2.5305867195129395, 'latency_p99': 2.6497864723205566, 'latency_p999': 3.4756004810333603, 'distance_computations': 37840.309, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.804319999999995, 'qps': 179.91243137609243, 'latency_p50': 5.738496780395508, 'latency_p95': 6.591606140136718, 'latency_p99': 7.17084884643555, 'latency_p999': 9.810531616210955, 'distance_computations': 89297.4303, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=330.7MB, search=-1.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 3.4891183376312256 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6031610000000021, 'qps': 3769.0252788553057, 'latency_p50': 0.26106834411621094, 'latency_p95': 0.3864765167236328, 'latency_p99': 0.4525184631347656, 'latency_p999': 0.5998656749725351, 'distance_computations': 2274.9365, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6570279999999998, 'qps': 2123.296575392118, 'latency_p50': 0.4780292510986328, 'latency_p95': 0.6442308425903317, 'latency_p99': 0.7290887832641603, 'latency_p999': 0.8847725391387942, 'distance_computations': 6381.5429, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6855819999999994, 'qps': 1482.0027975103733, 'latency_p50': 0.6933212280273438, 'latency_p95': 0.8959889411926267, 'latency_p99': 0.979433059692383, 'latency_p999': 1.2142863273620648, 'distance_computations': 12287.7243, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.7197829999999996, 'qps': 913.5271366066656, 'latency_p50': 1.1370182037353516, 'latency_p95': 1.4081001281738281, 'latency_p99': 1.5165901184082033, 'latency_p999': 2.3143680095672687, 'distance_computations': 21798.9466, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.7643639999999993, 'qps': 476.03047595432116, 'latency_p50': 2.2084712982177734, 'latency_p95': 2.589702606201172, 'latency_p99': 2.7501654624938965, 'latency_p999': 4.312811851501476, 'distance_computations': 40454.3171, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.8172649999999965, 'qps': 157.8936035364399, 'latency_p50': 6.589651107788086, 'latency_p95': 7.2455525398254395, 'latency_p99': 8.226974010467531, 'latency_p999': 11.186838865280151, 'distance_computations': 96101.4068, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=328.1MB, search=0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 6.258635759353638 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.655762999999999, 'qps': 3321.6345407214835, 'latency_p50': 0.2994537353515625, 'latency_p95': 0.42176246643066406, 'latency_p99': 0.4935264587402344, 'latency_p999': 0.6060636043548592, 'distance_computations': 2584.5601, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7005499999999971, 'qps': 1843.664940249849, 'latency_p50': 0.5528926849365234, 'latency_p95': 0.7195591926574705, 'latency_p99': 0.8018016815185547, 'latency_p999': 1.017333269119263, 'distance_computations': 7318.9049, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7251079999999989, 'qps': 1274.2833799615141, 'latency_p50': 0.8118152618408203, 'latency_p95': 1.0104179382324219, 'latency_p99': 1.1050748825073242, 'latency_p999': 1.5850129127502455, 'distance_computations': 14187.9329, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.756083999999995, 'qps': 781.4266740019316, 'latency_p50': 1.3401508331298828, 'latency_p95': 1.60980224609375, 'latency_p99': 1.735692024230957, 'latency_p999': 2.531808137893685, 'distance_computations': 25362.7497, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7950689999999957, 'qps': 397.8091730859014, 'latency_p50': 2.644658088684082, 'latency_p95': 3.0663132667541504, 'latency_p99': 3.2300972938537598, 'latency_p999': 4.85778594017029, 'distance_computations': 47418.6083, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.8347929999999995, 'qps': 144.9320478467632, 'latency_p50': 7.171154022216797, 'latency_p95': 7.905757427215574, 'latency_p99': 8.63956212997437, 'latency_p999': 11.732369422912603, 'distance_computations': 113431.4955, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=326.9MB, search=0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 11.088685035705566 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.6787889999999936, 'qps': 3093.1819529380737, 'latency_p50': 0.3204345703125, 'latency_p95': 0.4458427429199219, 'latency_p99': 0.5285763740539551, 'latency_p999': 0.7059679031372091, 'distance_computations': 2758.9659, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7196149999999976, 'qps': 1715.9108430873175, 'latency_p50': 0.5934238433837891, 'latency_p95': 0.7498383522033689, 'latency_p99': 0.8451986312866212, 'latency_p999': 1.0969688892364513, 'distance_computations': 7858.5467, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7428490000000002, 'qps': 1180.08496333533, 'latency_p50': 0.873565673828125, 'latency_p95': 1.0683655738830564, 'latency_p99': 1.1892533302307133, 'latency_p999': 1.7092618942260822, 'distance_computations': 15299.2791, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7713139999999988, 'qps': 726.7257645600666, 'latency_p50': 1.4407634735107422, 'latency_p95': 1.6863465309143064, 'latency_p99': 1.7631053924560547, 'latency_p999': 2.1689531803131223, 'distance_computations': 27433.7724, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.8064179999999954, 'qps': 366.003647135647, 'latency_p50': 2.881169319152832, 'latency_p95': 3.2470345497131348, 'latency_p99': 3.3419227600097656, 'latency_p999': 4.24486541748053, 'distance_computations': 51383.5527, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.840498000000002, 'qps': 122.4299756258827, 'latency_p50': 8.498668670654297, 'latency_p95': 9.14454460144043, 'latency_p99': 9.750485420227058, 'latency_p999': 12.88090991973879, 'distance_computations': 122722.842, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=326.1MB, search=0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 15.694305419921875 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.6871049999999983, 'qps': 3058.8859227641337, 'latency_p50': 0.32401084899902344, 'latency_p95': 0.4436969757080078, 'latency_p99': 0.5154633522033691, 'latency_p999': 0.6020202636718777, 'distance_computations': 2805.9604, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7274250000000008, 'qps': 1683.0624958794242, 'latency_p50': 0.6041526794433594, 'latency_p95': 0.7541179656982422, 'latency_p99': 0.8387565612792969, 'latency_p999': 1.0228157043457031, 'distance_computations': 8017.5776, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7497079999999965, 'qps': 1158.7475438142105, 'latency_p50': 0.887751579284668, 'latency_p95': 1.0704994201660156, 'latency_p99': 1.1727929115295412, 'latency_p999': 1.6739454269409197, 'distance_computations': 15636.184, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7766979999999986, 'qps': 710.490426970918, 'latency_p50': 1.4660358428955078, 'latency_p95': 1.7066001892089844, 'latency_p99': 1.7991065979003906, 'latency_p999': 2.7511165142059335, 'distance_computations': 28085.4752, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8100789999999962, 'qps': 383.91046267917073, 'latency_p50': 2.7338266372680664, 'latency_p95': 3.0639171600341797, 'latency_p99': 3.180508613586426, 'latency_p999': 4.771352529525782, 'distance_computations': 52662.6722, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8421870000000019, 'qps': 129.55416086020224, 'latency_p50': 8.022546768188477, 'latency_p95': 8.594286441802979, 'latency_p99': 8.806712627410889, 'latency_p999': 12.208732843399055, 'distance_computations': 125728.5501, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=322.2MB, search=0.0MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:548: nytimes-bench-hnsw] Error 1

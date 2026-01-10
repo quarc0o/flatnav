@@ -1,0 +1,71 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 20.326146841049194 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5101999999999999, 'qps': 1733.3188418434331, 'latency_p50': 0.5893707275390625, 'latency_p95': 0.7436394691467285, 'latency_p99': 0.7982540130615234, 'latency_p999': 0.8666849136352569, 'distance_computations': 1571.43}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6318500000000004, 'qps': 985.4090619580966, 'latency_p50': 1.0472536087036133, 'latency_p95': 1.2925267219543457, 'latency_p99': 1.3609695434570312, 'latency_p999': 1.449824571609497, 'distance_computations': 2673.436, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6963100000000013, 'qps': 698.5382888318086, 'latency_p50': 1.4677047729492188, 'latency_p95': 1.818680763244629, 'latency_p99': 1.9292831420898438, 'latency_p999': 2.012989044189455, 'distance_computations': 3692.24, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.7685300000000005, 'qps': 449.26188323486673, 'latency_p50': 2.2895336151123047, 'latency_p95': 2.8425097465515137, 'latency_p99': 2.960076332092285, 'latency_p999': 3.1280601024627694, 'distance_computations': 5582.782, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.8501100000000023, 'qps': 247.20615115601757, 'latency_p50': 4.173636436462402, 'latency_p95': 5.117559432983398, 'latency_p99': 5.43428897857666, 'latency_p999': 5.570439577102663, 'distance_computations': 9761.652, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9288400000000039, 'qps': 96.80121483412408, 'latency_p50': 10.636329650878906, 'latency_p95': 12.93036937713623, 'latency_p99': 13.630197048187256, 'latency_p999': 14.589644670486889, 'distance_computations': 23218.821, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3933.2MB, search=2.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 22.8557767868042 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.55502, 'qps': 1677.2056915292856, 'latency_p50': 0.613093376159668, 'latency_p95': 0.7500767707824707, 'latency_p99': 0.8102273941040038, 'latency_p999': 0.8783528804779069, 'distance_computations': 1660.825, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.6769700000000008, 'qps': 947.4079856593518, 'latency_p50': 1.0828971862792969, 'latency_p95': 1.3326048851013181, 'latency_p99': 1.411731243133545, 'latency_p999': 1.4720036983489997, 'distance_computations': 2842.866, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.7428200000000015, 'qps': 669.6498036458943, 'latency_p50': 1.5354156494140625, 'latency_p95': 1.888275146484375, 'latency_p99': 1.979353427886963, 'latency_p999': 2.035625934600831, 'distance_computations': 3938.547, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.8109200000000018, 'qps': 430.3320447221507, 'latency_p50': 2.3823976516723633, 'latency_p95': 2.95259952545166, 'latency_p99': 3.0666494369506836, 'latency_p999': 3.212712526321499, 'distance_computations': 5944.508, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.8820800000000018, 'qps': 237.7400708770023, 'latency_p50': 4.346370697021484, 'latency_p95': 5.320250988006592, 'latency_p99': 5.576958656311035, 'latency_p999': 5.730899810791019, 'distance_computations': 10363.556, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9477900000000042, 'qps': 93.93456894548463, 'latency_p50': 11.01374626159668, 'latency_p95': 13.314032554626465, 'latency_p99': 13.928332328796385, 'latency_p999': 14.189082145690946, 'distance_computations': 24467.522, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3931.0MB, search=2.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 27.71650266647339 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.5856400000000007, 'qps': 1583.071048468884, 'latency_p50': 0.6498098373413086, 'latency_p95': 0.7856369018554688, 'latency_p99': 0.8547353744506836, 'latency_p999': 0.9530136585235646, 'distance_computations': 1736.356, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.7076500000000012, 'qps': 893.4928864460094, 'latency_p50': 1.1521577835083008, 'latency_p95': 1.3990521430969238, 'latency_p99': 1.4617490768432617, 'latency_p999': 1.5154173374176052, 'distance_computations': 2974.57, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.7705300000000009, 'qps': 630.8858671201576, 'latency_p50': 1.639246940612793, 'latency_p95': 1.976501941680908, 'latency_p99': 2.083230018615722, 'latency_p999': 2.1651015281677264, 'distance_computations': 4126.825, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.8342500000000026, 'qps': 406.760186281499, 'latency_p50': 2.5321245193481445, 'latency_p95': 3.0989885330200195, 'latency_p99': 3.2289314270019527, 'latency_p999': 3.3055312633514493, 'distance_computations': 6226.826, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.8998200000000028, 'qps': 224.23316506016192, 'latency_p50': 4.61423397064209, 'latency_p95': 5.579984188079833, 'latency_p99': 5.84613561630249, 'latency_p999': 6.0265743732452455, 'distance_computations': 10849.023, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9579100000000056, 'qps': 88.86237476403336, 'latency_p50': 11.623740196228027, 'latency_p95': 14.043235778808594, 'latency_p99': 14.689013957977295, 'latency_p999': 15.132122516632204, 'distance_computations': 25490.712, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3850.4MB, search=-0.7MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 52.67327809333801 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6602999999999993, 'qps': 1439.1907077704145, 'latency_p50': 0.7194280624389648, 'latency_p95': 0.8571267127990723, 'latency_p99': 0.9126687049865723, 'latency_p999': 0.9792916774749851, 'distance_computations': 1949.342, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7818000000000008, 'qps': 804.0413087018799, 'latency_p50': 1.2923479080200195, 'latency_p95': 1.5283346176147459, 'latency_p99': 1.5867042541503906, 'latency_p999': 1.644429922103887, 'distance_computations': 3384.795, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.8373400000000009, 'qps': 567.172094775512, 'latency_p50': 1.8317699432373047, 'latency_p95': 2.173018455505371, 'latency_p99': 2.2533440589904785, 'latency_p999': 2.3048038482666025, 'distance_computations': 4706.65, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.8925200000000011, 'qps': 364.95257831098024, 'latency_p50': 2.848505973815918, 'latency_p95': 3.3916831016540523, 'latency_p99': 3.5073351860046387, 'latency_p999': 3.619499921798712, 'distance_computations': 7120.448, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9422700000000045, 'qps': 201.61170966691728, 'latency_p50': 5.133628845214844, 'latency_p95': 6.1736345291137695, 'latency_p99': 6.379258632659912, 'latency_p999': 6.585976123809977, 'distance_computations': 12366.122, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9795100000000049, 'qps': 80.79479830166002, 'latency_p50': 12.809991836547852, 'latency_p95': 15.362107753753662, 'latency_p99': 15.942625999450684, 'latency_p999': 16.51821398735047, 'distance_computations': 28783.331, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3827.6MB, search=1.6MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 102.46734929084778 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7046999999999997, 'qps': 1323.0904825460295, 'latency_p50': 0.7861852645874023, 'latency_p95': 0.913393497467041, 'latency_p99': 0.953218936920166, 'latency_p999': 1.0175795555114753, 'distance_computations': 2125.737, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.8251500000000005, 'qps': 732.8414996547473, 'latency_p50': 1.4191865921020508, 'latency_p95': 1.6517996788024902, 'latency_p99': 1.688072681427002, 'latency_p999': 1.7344992160797124, 'distance_computations': 3725.356, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.8781000000000021, 'qps': 515.4463553738884, 'latency_p50': 2.016425132751465, 'latency_p95': 2.3436903953552246, 'latency_p99': 2.4257612228393555, 'latency_p999': 2.4764745235443137, 'distance_computations': 5200.569, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9264300000000029, 'qps': 331.4416294493545, 'latency_p50': 3.1360387802124023, 'latency_p95': 3.671443462371826, 'latency_p99': 3.799459934234619, 'latency_p999': 3.907211065292359, 'distance_computations': 7889.132, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9655900000000044, 'qps': 182.90705284091322, 'latency_p50': 5.665898323059082, 'latency_p95': 6.719040870666504, 'latency_p99': 6.963255405426025, 'latency_p999': 7.090822696685793, 'distance_computations': 13735.861, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9895400000000047, 'qps': 73.39318930121047, 'latency_p50': 14.159321784973145, 'latency_p95': 16.870439052581787, 'latency_p99': 17.47931480407715, 'latency_p999': 18.303882122039862, 'distance_computations': 31905.277, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3818.0MB, search=-0.6MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 149.5653007030487 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.718849999999999, 'qps': 1278.0845114027409, 'latency_p50': 0.8105039596557617, 'latency_p95': 0.9386658668518066, 'latency_p99': 0.9942126274108886, 'latency_p999': 1.0347642898559597, 'distance_computations': 2200.251, 'distance_type': 'l2', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8394100000000017, 'qps': 706.6004570164013, 'latency_p50': 1.4685392379760742, 'latency_p95': 1.6951680183410645, 'latency_p99': 1.7488145828247068, 'latency_p999': 1.7705001831054692, 'distance_computations': 3868.699, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8915200000000025, 'qps': 496.4406577444811, 'latency_p50': 2.093076705932617, 'latency_p95': 2.4223923683166504, 'latency_p99': 2.4855446815490723, 'latency_p999': 2.5413289070129417, 'distance_computations': 5410.824, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9378000000000045, 'qps': 318.2277893633432, 'latency_p50': 3.269672393798828, 'latency_p95': 3.7966847419738765, 'latency_p99': 3.9119768142700195, 'latency_p999': 4.015706062316896, 'distance_computations': 8231.875, 'distance_type': 'l2', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9735000000000053, 'qps': 175.21581125787353, 'latency_p50': 5.9195756912231445, 'latency_p95': 6.968510150909424, 'latency_p99': 7.180202007293701, 'latency_p999': 7.39846110343949, 'distance_computations': 14364.724, 'distance_type': 'l2', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9926900000000038, 'qps': 70.35953296197465, 'latency_p50': 14.758110046386719, 'latency_p95': 17.56061315536499, 'latency_p99': 18.183729648590088, 'latency_p999': 18.535134077072186, 'distance_computations': 33402.25, 'distance_type': 'l2', 'ef_search': 1000}
+INFO:root:Memory: index=3818.7MB, search=0.4MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:348: gist-bench-flatnav] Error 1

@@ -1,0 +1,6 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 71.3540289402008 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=8486.0MB, search=0.0MB, construction_time=230.82s
+INFO:root:Building index_type='flatnav'
+[2026-01-08T10:49:23.233] error: *** JOB 23886499 ON idun-08-01 CANCELLED AT 2026-01-08T10:49:23 DUE to SIGNAL Terminated ***

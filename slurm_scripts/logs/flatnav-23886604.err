@@ -1,0 +1,4 @@
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 1992.7911312580109 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=77576.1MB, search=0.0MB, construction_time=1993.40s

@@ -1,0 +1,18 @@
+usage: run-benchmark.py [-h] [--index-type INDEX_TYPE] [--data-type DATA_TYPE]
+                        [--use-hnsw-base-layer]
+                        [--hnsw-base-layer-filename HNSW_BASE_LAYER_FILENAME]
+                        [--num-node-links NUM_NODE_LINKS [NUM_NODE_LINKS ...]]
+                        [--ef-construction EF_CONSTRUCTION [EF_CONSTRUCTION ...]]
+                        [--ef-search EF_SEARCH [EF_SEARCH ...]] [--build-only]
+                        [--num-initializations NUM_INITIALIZATIONS [NUM_INITIALIZATIONS ...]]
+                        --dataset DATASET --queries QUERIES [--gtruth GTRUTH]
+                        --metric METRIC
+                        [--reordering-strategies REORDERING_STRATEGIES [REORDERING_STRATEGIES ...]]
+                        [--num-build-threads NUM_BUILD_THREADS]
+                        [--num-search-threads NUM_SEARCH_THREADS]
+                        [--requested-metrics REQUESTED_METRICS [REQUESTED_METRICS ...]]
+                        [--metrics-file METRICS_FILE] --dataset-name
+                        DATASET_NAME
+                        [--train-dataset-range TRAIN_DATASET_RANGE [TRAIN_DATASET_RANGE ...]]
+run-benchmark.py: error: the following arguments are required: --queries
+make: *** [Makefile:139: bigann-10m-bench-flatnav] Error 2

@@ -1,0 +1,37 @@
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.43304872512817383 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.971266999999929, 'qps': 5361.344262831525, 'latency_p50': 0.18334388732910156, 'latency_p95': 0.24390220642089844, 'latency_p99': 0.281815528869629, 'latency_p999': 0.3697926998138439, 'distance_computations': 1496.437}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9890689999999569, 'qps': 3301.981478281441, 'latency_p50': 0.301361083984375, 'latency_p95': 0.407004356384277, 'latency_p99': 0.45776844024658214, 'latency_p999': 0.5312066078186055, 'distance_computations': 4365.0819, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=193.7MB, search=29.9MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.4618649482727051 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9790269999999357, 'qps': 5276.4115956906135, 'latency_p50': 0.1888275146484375, 'latency_p95': 0.25177001953125, 'latency_p99': 0.28634071350097656, 'latency_p999': 0.33879494667053267, 'distance_computations': 1592.1797, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9932149999999649, 'qps': 3164.6058231166376, 'latency_p50': 0.31375885009765625, 'latency_p95': 0.42701959609985335, 'latency_p99': 0.48065185546875, 'latency_p999': 0.5340580940246583, 'distance_computations': 4656.0088, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=190.8MB, search=0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.5298357009887695 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.982604999999941, 'qps': 5068.187189846767, 'latency_p50': 0.19741058349609375, 'latency_p95': 0.2608418464660643, 'latency_p99': 0.2951669692993165, 'latency_p999': 0.337603092193604, 'distance_computations': 1664.1923, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9949829999999728, 'qps': 3050.959847943152, 'latency_p50': 0.32639503479003906, 'latency_p95': 0.4429817199707031, 'latency_p99': 0.4949593544006348, 'latency_p999': 0.5548036098480232, 'distance_computations': 4873.7833, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=188.8MB, search=0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.914315938949585 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9889439999999493, 'qps': 4588.968608324906, 'latency_p50': 0.21839141845703125, 'latency_p95': 0.2899169921875, 'latency_p99': 0.3237724304199219, 'latency_p999': 0.3576288223266604, 'distance_computations': 1827.9767, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9975659999999816, 'qps': 2757.27617687519, 'latency_p50': 0.3619194030761719, 'latency_p95': 0.49424171447753906, 'latency_p99': 0.5528950691223145, 'latency_p999': 0.6096377372741703, 'distance_computations': 5373.9699, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=188.9MB, search=-0.3MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:334: mnist-bench-hnsw] Error 1

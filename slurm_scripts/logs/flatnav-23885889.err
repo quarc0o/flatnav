@@ -1,0 +1,41 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.3355095386505127 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5022210000000055, 'qps': 4214.14461425839, 'latency_p50': 0.2334117889404297, 'latency_p95': 0.3359436988830565, 'latency_p99': 0.38552522659301763, 'latency_p999': 0.4625384807586683, 'distance_computations': 1552.5106}
+INFO:root:Memory: index=388.1MB, search=1.8MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.45745587348938 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.5688710000000027, 'qps': 4110.20630191834, 'latency_p50': 0.24056434631347656, 'latency_p95': 0.3485679626464844, 'latency_p99': 0.40078401565551763, 'latency_p999': 0.4515671730041509, 'distance_computations': 1602.563, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=346.8MB, search=1.2MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 3.062830924987793 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.599139999999999, 'qps': 3980.5168109127726, 'latency_p50': 0.24890899658203125, 'latency_p95': 0.3581047058105469, 'latency_p99': 0.4127025604248047, 'latency_p999': 0.47731518745422385, 'distance_computations': 1681.7482, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=329.8MB, search=19.9MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 5.503131628036499 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6546189999999977, 'qps': 3588.980762266853, 'latency_p50': 0.27680397033691406, 'latency_p95': 0.3886222839355469, 'latency_p99': 0.4501485824584964, 'latency_p999': 0.5092639923095708, 'distance_computations': 1908.9657, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=323.6MB, search=0.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 9.72023320198059 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.6778319999999971, 'qps': 3399.3073177389324, 'latency_p50': 0.29206275939941406, 'latency_p95': 0.39912462234497054, 'latency_p99': 0.4553794860839844, 'latency_p999': 0.5142724514007576, 'distance_computations': 2042.6819, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=324.8MB, search=-0.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 13.74466586112976 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.6861289999999962, 'qps': 2450.947926273771, 'latency_p50': 0.39887428283691406, 'latency_p95': 0.560760498046875, 'latency_p99': 0.6520843505859377, 'latency_p999': 0.7629435062408455, 'distance_computations': 2098.6906, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=324.4MB, search=-1.0MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:531: nytimes-bench-flatnav] Error 1

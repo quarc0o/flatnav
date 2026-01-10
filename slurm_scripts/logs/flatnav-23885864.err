@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 606, in run_experiment
+    data_loader = get_data_loader(
+                  ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 241, in get_data_loader
+    return loader(**kwargs)
+           ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 69, in __init__
+    self.verify_paths([train_dataset_path, queries_path, ground_truth_path])
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 85, in verify_paths
+    raise FileNotFoundError(f"File {path} not found")
+FileNotFoundError: File ../data/glove-25-angular/glove-25-angular.train.npy not found
+make: *** [Makefile:410: glove25-bench-flatnav] Error 1

@@ -1,0 +1,41 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 20.111675024032593 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.51089, 'qps': 1451.0551734635983, 'latency_p50': 0.7007122039794922, 'latency_p95': 0.8895754814147948, 'latency_p99': 0.9603857994079589, 'latency_p999': 1.026636123657227, 'distance_computations': 1575.418}
+INFO:root:Memory: index=3933.8MB, search=1.9MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 24.609707593917847 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.5565000000000003, 'qps': 1373.3202275997057, 'latency_p50': 0.7426738739013672, 'latency_p95': 0.9248495101928711, 'latency_p99': 1.013810634613037, 'latency_p999': 1.1201128959655782, 'distance_computations': 1665.819, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=3893.8MB, search=-75.3MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 27.935007572174072 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.5889600000000005, 'qps': 1596.194983500711, 'latency_p50': 0.6430149078369141, 'latency_p95': 0.785374641418457, 'latency_p99': 0.8557224273681641, 'latency_p999': 0.9227077960968043, 'distance_computations': 1737.346, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=3894.0MB, search=0.8MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 53.09876894950867 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6617899999999997, 'qps': 1430.8921344504445, 'latency_p50': 0.7201433181762695, 'latency_p95': 0.8640408515930176, 'latency_p99': 0.917210578918457, 'latency_p999': 0.9801456928253179, 'distance_computations': 1949.749, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=3821.1MB, search=0.8MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 103.22708749771118 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7053799999999999, 'qps': 1313.885643221637, 'latency_p50': 0.7890462875366211, 'latency_p95': 0.9205937385559082, 'latency_p99': 0.9634494781494141, 'latency_p999': 1.0094721317291266, 'distance_computations': 2127.318, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=3833.6MB, search=0.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 150.84751844406128 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7194299999999992, 'qps': 1270.7778632846348, 'latency_p50': 0.8140802383422852, 'latency_p95': 0.9450912475585938, 'latency_p99': 0.9956932067871094, 'latency_p999': 1.0161736011505156, 'distance_computations': 2200.152, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=3824.9MB, search=0.8MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:348: gist-bench-flatnav] Error 1

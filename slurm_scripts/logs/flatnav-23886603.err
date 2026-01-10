@@ -1,0 +1,4 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2366.4160792827606 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=88020.5MB, search=0.0MB, construction_time=4251.53s

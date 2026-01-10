@@ -1,0 +1,26 @@
+Makefile:610: warning: overriding recipe for target 'sift-bench-flatnav-base'
+Makefile:406: warning: ignoring old recipe for target 'sift-bench-flatnav-base'
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 61.08743095397949 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5449.2MB, search=0.0MB, construction_time=61.14s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 76.76617741584778 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5449.7MB, search=0.0MB, construction_time=76.82s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 92.31669926643372 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5373.4MB, search=0.0MB, construction_time=92.37s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 168.89036512374878 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5382.7MB, search=0.0MB, construction_time=168.95s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 311.14013504981995 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5354.4MB, search=0.0MB, construction_time=311.20s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 443.0009825229645 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=5353.9MB, search=0.0MB, construction_time=443.06s

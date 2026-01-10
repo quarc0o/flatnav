@@ -1,0 +1,24 @@
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.5025534629821777 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=194.0MB, search=0.0MB, construction_time=0.50s
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.6209001541137695 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=190.1MB, search=0.0MB, construction_time=0.62s
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 0.7158701419830322 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=187.8MB, search=0.0MB, construction_time=0.72s
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 1.3185398578643799 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=191.2MB, search=0.0MB, construction_time=1.32s
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2.3445582389831543 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=188.5MB, search=0.0MB, construction_time=2.35s
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 3.345428228378296 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=188.4MB, search=0.0MB, construction_time=3.35s

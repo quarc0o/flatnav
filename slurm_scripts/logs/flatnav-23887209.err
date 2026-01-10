@@ -1,0 +1,6 @@
+Makefile:632: warning: overriding recipe for target 'sift-bench-flatnav-base'
+Makefile:428: warning: ignoring old recipe for target 'sift-bench-flatnav-base'
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2141.881766319275 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=66895.1MB, search=0.0MB, construction_time=2142.48s

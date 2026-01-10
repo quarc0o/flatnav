@@ -1,0 +1,45 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.4486508369445801 seconds
+INFO:root:Index memory usage = 193.83 MB
+INFO:root:Index memory usage = 200.92 MB
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9593669999999199, 'qps': 3910.1378591934067, 'latency_p50': 0.2529621124267578, 'latency_p95': 0.32830238342285156, 'latency_p99': 0.38528680801391607, 'latency_p999': 0.5040175914764405, 'distance_computations': 867.0644}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9845639999999437, 'qps': 2280.259704604361, 'latency_p50': 0.43773651123046875, 'latency_p95': 0.5502700805664062, 'latency_p99': 0.6124973297119141, 'latency_p999': 0.7495932579040538, 'distance_computations': 1390.8417, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Technical metrics saved: construction_time=0.55s, index_memory=200.92MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.445598840713501 seconds
+INFO:root:Index memory usage = 188.82 MB
+INFO:root:Index memory usage = 187.59 MB
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9765539999999281, 'qps': 4091.5045392996426, 'latency_p50': 0.24318695068359375, 'latency_p95': 0.3154277801513672, 'latency_p99': 0.3571510314941406, 'latency_p999': 0.46491765975952176, 'distance_computations': 830.3243, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9920809999999621, 'qps': 2399.10819588414, 'latency_p50': 0.4153251647949219, 'latency_p95': 0.5414605140686033, 'latency_p99': 0.5998659133911134, 'latency_p999': 0.6778261661529545, 'distance_computations': 1299.5454, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Technical metrics saved: construction_time=0.55s, index_memory=187.59MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.623640775680542 seconds
+INFO:root:Index memory usage = 188.14 MB
+INFO:root:Index memory usage = 187.01 MB
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9800809999999331, 'qps': 3832.1802145372, 'latency_p50': 0.2598762512207031, 'latency_p95': 0.3368854522705078, 'latency_p99': 0.3800392150878906, 'latency_p999': 0.45657420158386286, 'distance_computations': 880.7598, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9941649999999695, 'qps': 2252.368090821959, 'latency_p50': 0.44274330139160156, 'latency_p95': 0.5743503570556641, 'latency_p99': 0.633242130279541, 'latency_p999': 0.7026281356811541, 'distance_computations': 1386.06, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Technical metrics saved: construction_time=0.73s, index_memory=187.01MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.9212963581085205 seconds
+INFO:root:Index memory usage = 188.43 MB
+INFO:root:Index memory usage = 187.30 MB
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9882789999999494, 'qps': 3647.8981097795113, 'latency_p50': 0.2739429473876953, 'latency_p95': 0.3590583801269531, 'latency_p99': 0.39721012115478527, 'latency_p999': 0.4510924816131601, 'distance_computations': 938.6998, 'distance_type': 'l2', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.9974389999999818, 'qps': 2152.9794017820286, 'latency_p50': 0.46312808990478516, 'latency_p95': 0.6156086921691892, 'latency_p99': 0.6833100318908691, 'latency_p999': 0.749592065811158, 'distance_computations': 1472.2654, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Technical metrics saved: construction_time=1.04s, index_memory=187.30MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 710, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 701, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 642, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 643, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:304: mnist-bench-flatnav] Error 1

@@ -1,0 +1,71 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.370833158493042 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5037970000000043, 'qps': 4101.392690545459, 'latency_p50': 0.23889541625976562, 'latency_p95': 0.347137451171875, 'latency_p99': 0.3967380523681643, 'latency_p999': 0.4503738880157473, 'distance_computations': 1565.3607}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5719500000000031, 'qps': 2316.18607356279, 'latency_p50': 0.4341602325439453, 'latency_p95': 0.5777001380920408, 'latency_p99': 0.6508851051330566, 'latency_p999': 0.7600810527801519, 'distance_computations': 2618.4978, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6052720000000065, 'qps': 1630.5951182494262, 'latency_p50': 0.6227493286132812, 'latency_p95': 0.7898807525634766, 'latency_p99': 0.868806838989258, 'latency_p999': 0.9801404476165775, 'distance_computations': 3622.0559, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6441370000000018, 'qps': 1024.9897056361795, 'latency_p50': 1.0037422180175781, 'latency_p95': 1.2045025825500486, 'latency_p99': 1.2888979911804201, 'latency_p999': 1.3954639434814453, 'distance_computations': 5613.7493, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.6966970000000043, 'qps': 528.8898841038346, 'latency_p50': 1.966238021850586, 'latency_p95': 2.24686861038208, 'latency_p99': 2.329111099243164, 'latency_p999': 2.4232866764068604, 'distance_computations': 10619.3164, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.7716710000000018, 'qps': 177.24317305739336, 'latency_p50': 5.834102630615234, 'latency_p95': 6.297600269317627, 'latency_p99': 6.43563985824585, 'latency_p999': 6.612541437149048, 'distance_computations': 29861.3558, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=387.6MB, search=2.5MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.484999418258667 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.5695140000000015, 'qps': 4053.8263501071037, 'latency_p50': 0.244140625, 'latency_p95': 0.3533363342285156, 'latency_p99': 0.4067444801330567, 'latency_p999': 0.45847964286804216, 'distance_computations': 1605.7783, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.6287320000000004, 'qps': 2274.4813715093865, 'latency_p50': 0.44417381286621094, 'latency_p95': 0.5927085876464844, 'latency_p99': 0.6640005111694337, 'latency_p999': 0.7383825778961182, 'distance_computations': 2698.2729, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.658337000000001, 'qps': 1592.7359492536575, 'latency_p50': 0.6425380706787109, 'latency_p95': 0.811350345611572, 'latency_p99': 0.8881187438964846, 'latency_p999': 0.9861013889312749, 'distance_computations': 3760.5186, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.6942499999999996, 'qps': 991.9103911518736, 'latency_p50': 1.0437965393066406, 'latency_p95': 1.2662410736083984, 'latency_p99': 1.3404011726379397, 'latency_p999': 1.4312303066253669, 'distance_computations': 5898.0654, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.7413229999999986, 'qps': 506.9594480087976, 'latency_p50': 2.0678043365478516, 'latency_p95': 2.383244037628174, 'latency_p99': 2.4611973762512207, 'latency_p999': 2.5718271732330336, 'distance_computations': 11281.574, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.8023989999999984, 'qps': 169.0059861739914, 'latency_p50': 6.1501264572143555, 'latency_p95': 6.688368320465088, 'latency_p99': 6.807572841644287, 'latency_p999': 6.9487328529357955, 'distance_computations': 31867.9461, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=347.4MB, search=1.2MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 3.051206350326538 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6029000000000004, 'qps': 3923.8822026295966, 'latency_p50': 0.25272369384765625, 'latency_p95': 0.3638267517089844, 'latency_p99': 0.41604042053222656, 'latency_p999': 0.46157956123352073, 'distance_computations': 1674.5082, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6571469999999991, 'qps': 2190.7739583387197, 'latency_p50': 0.46372413635253906, 'latency_p95': 0.6098866462707517, 'latency_p99': 0.6747341156005862, 'latency_p999': 0.7874977588653567, 'distance_computations': 2843.9765, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.6843820000000006, 'qps': 1529.530693840599, 'latency_p50': 0.6709098815917969, 'latency_p95': 0.8463859558105469, 'latency_p99': 0.9126734733581544, 'latency_p999': 1.0068445205688483, 'distance_computations': 3987.0111, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.718521, 'qps': 947.6622004901819, 'latency_p50': 1.096963882446289, 'latency_p95': 1.3232469558715816, 'latency_p99': 1.3911819458007815, 'latency_p999': 1.4896402359008791, 'distance_computations': 6298.5184, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.7634959999999998, 'qps': 481.34520840886086, 'latency_p50': 2.178788185119629, 'latency_p95': 2.5127053260803223, 'latency_p99': 2.5975728034973145, 'latency_p999': 2.692943334579469, 'distance_computations': 12127.4745, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.8166549999999945, 'qps': 160.10276065824337, 'latency_p50': 6.5032243728637695, 'latency_p95': 7.058155536651611, 'latency_p99': 7.189996242523193, 'latency_p999': 7.337579488754274, 'distance_computations': 34255.1253, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=329.2MB, search=18.0MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 5.539071798324585 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6546709999999978, 'qps': 3530.665912435057, 'latency_p50': 0.2818107604980469, 'latency_p95': 0.3952980041503906, 'latency_p99': 0.45586109161376964, 'latency_p999': 0.5183236598968509, 'distance_computations': 1908.1002, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6998849999999982, 'qps': 1954.541790098172, 'latency_p50': 0.5228519439697266, 'latency_p95': 0.6651878356933594, 'latency_p99': 0.7350540161132815, 'latency_p999': 0.82564377784729, 'distance_computations': 3299.0623, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7243379999999997, 'qps': 1353.7557252874215, 'latency_p50': 0.7636547088623047, 'latency_p95': 0.9358048439025877, 'latency_p99': 1.0008907318115237, 'latency_p999': 1.1038827896118173, 'distance_computations': 4680.3989, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.755297999999998, 'qps': 832.5420720863278, 'latency_p50': 1.2552738189697266, 'latency_p95': 1.4858245849609375, 'latency_p99': 1.5509271621704104, 'latency_p999': 1.6357934474945075, 'distance_computations': 7469.4019, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.7941169999999966, 'qps': 420.72933028326344, 'latency_p50': 2.5044679641723633, 'latency_p95': 2.8390884399414062, 'latency_p99': 2.9144406318664555, 'latency_p999': 2.993348360061646, 'distance_computations': 14437.8685, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.8343650000000015, 'qps': 140.38375398666068, 'latency_p50': 7.427096366882324, 'latency_p95': 7.996094226837159, 'latency_p99': 8.124356269836428, 'latency_p999': 8.260250329971315, 'distance_computations': 40416.982, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=322.7MB, search=1.1MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 9.857249736785889 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.678324999999994, 'qps': 3329.495773537666, 'latency_p50': 0.29754638671875, 'latency_p95': 0.40913820266723616, 'latency_p99': 0.46802043914794933, 'latency_p999': 0.5331118106842057, 'distance_computations': 2051.1016, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7200940000000003, 'qps': 1831.4967003135764, 'latency_p50': 0.5574226379394531, 'latency_p95': 0.6926178932189939, 'latency_p99': 0.7641315460205078, 'latency_p999': 0.8635623455047629, 'distance_computations': 3588.1685, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7426709999999977, 'qps': 1263.7957381653234, 'latency_p50': 0.8161067962646484, 'latency_p95': 0.9777665138244627, 'latency_p99': 1.041414737701416, 'latency_p999': 1.1346414089202896, 'distance_computations': 5116.1406, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.7714719999999993, 'qps': 776.4290414358328, 'latency_p50': 1.3442039489746094, 'latency_p95': 1.558065414428711, 'latency_p99': 1.6205334663391113, 'latency_p999': 1.7211449146270754, 'distance_computations': 8177.4034, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.8060999999999966, 'qps': 392.41828720055014, 'latency_p50': 2.6798248291015625, 'latency_p95': 2.9952526092529297, 'latency_p99': 3.069887161254883, 'latency_p999': 3.164292335510254, 'distance_computations': 15758.4588, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.8404730000000027, 'qps': 132.0606560062987, 'latency_p50': 7.883787155151367, 'latency_p95': 8.420002460479736, 'latency_p99': 8.536341190338135, 'latency_p999': 8.67247724533081, 'distance_computations': 43604.7213, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=324.0MB, search=0.1MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 13.85957956314087 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.6865129999999962, 'qps': 3270.3831505604435, 'latency_p50': 0.3027915954589844, 'latency_p95': 0.4122376441955565, 'latency_p99': 0.47659873962402344, 'latency_p999': 0.5481252670288088, 'distance_computations': 2097.7374, 'distance_type': 'angular', 'ef_search': 3000}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.727098999999996, 'qps': 1791.6021383532602, 'latency_p50': 0.5669593811035156, 'latency_p95': 0.7009625434875486, 'latency_p99': 0.7672333717346191, 'latency_p999': 0.8924016952514651, 'distance_computations': 3689.8974, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7494469999999955, 'qps': 1234.6699997789294, 'latency_p50': 0.8332729339599609, 'latency_p95': 0.9903907775878906, 'latency_p99': 1.0538148880004883, 'latency_p999': 1.13654375076294, 'distance_computations': 5271.1015, 'distance_type': 'angular', 'ef_search': 200}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.7766459999999963, 'qps': 757.7601006400133, 'latency_p50': 1.3742446899414062, 'latency_p95': 1.581430435180664, 'latency_p99': 1.6400837898254395, 'latency_p999': 1.7168524265289307, 'distance_computations': 8433.4155, 'distance_type': 'angular', 'ef_search': 300}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8098499999999964, 'qps': 383.3544744918298, 'latency_p50': 2.7370452880859375, 'latency_p95': 3.0426979064941406, 'latency_p99': 3.1132864952087407, 'latency_p999': 3.195288181304932, 'distance_computations': 16229.7574, 'distance_type': 'angular', 'ef_search': 500}
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.8421420000000029, 'qps': 129.3890148451719, 'latency_p50': 8.031845092773438, 'latency_p95': 8.553266525268555, 'latency_p99': 8.676767349243164, 'latency_p999': 8.789305448532104, 'distance_computations': 44690.4459, 'distance_type': 'angular', 'ef_search': 1000}
+INFO:root:Memory: index=323.6MB, search=0.1MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:531: nytimes-bench-flatnav] Error 1

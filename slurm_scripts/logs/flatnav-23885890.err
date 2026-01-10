@@ -1,0 +1,41 @@
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2.3913424015045166 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.5226680000000034, 'qps': 4066.521294704375, 'latency_p50': 0.2428293228149414, 'latency_p95': 0.35762786865234375, 'latency_p99': 0.4084157943725587, 'latency_p999': 0.4637289047241221, 'distance_computations': 2032.6341}
+INFO:root:Memory: index=364.3MB, search=23.8MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 2.472170829772949 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.5740090000000044, 'qps': 4506.122736640513, 'latency_p50': 0.21958351135253906, 'latency_p95': 0.3185272216796875, 'latency_p99': 0.3647828102111817, 'latency_p999': 0.4150924682617199, 'distance_computations': 2165.7954, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=331.0MB, search=1.1MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 3.0558931827545166 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.605162, 'qps': 4334.256715931765, 'latency_p50': 0.22792816162109375, 'latency_p95': 0.331878662109375, 'latency_p99': 0.3836226463317873, 'latency_p999': 0.43082475662231495, 'distance_computations': 2274.0353, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=323.9MB, search=1.1MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 5.5452330112457275 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.6552399999999999, 'qps': 3845.11206992573, 'latency_p50': 0.25963783264160156, 'latency_p95': 0.3650307655334471, 'latency_p99': 0.4234385490417482, 'latency_p999': 0.48351335525512706, 'distance_computations': 2582.6537, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=327.4MB, search=-0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 9.841986417770386 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.6785689999999971, 'qps': 3586.5412693845387, 'latency_p50': 0.27680397033691406, 'latency_p95': 0.37932395935058594, 'latency_p99': 0.4339241981506348, 'latency_p999': 0.5028312206268324, 'distance_computations': 2756.0186, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=326.1MB, search=-0.0MB
+INFO:root:Building index_type='hnsw'
+INFO:root:Indexing time = 13.974200248718262 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.6872539999999985, 'qps': 3501.7329984358557, 'latency_p50': 0.28228759765625, 'latency_p95': 0.3840923309326172, 'latency_p99': 0.4467988014221192, 'latency_p999': 0.5052099227905276, 'distance_computations': 2813.0184, 'distance_type': 'angular', 'ef_search': 100}
+INFO:root:Memory: index=324.4MB, search=-1.0MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:548: nytimes-bench-hnsw] Error 1

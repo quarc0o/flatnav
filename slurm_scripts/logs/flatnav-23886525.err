@@ -1,0 +1,24 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.49919652938842773 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=202.8MB, search=0.0MB, construction_time=1.16s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.6099739074707031 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=190.0MB, search=0.0MB, construction_time=1.33s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.7228825092315674 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=188.7MB, search=0.0MB, construction_time=1.45s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.269921064376831 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=189.8MB, search=0.0MB, construction_time=2.08s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.269613265991211 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=188.2MB, search=0.0MB, construction_time=3.16s
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 3.2311928272247314 seconds
+INFO:root:Build-only mode: skipping search
+INFO:root:Memory: index=188.1MB, search=0.0MB, construction_time=4.14s

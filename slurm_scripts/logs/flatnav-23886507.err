@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 680, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 631, in run_experiment
+    data_loader = get_data_loader(
+                  ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 254, in get_data_loader
+    return loader(**kwargs)
+           ^^^^^^^^^^^^^^^^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 74, in __init__
+    self.verify_paths(paths_to_verify)
+  File "/cluster/home/emmanueq/code/flatnav/experiments/data_loader.py", line 90, in verify_paths
+    raise FileNotFoundError(f"File {path} not found")
+FileNotFoundError: File ../data/deep/train_100m.npy not found
+make: *** [Makefile:35: yandex-deep-100m-bench-flatnav] Error 1

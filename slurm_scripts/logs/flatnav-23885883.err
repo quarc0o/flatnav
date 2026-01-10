@@ -1,0 +1,41 @@
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.4448254108428955 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 30, 'recall': 0.9648859999999196, 'qps': 4780.9014891075385, 'latency_p50': 0.20766258239746094, 'latency_p95': 0.2720355987548828, 'latency_p99': 0.3182935714721681, 'latency_p999': 0.3964936733245857, 'distance_computations': 828.342}
+INFO:root:Memory: index=201.6MB, search=13.7MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.45081353187561035 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 40, 'recall': 0.9767309999999314, 'qps': 4941.976633237887, 'latency_p50': 0.20074844360351562, 'latency_p95': 0.2694129943847656, 'latency_p99': 0.3058910369873047, 'latency_p999': 0.37074875831604165, 'distance_computations': 833.3465, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=189.4MB, search=1.3MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.5325729846954346 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 50, 'recall': 0.9812889999999408, 'qps': 4849.493904001317, 'latency_p50': 0.2048015594482422, 'latency_p95': 0.27108192443847656, 'latency_p99': 0.3075599670410156, 'latency_p999': 0.3659727573394776, 'distance_computations': 854.5959, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.9MB, search=1.3MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 0.913926362991333 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 100, 'recall': 0.988425999999947, 'qps': 4472.629947195014, 'latency_p50': 0.2231597900390625, 'latency_p95': 0.2963542938232422, 'latency_p99': 0.329735279083252, 'latency_p999': 0.3712203502655035, 'distance_computations': 938.9366, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.8MB, search=1.3MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 1.623737096786499 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 200, 'recall': 0.9913599999999546, 'qps': 4211.502935688766, 'latency_p50': 0.23698806762695312, 'latency_p95': 0.3159165382385252, 'latency_p99': 0.3514289855957031, 'latency_p999': 0.38981509208679216, 'distance_computations': 1007.4937, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=188.7MB, search=-1.9MB
+INFO:root:Building index_type='flatnav'
+INFO:root:Indexing time = 2.314762830734253 seconds
+INFO:root:Metrics: {'node_links': 32, 'ef_construction': 300, 'recall': 0.9921579999999564, 'qps': 4072.9884109834925, 'latency_p50': 0.24580955505371094, 'latency_p95': 0.32712221145629866, 'latency_p99': 0.3628730773925781, 'latency_p999': 0.4050750732421879, 'distance_computations': 1044.4738, 'distance_type': 'l2', 'ef_search': 100}
+INFO:root:Memory: index=187.9MB, search=1.3MB
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:549: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  setattr(self, word, getattr(machar, word).flat[0])
+/cluster/home/emmanueq/code/flatnav/venv/lib/python3.11/site-packages/numpy/core/getlimits.py:89: UserWarning: The value of the smallest subnormal for <class 'numpy.float64'> type is zero.
+  return self._float_to_str(self.smallest_subnormal)
+Traceback (most recent call last):
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 653, in <module>
+    run_experiment()
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 644, in run_experiment
+    plot_all_metrics(
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 585, in plot_all_metrics
+    experiment_runs[experiment_key] = [
+                                      ^
+  File "/cluster/home/emmanueq/code/flatnav/experiments/run-benchmark.py", line 586, in <listcomp>
+    (experiment_key, run[x_metric], run[y_metric]) for run in metrics
+                                    ~~~^^^^^^^^^^
+KeyError: 'latency_p999'
+make: *** [Makefile:304: mnist-bench-flatnav] Error 1

@@ -1,0 +1,2 @@
+INFO:root:Building index_type='hnsw'
+[2026-01-08T10:52:36.617] error: *** JOB 23886506 ON idun-01-03 CANCELLED AT 2026-01-08T10:52:36 DUE to SIGNAL Terminated ***
