@@ -1,0 +1,12 @@
+INFO:root:Dataset: bigann-100m
+INFO:root:Train data shape: (100000000, 128)
+INFO:root:Queries shape: (10000, 128)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building index...
+INFO:root:Indexing time = 2644.512905359268 seconds
+make: *** [Makefile:717: hub-pruning-bigann-100m] Killed
+[2026-01-11T12:07:53.606] error: Detected 1 oom_kill event in StepId=23888858.batch. Some of the step tasks have been OOM Killed.

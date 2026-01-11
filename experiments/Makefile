@@ -719,7 +719,6 @@ hub-pruning-bigann-100m:
 		--dataset ../data/bigann/train_100m.npy \
 		--queries ../data/bigann/queries.npy \
 		--gtruth ../data/bigann/ground_truth_100m.npy \
-		--index-type flatnav \
 		--num-node-links 32 \
 		--ef-construction 100 \
 		--ef-search 100 200 300 500 1000 3000 \

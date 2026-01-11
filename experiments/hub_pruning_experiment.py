@@ -205,14 +205,9 @@ def run_pruning_experiment(
         "anti_hub_pruned": [],
     }
 
-    for prune_pct in pruning_percentages:
-        logging.info(f"\n{'='*60}")
-        logging.info(f"Running experiment with {prune_pct}% pruning")
-        logging.info(f"{'='*60}")
-
-        # Build the index
-        logging.info("Building index...")
-        index = train_index(
+    # Helper to build an index with common parameters
+    def build_index():
+        return train_index(
             index_type="flatnav",
             data_type=data_type,
             train_dataset=train_dataset,
@@ -225,10 +220,19 @@ def run_pruning_experiment(
             hnsw_base_layer_filename=hnsw_base_layer_filename,
             num_build_threads=num_build_threads,
         )
-        index.set_num_threads(num_search_threads)
+
+    for prune_pct in pruning_percentages:
+        logging.info(f"\n{'='*60}")
+        logging.info(f"Running experiment with {prune_pct}% pruning")
+        logging.info(f"{'='*60}")
+
+        # Build the baseline index (also used to compute hub statistics)
+        logging.info("Building baseline index...")
+        baseline_index = build_index()
+        baseline_index.set_num_threads(num_search_threads)
 
         # Get graph structure and compute in-degrees
-        outdegree_table = index.get_graph_outdegree_table()
+        outdegree_table = baseline_index.get_graph_outdegree_table()
         indegree_counts = compute_indegree_distribution(outdegree_table)
 
         # Identify hub nodes (top X% by in-degree)
@@ -242,12 +246,12 @@ def run_pruning_experiment(
         else:
             # Run a warmup search to collect access counts
             logging.info("Running warmup search to collect node access counts...")
-            _ = run_search_benchmark(index, queries[:100], ground_truth[:100], ef_search_params[0])
-            node_access_counts = index.get_node_access_counts()
+            _ = run_search_benchmark(baseline_index, queries[:100], ground_truth[:100], ef_search_params[0])
+            node_access_counts = baseline_index.get_node_access_counts()
             hub_nodes = find_hub_nodes_by_access_count(node_access_counts, hub_percentile)
             # For anti-hubs with access count, find least accessed nodes
             anti_hub_nodes = find_anti_hub_nodes_by_indegree(indegree_counts, anti_hub_percentile)
-            index.reset_node_access_distribution()
+            baseline_index.reset_node_access_distribution()
 
         # Select random nodes (same count as hub nodes for fair comparison)
         random_nodes = select_random_nodes(dataset_size, prune_pct, seed=seed)
@@ -264,25 +268,11 @@ def run_pruning_experiment(
         logging.info(f"Anti-hub nodes avg in-degree: {np.mean(anti_hub_indegrees):.2f}")
         logging.info(f"Random nodes avg in-degree: {np.mean(random_indegrees):.2f}")
 
+        # Run baseline searches for all ef_search values
+        logging.info("\nRunning baseline searches (no pruning)...")
+        baseline_results_for_pct = []
         for ef_search in ef_search_params:
-            logging.info(f"\nTesting with ef_search={ef_search}")
-
-            # 1. Baseline (no pruning) - rebuild index for fair comparison
-            logging.info("Running baseline search (no pruning)...")
-            baseline_index = train_index(
-                index_type="flatnav",
-                data_type=data_type,
-                train_dataset=train_dataset,
-                max_edges_per_node=max_edges_per_node,
-                ef_construction=ef_construction,
-                dataset_size=dataset_size,
-                dim=dim,
-                distance_type=distance_type,
-                use_hnsw_base_layer=use_hnsw_base_layer,
-                hnsw_base_layer_filename=hnsw_base_layer_filename,
-                num_build_threads=num_build_threads,
-            )
-            baseline_index.set_num_threads(num_search_threads)
+            logging.info(f"  ef_search={ef_search}")
             baseline_metrics = run_search_benchmark(
                 baseline_index, queries, ground_truth, ef_search
             )
@@ -290,25 +280,22 @@ def run_pruning_experiment(
             baseline_metrics["ef_search"] = ef_search
             baseline_metrics["experiment_type"] = "baseline"
             results["baseline"].append(baseline_metrics)
-            logging.info(f"Baseline - Recall: {baseline_metrics['recall']:.4f}, QPS: {baseline_metrics['qps']:.2f}")
+            baseline_results_for_pct.append(baseline_metrics)
+            logging.info(f"    Recall: {baseline_metrics['recall']:.4f}, QPS: {baseline_metrics['qps']:.2f}")
 
-            # 2. Hub node pruning
-            logging.info("Running hub-pruned search...")
-            hub_pruned_index = train_index(
-                index_type="flatnav",
-                data_type=data_type,
-                train_dataset=train_dataset,
-                max_edges_per_node=max_edges_per_node,
-                ef_construction=ef_construction,
-                dataset_size=dataset_size,
-                dim=dim,
-                distance_type=distance_type,
-                use_hnsw_base_layer=use_hnsw_base_layer,
-                hnsw_base_layer_filename=hnsw_base_layer_filename,
-                num_build_threads=num_build_threads,
-            )
-            hub_pruned_index.set_num_threads(num_search_threads)
-            hub_pruned_index.reprune_graph(hub_nodes=hub_nodes, alpha=alpha)
+        # Free baseline index memory before building next index
+        del baseline_index
+
+        # Build and test hub-pruned index
+        logging.info("\nBuilding hub-pruned index...")
+        hub_pruned_index = build_index()
+        hub_pruned_index.set_num_threads(num_search_threads)
+        hub_pruned_index.reprune_graph(hub_nodes=hub_nodes, alpha=alpha)
+
+        logging.info("Running hub-pruned searches...")
+        hub_results_for_pct = []
+        for ef_search in ef_search_params:
+            logging.info(f"  ef_search={ef_search}")
             hub_metrics = run_search_benchmark(
                 hub_pruned_index, queries, ground_truth, ef_search
             )
@@ -318,25 +305,21 @@ def run_pruning_experiment(
             hub_metrics["num_pruned_nodes"] = len(hub_nodes)
             hub_metrics["avg_indegree_pruned"] = np.mean(hub_indegrees)
             results["hub_pruned"].append(hub_metrics)
-            logging.info(f"Hub-pruned - Recall: {hub_metrics['recall']:.4f}, QPS: {hub_metrics['qps']:.2f}")
+            hub_results_for_pct.append(hub_metrics)
+            logging.info(f"    Recall: {hub_metrics['recall']:.4f}, QPS: {hub_metrics['qps']:.2f}")
 
-            # 3. Random node pruning
-            logging.info("Running random-pruned search...")
-            random_pruned_index = train_index(
-                index_type="flatnav",
-                data_type=data_type,
-                train_dataset=train_dataset,
-                max_edges_per_node=max_edges_per_node,
-                ef_construction=ef_construction,
-                dataset_size=dataset_size,
-                dim=dim,
-                distance_type=distance_type,
-                use_hnsw_base_layer=use_hnsw_base_layer,
-                hnsw_base_layer_filename=hnsw_base_layer_filename,
-                num_build_threads=num_build_threads,
-            )
-            random_pruned_index.set_num_threads(num_search_threads)
-            random_pruned_index.reprune_graph(hub_nodes=random_nodes, alpha=alpha)
+        del hub_pruned_index
+
+        # Build and test random-pruned index
+        logging.info("\nBuilding random-pruned index...")
+        random_pruned_index = build_index()
+        random_pruned_index.set_num_threads(num_search_threads)
+        random_pruned_index.reprune_graph(hub_nodes=random_nodes, alpha=alpha)
+
+        logging.info("Running random-pruned searches...")
+        random_results_for_pct = []
+        for ef_search in ef_search_params:
+            logging.info(f"  ef_search={ef_search}")
             random_metrics = run_search_benchmark(
                 random_pruned_index, queries, ground_truth, ef_search
             )
@@ -346,25 +329,21 @@ def run_pruning_experiment(
             random_metrics["num_pruned_nodes"] = len(random_nodes)
             random_metrics["avg_indegree_pruned"] = np.mean(random_indegrees)
             results["random_pruned"].append(random_metrics)
-            logging.info(f"Random-pruned - Recall: {random_metrics['recall']:.4f}, QPS: {random_metrics['qps']:.2f}")
+            random_results_for_pct.append(random_metrics)
+            logging.info(f"    Recall: {random_metrics['recall']:.4f}, QPS: {random_metrics['qps']:.2f}")
 
-            # 4. Anti-hub node pruning
-            logging.info("Running anti-hub-pruned search...")
-            anti_hub_pruned_index = train_index(
-                index_type="flatnav",
-                data_type=data_type,
-                train_dataset=train_dataset,
-                max_edges_per_node=max_edges_per_node,
-                ef_construction=ef_construction,
-                dataset_size=dataset_size,
-                dim=dim,
-                distance_type=distance_type,
-                use_hnsw_base_layer=use_hnsw_base_layer,
-                hnsw_base_layer_filename=hnsw_base_layer_filename,
-                num_build_threads=num_build_threads,
-            )
-            anti_hub_pruned_index.set_num_threads(num_search_threads)
-            anti_hub_pruned_index.reprune_graph(hub_nodes=anti_hub_nodes, alpha=alpha)
+        del random_pruned_index
+
+        # Build and test anti-hub-pruned index
+        logging.info("\nBuilding anti-hub-pruned index...")
+        anti_hub_pruned_index = build_index()
+        anti_hub_pruned_index.set_num_threads(num_search_threads)
+        anti_hub_pruned_index.reprune_graph(hub_nodes=anti_hub_nodes, alpha=alpha)
+
+        logging.info("Running anti-hub-pruned searches...")
+        anti_hub_results_for_pct = []
+        for ef_search in ef_search_params:
+            logging.info(f"  ef_search={ef_search}")
             anti_hub_metrics = run_search_benchmark(
                 anti_hub_pruned_index, queries, ground_truth, ef_search
             )
@@ -374,16 +353,29 @@ def run_pruning_experiment(
             anti_hub_metrics["num_pruned_nodes"] = len(anti_hub_nodes)
             anti_hub_metrics["avg_indegree_pruned"] = np.mean(anti_hub_indegrees)
             results["anti_hub_pruned"].append(anti_hub_metrics)
-            logging.info(f"Anti-hub-pruned - Recall: {anti_hub_metrics['recall']:.4f}, QPS: {anti_hub_metrics['qps']:.2f}")
+            anti_hub_results_for_pct.append(anti_hub_metrics)
+            logging.info(f"    Recall: {anti_hub_metrics['recall']:.4f}, QPS: {anti_hub_metrics['qps']:.2f}")
 
-            # Calculate recall degradation
-            hub_recall_drop = baseline_metrics['recall'] - hub_metrics['recall']
-            random_recall_drop = baseline_metrics['recall'] - random_metrics['recall']
-            anti_hub_recall_drop = baseline_metrics['recall'] - anti_hub_metrics['recall']
-            logging.info(f"\nRecall degradation:")
-            logging.info(f"  Hub pruning: {hub_recall_drop:.4f} ({hub_recall_drop/baseline_metrics['recall']*100:.2f}%)")
-            logging.info(f"  Random pruning: {random_recall_drop:.4f} ({random_recall_drop/baseline_metrics['recall']*100:.2f}%)")
-            logging.info(f"  Anti-hub pruning: {anti_hub_recall_drop:.4f} ({anti_hub_recall_drop/baseline_metrics['recall']*100:.2f}%)")
+        del anti_hub_pruned_index
+
+        # Log recall degradation summary for this pruning percentage
+        logging.info(f"\n{'='*60}")
+        logging.info(f"Recall degradation summary for {prune_pct}% pruning:")
+        logging.info(f"{'='*60}")
+        for i, ef_search in enumerate(ef_search_params):
+            baseline_recall = baseline_results_for_pct[i]['recall']
+            hub_recall = hub_results_for_pct[i]['recall']
+            random_recall = random_results_for_pct[i]['recall']
+            anti_hub_recall = anti_hub_results_for_pct[i]['recall']
+
+            hub_drop = baseline_recall - hub_recall
+            random_drop = baseline_recall - random_recall
+            anti_hub_drop = baseline_recall - anti_hub_recall
+
+            logging.info(f"\nef_search={ef_search}:")
+            logging.info(f"  Hub pruning: {hub_drop:.4f} ({hub_drop/baseline_recall*100:.2f}%)")
+            logging.info(f"  Random pruning: {random_drop:.4f} ({random_drop/baseline_recall*100:.2f}%)")
+            logging.info(f"  Anti-hub pruning: {anti_hub_drop:.4f} ({anti_hub_drop/baseline_recall*100:.2f}%)")
 
     return results
 
@@ -501,7 +493,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument(
         "--metrics-file",
         type=str,
-        default="../metrics/final_pruning_metrics.json",
+        default="../metrics/test_building_pruning_metrics.json",
         help="Path to the pruning metrics file to append results to.",
     )
 

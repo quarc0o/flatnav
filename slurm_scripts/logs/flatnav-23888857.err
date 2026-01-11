@@ -1,0 +1,17 @@
+usage: hub_pruning_experiment.py [-h] --dataset DATASET --queries QUERIES
+                                 --gtruth GTRUTH --metric METRIC
+                                 --dataset-name DATASET_NAME
+                                 [--num-node-links NUM_NODE_LINKS]
+                                 [--ef-construction EF_CONSTRUCTION]
+                                 [--ef-search EF_SEARCH [EF_SEARCH ...]]
+                                 [--pruning-percentages PRUNING_PERCENTAGES [PRUNING_PERCENTAGES ...]]
+                                 [--alpha ALPHA]
+                                 [--hub-identification {indegree,access_count}]
+                                 [--data-type {float32,uint8,int8}]
+                                 [--use-hnsw-base-layer]
+                                 [--num-build-threads NUM_BUILD_THREADS]
+                                 [--num-search-threads NUM_SEARCH_THREADS]
+                                 [--metrics-file METRICS_FILE] [--seed SEED]
+                                 [--train-dataset-range TRAIN_DATASET_RANGE [TRAIN_DATASET_RANGE ...]]
+hub_pruning_experiment.py: error: unrecognized arguments: --index-type flatnav
+make: *** [Makefile:717: hub-pruning-bigann-100m] Error 2
