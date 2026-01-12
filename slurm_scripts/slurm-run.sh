@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=flatnav
-#SBATCH --time=1:00:00
-#SBATCH --mem=64G
+#SBATCH --time=12:00:00
+#SBATCH --mem=200G
 #SBATCH --cpus-per-task=32
-#SBATCH --partition=CPUQ
+#SBATCH --partition=GPUQ
 #SBATCH --output=logs/flatnav-%j.out
 #SBATCH --error=logs/flatnav-%j.err
 

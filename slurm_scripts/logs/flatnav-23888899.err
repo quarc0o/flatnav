@@ -1,0 +1,114 @@
+INFO:root:Dataset: bigann-100m
+INFO:root:Train data shape: (100000000, 128)
+INFO:root:Queries shape: (10000, 128)
+INFO:root:Ground truth shape: (10000, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building baseline index...
+INFO:root:Indexing time = 2709.5856759548187 seconds
+INFO:root:Number of hub nodes: 5287760
+INFO:root:Number of anti-hub nodes: 5000000
+INFO:root:Number of random nodes: 5000000
+INFO:root:Hub nodes avg in-degree: 53.84
+INFO:root:Anti-hub nodes avg in-degree: 6.89
+INFO:root:Random nodes avg in-degree: 21.80
+INFO:root:
+Running baseline searches (no pruning)...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.7758, QPS: 752.87
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.8769, QPS: 618.69
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.9189, QPS: 427.08
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.9543, QPS: 269.83
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.9810, QPS: 146.24
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.9961, QPS: 55.73
+INFO:root:
+Building hub-pruned index...
+INFO:root:Indexing time = 2825.3370184898376 seconds
+INFO:root:Running hub-pruned searches...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.6794, QPS: 799.90
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.7881, QPS: 649.65
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.8314, QPS: 499.15
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.8719, QPS: 307.18
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.9053, QPS: 172.70
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.9282, QPS: 61.42
+INFO:root:
+Building random-pruned index...
+INFO:root:Indexing time = 2794.4211597442627 seconds
+INFO:root:Running random-pruned searches...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.7247, QPS: 880.89
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.8236, QPS: 648.70
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.8640, QPS: 409.48
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.9016, QPS: 274.72
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.9313, QPS: 150.32
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.9421, QPS: 54.15
+INFO:root:
+Building anti-hub-pruned index...
+INFO:root:Indexing time = 2788.158707380295 seconds
+INFO:root:Running anti-hub-pruned searches...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.7297, QPS: 988.20
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.8273, QPS: 588.08
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.8682, QPS: 438.07
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.9014, QPS: 273.02
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.9239, QPS: 147.91
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.9426, QPS: 53.56
+INFO:root:
+============================================================
+INFO:root:Recall degradation summary for 5.0% pruning:
+INFO:root:============================================================
+INFO:root:
+ef_search=100:
+INFO:root:  Hub pruning: 0.0964 (12.42%)
+INFO:root:  Random pruning: 0.0511 (6.59%)
+INFO:root:  Anti-hub pruning: 0.0461 (5.94%)
+INFO:root:
+ef_search=200:
+INFO:root:  Hub pruning: 0.0889 (10.14%)
+INFO:root:  Random pruning: 0.0533 (6.08%)
+INFO:root:  Anti-hub pruning: 0.0497 (5.66%)
+INFO:root:
+ef_search=300:
+INFO:root:  Hub pruning: 0.0875 (9.53%)
+INFO:root:  Random pruning: 0.0549 (5.97%)
+INFO:root:  Anti-hub pruning: 0.0507 (5.52%)
+INFO:root:
+ef_search=500:
+INFO:root:  Hub pruning: 0.0824 (8.64%)
+INFO:root:  Random pruning: 0.0527 (5.52%)
+INFO:root:  Anti-hub pruning: 0.0529 (5.54%)
+INFO:root:
+ef_search=1000:
+INFO:root:  Hub pruning: 0.0757 (7.72%)
+INFO:root:  Random pruning: 0.0497 (5.07%)
+INFO:root:  Anti-hub pruning: 0.0571 (5.83%)
+INFO:root:
+ef_search=3000:
+INFO:root:  Hub pruning: 0.0679 (6.82%)
+INFO:root:  Random pruning: 0.0540 (5.42%)
+INFO:root:  Anti-hub pruning: 0.0535 (5.37%)
+INFO:root:
+Results saved to: ../metrics/test_building_pruning_metrics.json

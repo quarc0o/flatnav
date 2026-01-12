@@ -1,0 +1,33 @@
+INFO:root:Dataset: spacev-100m
+INFO:root:Train data shape: (100000000, 100)
+INFO:root:Queries shape: (29316, 100)
+INFO:root:Ground truth shape: (29316, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building baseline index...
+INFO:root:Indexing time = 2509.0355994701385 seconds
+INFO:root:Number of hub nodes: 5049568
+INFO:root:Number of anti-hub nodes: 5000000
+INFO:root:Number of random nodes: 5000000
+INFO:root:Hub nodes avg in-degree: 55.85
+INFO:root:Anti-hub nodes avg in-degree: 2.25
+INFO:root:Random nodes avg in-degree: 17.93
+INFO:root:
+Running baseline searches (no pruning)...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.0000, QPS: 1939.40
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.0000, QPS: 1163.30
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.0000, QPS: 827.29
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.0000, QPS: 521.44
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.0000, QPS: 253.47
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.0000, QPS: 88.36
+INFO:root:
+Building hub-pruned index...
+[2026-01-11T20:44:07.738] error: *** JOB 23889057 ON idun-08-01 CANCELLED AT 2026-01-11T20:44:07 DUE to SIGNAL Terminated ***

@@ -1,0 +1,44 @@
+INFO:root:Dataset: spacev-100m
+INFO:root:Train data shape: (10000000, 100)
+INFO:root:Queries shape: (29316, 100)
+INFO:root:Ground truth shape: (29316, 100)
+INFO:root:
+============================================================
+INFO:root:Running experiment with 5.0% pruning
+INFO:root:============================================================
+INFO:root:Building baseline index...
+INFO:root:Indexing time = 183.85240054130554 seconds
+INFO:root:Number of hub nodes: 525030
+INFO:root:Number of anti-hub nodes: 500000
+INFO:root:Number of random nodes: 500000
+INFO:root:Hub nodes avg in-degree: 55.39
+INFO:root:Anti-hub nodes avg in-degree: 2.46
+INFO:root:Random nodes avg in-degree: 19.58
+INFO:root:
+Running baseline searches (no pruning)...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.0000, QPS: 2524.04
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.0000, QPS: 1434.26
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.0000, QPS: 986.17
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.0000, QPS: 615.28
+INFO:root:  ef_search=1000
+INFO:root:    Recall: 0.0000, QPS: 318.86
+INFO:root:  ef_search=3000
+INFO:root:    Recall: 0.0000, QPS: 112.43
+INFO:root:
+Building hub-pruned index...
+INFO:root:Indexing time = 184.66032457351685 seconds
+INFO:root:Running hub-pruned searches...
+INFO:root:  ef_search=100
+INFO:root:    Recall: 0.0000, QPS: 2978.70
+INFO:root:  ef_search=200
+INFO:root:    Recall: 0.0000, QPS: 1736.75
+INFO:root:  ef_search=300
+INFO:root:    Recall: 0.0000, QPS: 1207.33
+INFO:root:  ef_search=500
+INFO:root:    Recall: 0.0000, QPS: 750.77
+INFO:root:  ef_search=1000
+[2026-01-11T21:09:46.473] error: *** JOB 23889102 ON idun-08-01 CANCELLED AT 2026-01-11T21:09:46 DUE to SIGNAL Terminated ***

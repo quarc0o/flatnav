@@ -729,6 +729,38 @@ hub-pruning-bigann-100m:
 		--num-build-threads 16 \
 		--num-search-threads 1
 
+hub-pruning-yandex-deep-100m:
+	poetry run python hub_pruning_experiment.py \
+		--dataset-name yandex-deep-100m \
+		--dataset ../data/deep/train_100m.npy \
+		--queries ../data/deep/queries.npy \
+		--gtruth ../data/deep/ground_truth_100m.npy \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
+		--metric l2 \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
+hub-pruning-spacev-100m:
+	poetry run python hub_pruning_experiment.py \
+		--dataset-name spacev-100m \
+		--dataset ../data/msspacev/train_10m.npy \
+		--queries ../data/msspacev/queries.npy \
+		--gtruth ../data/msspacev/ground_truth_10m.npy \
+		--num-node-links 32 \
+		--ef-construction 100 \
+		--ef-search 100 200 300 500 1000 3000 \
+		--pruning-percentages 5 \
+		--metric angular \
+		--alpha 1.0 \
+		--hub-identification indegree \
+		--num-build-threads 16 \
+		--num-search-threads 1
+
 # Run hub pruning experiment on glove-100-angular
 hub-pruning-glove100:
 	poetry run python hub_pruning_experiment.py \
