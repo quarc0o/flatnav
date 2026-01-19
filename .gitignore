@@ -32,3 +32,5 @@ external/openmp
 wheelhouse
 
 /venv
+
+slurm_scripts/logsADSampling/

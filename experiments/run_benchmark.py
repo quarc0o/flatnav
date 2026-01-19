@@ -199,6 +199,11 @@ def train_index(
             num_threads=num_build_threads,
         )
 
+        # NOTE: Commented out to allow benchmarks to run
+        # Uncomment below if you need to save the HNSW index for debugging:
+        # hnsw_index.save_index("../data/hnsw_index_100m.bin")
+        # exit(0)
+
         return hnsw_index
 
     if use_hnsw_base_layer:
@@ -228,6 +233,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=False,
             collect_stats=True,
+            use_random_initialization=False,
+            # random_seed=42,
         )
 
         # Here we will first allocate memory for the index and then build edge connectivity
@@ -247,6 +254,8 @@ def train_index(
             max_edges_per_node=max_edges_per_node,
             verbose=True,
             collect_stats=False,
+            use_random_initialization=False,
+            # random_seed=42,
         )
         index.set_num_threads(num_build_threads)
 
@@ -260,6 +269,27 @@ def train_index(
         logging.info(f"Indexing time = {end - start} seconds")
 
     return index
+
+
+def find_hub_nodes(node_access_distribution: Dict[int, int]) -> List[int]:
+    """
+    Find the hub nodes in the graph based on the node access distribution.
+    :param node_access_distribution: The node access distribution.
+    :return: The hub nodes.
+
+    The hub nodes are the nodes that fall into the 99th percentile of the node access distribution.
+    It means they are accessed more frequently than other nodes during kNN search.
+    """
+
+    access_values = np.array(list(node_access_distribution.values()))
+    percentile_99 = np.percentile(access_values, 99)
+
+    hub_nodes = [
+        node
+        for node, access_count in node_access_distribution.items()
+        if access_count >= percentile_99
+    ]
+    return hub_nodes
 
 
 def main(
@@ -281,13 +311,14 @@ def main(
     num_initializations: Optional[List[int]] = None,
     num_build_threads: int = 1,
     num_search_threads: int = 1,
+    reprune_graph: bool = False,
+    alpha: float = 0.5,
 ):
-    
     def build_and_run_knn_search(ef_cons: int, node_links: int):
         """
         Build the index and run the KNN search.
         This part is here to ensure that two indices are not in memory at the same time.
-        With large datasets, we might get an OOM error. 
+        With large datasets, we might get an OOM error.
         """
         
         index = train_index(
@@ -303,24 +334,49 @@ def main(
             hnsw_base_layer_filename=hnsw_base_layer_filename,
             num_build_threads=num_build_threads,
         )
-        
+
         if reordering_strategies is not None:
             if index_type != "flatnav":
                 raise ValueError("Reordering only applies to the FlatNav index.")
             index.reorder(strategies=reordering_strategies)
-        
+
         index.set_num_threads(num_search_threads)
         for ef_search in ef_search_params:
             # Extend metrics with computed metrics
-            metrics.update(
-                compute_metrics(
+            computed_metrics = compute_metrics(
+                requested_metrics=requested_metrics,
+                index=index,
+                queries=queries,
+                ground_truth=gtruth,
+                ef_search=ef_search,
+            )
+
+            if not reprune_graph:
+                metrics.update(computed_metrics)
+            else:
+                # Re-prune the graph by randomly dropping edges from the hub node cluster.
+                # We will drop an edge with probability alpha.
+                node_access_distribution = index.get_node_access_counts()
+                hub_nodes: List[int] = find_hub_nodes(node_access_distribution)
+
+                logging.info(
+                    f"Re-pruning the graph with {alpha=}. Number of nodes in the hub cluster: {len(hub_nodes)}."
+                )
+                index.reprune_graph(hub_nodes=hub_nodes, alpha=alpha)
+
+                # Re-run the search with the re-pruned graph to see if the performance changes.
+                computed_metrics = compute_metrics(
                     requested_metrics=requested_metrics,
                     index=index,
                     queries=queries,
                     ground_truth=gtruth,
                     ef_search=ef_search,
                 )
-            )
+                metrics.update(computed_metrics)
+
+                # Reset the node access distribution.
+                index.reset_node_access_distribution()
+
             logging.info(f"Metrics: {metrics}")
 
             # Add parameters to the metrics dictionary.
@@ -341,8 +397,7 @@ def main(
             all_metrics[experiment_key].append(metrics)
             with open(metrics_file, "w") as file:
                 json.dump(all_metrics, file, indent=4)
-    
-    
+
     dataset_size = train_dataset.shape[0]
     dim = train_dataset.shape[1]
 
@@ -381,6 +436,21 @@ def parse_arguments() -> argparse.Namespace:
         action="store_true",
         help="If set, use HNSW's base layer's connectivity for the Flatnav index.",
     )
+
+    parser.add_argument(
+        "--reprune-graph",
+        default=False,
+        action="store_false",
+        help="If set, re-prune the graph by randomly dropping edges from the hub node cluster.",
+    )
+
+    parser.add_argument(
+        "--alpha",
+        type=float,
+        default=0.5,
+        help="The probability of dropping an edge from the hub node cluster.",
+    )
+
     parser.add_argument(
         "--hnsw-base-layer-filename",
         default=None,
@@ -554,7 +624,7 @@ def plot_all_metrics(
 
 def run_experiment():
     # This is the root directory inside the Docker container not the host machine.
-    ROOT_DIR = "/root"
+    ROOT_DIR = "../"
     args = parse_arguments()
 
     data_loader = get_data_loader(
@@ -591,6 +661,8 @@ def run_experiment():
         metrics_file=metrics_file_path,
         num_initializations=num_initializations,
         requested_metrics=args.requested_metrics,
+        reprune_graph=args.reprune_graph,
+        alpha=args.alpha,
     )
 
     plot_all_metrics(
