@@ -13,7 +13,8 @@ ExternalProject_Add(
   ZLIB
   DEPENDS ""
   GIT_REPOSITORY https://github.com/madler/zlib.git
-  GIT_TAG v1.2.11
+  # zlib < 1.2.12 uses K&R function definitions that fail against recent macOS SDKs.
+  GIT_TAG v1.3.1
   SOURCE_DIR ZLIB-source
   BINARY_DIR ZLIB-build
   UPDATE_COMMAND ""
@@ -27,7 +28,9 @@ ExternalProject_Add(
     -DINSTALL_LIB_DIR:STRING=${PROJECT_BINARY_DIR}/ep/lib
     -DINSTALL_MAN_DIR:STRING=${PROJECT_BINARY_DIR}/ep/share/man
     -DINSTALL_PKGCONFIG_DIR:STRING=${PROJECT_BINARY_DIR}/ep/share/pkgconfig
-    -DCMAKE_BUILD_TYPE:STRING=Release)
+    -DCMAKE_BUILD_TYPE:STRING=Release
+    # zlib/cnpy declare cmake_minimum_required < 3.5, which CMake >= 4.0 rejects.
+    -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5)
 functioninstallexternalcmakeproject(ZLIB)
 
 # Set the necessary variables for linking
@@ -50,7 +53,8 @@ ExternalProject_Add(
              -DZLIB_LIBRARY_RELEASE:STRING=${ZLIB_LIB_RELEASE}
              -DCMAKE_INSTALL_PREFIX:STRING=${PROJECT_BINARY_DIR}/ep
              -DBUILD_SHARED_LIBS:BOOL=${BUILD_SHARED_LIBS}
-             -DCMAKE_BUILD_TYPE:STRING=Release)
+             -DCMAKE_BUILD_TYPE:STRING=Release
+             -DCMAKE_POLICY_VERSION_MINIMUM:STRING=3.5)
 functioninstallexternalcmakeproject(CNPY)
 
 set(CNPY_LIB ${PROJECT_BINARY_DIR}/ep/lib/libcnpy.a)
