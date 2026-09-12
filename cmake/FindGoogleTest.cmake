@@ -11,10 +11,13 @@ if(NOT EXISTS ${GOOGLE_TEST_DIR})
 endif()
 # This does not download googletest again if its already available in the
 # CMakeCache file
+# Pin to a release tag rather than a branch: with a branch name, CMake re-runs
+# `git fetch` on every reconfigure, which fails without network access. A tag
+# that already exists in the checkout is resolved locally and skips the fetch.
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG main)
+  GIT_TAG v1.15.2)
 
 FetchContent_MakeAvailable(googletest)
 

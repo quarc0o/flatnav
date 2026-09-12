@@ -112,6 +112,14 @@ def construct_cmake_args() -> List[str]:
     if cmake_linker_args:
         cmake_args.append(f"-DCMAKE_EXE_LINKER_FLAGS={' '.join(cmake_linker_args)}")
 
+    # Point CMake at the pip-installed pybind11 so no download is needed.
+    try:
+        import pybind11
+
+        cmake_args.append(f"-Dpybind11_DIR={pybind11.get_cmake_dir()}")
+    except ImportError:
+        pass
+
     return cmake_args
 
 setup(

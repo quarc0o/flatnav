@@ -17,16 +17,21 @@ include_directories(${CMAKE_SOURCE_DIR}/../include)
 include_directories(${CMAKE_SOURCE_DIR}/../external/cereal/include)
 
 
-# Fetch Pybind11
-include(FetchContent)
-FetchContent_Declare(
-    pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
-    # pybind11 < 2.12 declares cmake_minimum_required < 3.5, which CMake >= 4.0 rejects.
-    GIT_TAG v2.13.6
-)
-FetchContent_GetProperties(pybind11)
-if(NOT pybind11_POPULATED)
+# Locate pybind11. Prefer the `pybind11` pip package (setup.py passes its
+# cmake dir as -Dpybind11_DIR) so that rebuilding never needs network access.
+# Fall back to fetching from GitHub only when it is not installed.
+find_package(pybind11 CONFIG QUIET)
+if(pybind11_FOUND)
+    message(STATUS "Using installed pybind11 ${pybind11_VERSION} from ${pybind11_DIR}")
+else()
+    message(STATUS "pybind11 not installed; fetching from GitHub")
+    include(FetchContent)
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11
+        # pybind11 < 2.12 declares cmake_minimum_required < 3.5, which CMake >= 4.0 rejects.
+        GIT_TAG v2.13.6
+    )
     FetchContent_MakeAvailable(pybind11)
 endif()
 
